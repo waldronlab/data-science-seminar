@@ -15,10 +15,11 @@ Note - to show the output in this directory on github, I did the following:
 2. This created a file called ISLR_Chapter2.md.  I renamed this to
 README.md, then added these extra comments at the top.
 
-3. Commit README.md in the /week2 directory, and push to github.
-That's it.
+3. Within the /week2 subdirectory, add README.md and
+/week2/figure. Commit and push.  That's it.
 
-A built html version of this document is available at http://rpubs.com/lwaldron/islrchapter2
+A built html version of this document is available at
+http://rpubs.com/lwaldron/islrchapter2
 
 # Problem 8
 First load the data using the ISLR package:
