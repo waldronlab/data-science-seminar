@@ -1,0 +1,63 @@
+Qualitative Predictors
+========================================================
+author: Marcel Ramos
+date: November 7, 2014
+
+========================================================
+
+Qualitative Predictors
+
+- Dummy variable creation (SAS, SPSS)
+- Automatically accounted for in R
+- Usually coded as binary variables (0,1)
+- The first category is taken as the reference category
+- Use contrasts() function to verify categories - factors only
+
+
+Pairs plots - Credit dataset
+========================================================
+
+```{r, echo=FALSE}
+credit <- read.csv("credit.csv")
+pairs(~Balance+Age+Cards+Education+Income+Limit+Rating, data=credit, col="blue", pch=".")
+```
+
+Contrasts
+========================================================
+
+```{r}
+contrasts(credit$Ethnicity)
+summary(lm(Balance~Ethnicity, data=credit))$coefficients
+```
+
+Relevel
+========================================================
+- Reassign the reference category using the relevel() function
+```{r}
+contrasts(relevel(credit$Ethnicity, ref="Caucasian"))
+```
+
+Extensions of the Linear Model
+========================================================
+- Relationship between X and Y is additive and linear
+- The additive assumption states that changes in X on Y are independent of other Xs. 
+- The linear assumption states that a one-unit change in X results in a constant change in Y. (constant slope)
+
+Removing the Additive Assumption
+========================================================
+- In the analysis of the **Advertising** data, the authors concluded that both the radio budget and TV budget were independently associated with sales. 
+- Consider an non-independent effect of X1 and X2 on Y (ie. Spending money on radio advertising increases the effectiveness of TV advertising).
+- This is known as an _interaction effect_ or _effect measure modification_. 
+- We can exend this model by adding an _interaction term_ to the regression equation. 
+- Since radio advertising now depends on the TV advertising, the additive assumption is relaxed. 
+- We can interpret the Beta coefficient of the interaction term as the effectiveness of TV advertising for a one unit increase in radio advertising or vice versa. 
+
+Heirarchical Principle
+========================================================
+- Upon inclusion of an interaction in a model, main effects should also be included. 
+- Confounding interactions should also be accounted for in multivariate models but only the _p_-values of the interactions of interest should be evaluated. 
+
+Non-Linear Relationships
+========================================================
+
+
