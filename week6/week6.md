@@ -73,7 +73,7 @@ Removing the Additive Assumption
 - Since radio advertising now depends on the TV advertising, the additive assumption is relaxed. 
 - We can interpret the Beta coefficient of the interaction term as the effectiveness of TV advertising for a one unit increase in radio advertising or vice versa. 
 
-Heirarchical Principle
+Hierarchical Principle
 ========================================================
 - Upon inclusion of an interaction in a model, main effects should also be included. 
 - Confounding interactions should also be accounted for in multivariate models but only the _p_-values of the interactions of interest should be evaluated. 
@@ -98,11 +98,11 @@ Potential Problems
 3. Non-constant variance of error terms
 4. Outliers
 5. High-leverage points
-6. Collinearity
+6. Collinearity    
+
 
 1. Non-linearity of the data
 ========================================================
-- Residual plots can be used to identify non-linearity. 
 ![plot of chunk unnamed-chunk-5](week6-figure/unnamed-chunk-5-1.png) 
 
 2. Correlation of Error Terms
@@ -138,7 +138,6 @@ Potential Problems
 
 6. Collinearity
 =========================================================
-- Occurs when 2 or more predictor variables are related. 
 ![plot of chunk unnamed-chunk-6](week6-figure/unnamed-chunk-6-1.png) 
 
 =========================================================
@@ -164,7 +163,7 @@ The Marketing Plan
 Linear Regression versus K-Nearest Neighbors
 =========================================================
 - Linear Regression is a _parametric_ approach and makes a strong assumption about the form of f(X)
-- _Non-parametric_ approaches do not make assumptions about the form of f(x) and are more flexible
+- _Non-parametric_ approaches do not make assumptions about the form of f(X) and are more flexible
 - KNN regression identifies the K training observations that are closest to the test observation
 - The optimal value for K depends on the _bias-variance_ tradeoff
 - Small values of K are most flexible which will have low bias but high variance

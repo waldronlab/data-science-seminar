@@ -7,7 +7,7 @@ _Gareth James • Daniela Witten • Trevor Hastie • Robert Tibshirani_
 
 ========================================================
 ```{r global_options, include=FALSE}
-opts_chunk$set(fig.width=14, fig.height=8, warning=FALSE, message=FALSE)
+opts_chunk$set(fig.width=10, fig.height=8, warning=FALSE, message=FALSE)
 ```
 Qualitative Predictors
 
@@ -52,7 +52,7 @@ Removing the Additive Assumption
 - Since radio advertising now depends on the TV advertising, the additive assumption is relaxed. 
 - We can interpret the Beta coefficient of the interaction term as the effectiveness of TV advertising for a one unit increase in radio advertising or vice versa. 
 
-Heirarchical Principle
+Hierarchical Principle
 ========================================================
 - Upon inclusion of an interaction in a model, main effects should also be included. 
 - Confounding interactions should also be accounted for in multivariate models but only the _p_-values of the interactions of interest should be evaluated. 
@@ -89,11 +89,11 @@ Potential Problems
 3. Non-constant variance of error terms
 4. Outliers
 5. High-leverage points
-6. Collinearity
+6. Collinearity    
+
 
 1. Non-linearity of the data
 ========================================================
-- Residual plots can be used to identify non-linearity. 
 ```{r, echo=FALSE}
 par(mfcol=c(1,2))
 plot(fitted(lm0), resid(lm0), col="lightgrey", ylab="Residuals", xlab="Fitted values", main="Residual Plot for Linear Fit", asp=1)
@@ -135,7 +135,6 @@ lines(lowess(fitted(lm1), resid(lm1)), col="red", lwd=2)
 
 6. Collinearity
 =========================================================
-- Occurs when 2 or more predictor variables are related. 
 ```{r, echo=FALSE} 
 par(mfcol=c(1,2))
 plot(credit$Limit, credit$Age, xlab="Limit", ylab="Age"); plot(credit$Limit, credit$Rating, xlab="Limit", ylab="Rating")
@@ -164,7 +163,7 @@ The Marketing Plan
 Linear Regression versus K-Nearest Neighbors
 =========================================================
 - Linear Regression is a _parametric_ approach and makes a strong assumption about the form of f(X)
-- _Non-parametric_ approaches do not make assumptions about the form of f(x) and are more flexible
+- _Non-parametric_ approaches do not make assumptions about the form of f(X) and are more flexible
 - KNN regression identifies the K training observations that are closest to the test observation
 - The optimal value for K depends on the _bias-variance_ tradeoff
 - Small values of K are most flexible which will have low bias but high variance
