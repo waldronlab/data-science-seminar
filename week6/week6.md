@@ -2,6 +2,8 @@ Considerations of the Regression Model
 ========================================================
 author: Marcel Ramos
 date: November 7, 2014
+**An Introduction to Statistical Learning**  
+_Gareth James • Daniela Witten • Trevor Hastie • Robert Tibshirani_
 
 ========================================================
 
