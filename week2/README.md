@@ -9,14 +9,18 @@ Note - to show the output in this directory on github, I did the following:
 
 1. create a .md file by loading R and doing:
 
-> library(knitr)
+> library(knitr); 
 > knit("ISLR_Chapter2.Rmd")
+
+This could also be done from within RStudio.
 
 2. This created a file called ISLR_Chapter2.md.  I renamed this to
 README.md, then added these extra comments at the top.
 
-3. Within the /week2 subdirectory, add README.md and
-/week2/figure. Commit and push.  That's it.
+3. Within the /week2 subdirectory, use `git add` to add README.md and
+/week2/figure to Github, or do this from within RStudio using the
+instructions I posted in a video on the home page of this
+Github. Commit and push.  That's it.
 
 A built html version of this document is available at
 http://rpubs.com/lwaldron/islrchapter2
