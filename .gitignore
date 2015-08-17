@@ -1,4 +1,5 @@
-*.Rproj.user
+# Remove tracking of files
 *.Rproj
-.Rhistory
-.RData
+*.Rhistory
+*.RData
+.DS_Store
