@@ -3,3 +3,5 @@
 *.Rhistory
 *.RData
 .DS_Store
+*~
+*.swp
