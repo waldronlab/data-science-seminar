@@ -52,12 +52,12 @@ browseVignettes("packagename")                | browseVignettes("dplyr")
 
 Learning R via online courses
 ==============================================
-* [Coursera](https://www.coursera.org)
-* [edX](https://www.edX.org)
-* [RStudio](https://www.rstudio.com/resources/training/online-learning/#R)
-* [Quick-R](http://www.statmethods.net/) -
+* [\color{hunterpurple}{Coursera}](https://www.coursera.org)
+* [\color{hunterpurple}{edX}](https://www.edX.org)
+* [\color{hunterpurple}{RStudio tutorials}](https://www.rstudio.com/resources/training/online-learning/#R)
+* [\color{hunterpurple}{Quick-R}](http://www.statmethods.net/) -
 Mostly for basic and base functions
-* [RStudio Cheatcheets](https://www.rstudio.com/resources/cheatsheets/)
+* [\color{hunterpurple}{RStudio Cheatcheets}](https://www.rstudio.com/resources/cheatsheets/)
 
 
 Installing packages
@@ -66,17 +66,39 @@ Installing packages
 - Depends on source of package
 - GitHub, CRAN, Bioconductor
 - Packages
-    - `devtools` 
     - `utils`
+    - `devtools` 
     - `BiocInstaller` 
+    
+    
+Functions for installing packages
+==============================================
 
+```{r, eval = FALSE}
+utils::install.packages("packagename")
+devtools::install_github("githubuser/repository")
+```
+
+
+Bioconductor Packages
+==============================================
+
+- See the [\color{hunterpurple}{Bioconductor}](http://www.bioconductor.org/) site for more info
+
+```{r, eval = FALSE}
+source("https://bioconductor.org/biocLite.R")
+packages <- c("packagename", "githubuser/repository", "bioconductorpackage")
+BiocInstaller::biocLite()
+```
+
+- Works for CRAN, GitHub, and Bioconductor packages!
 
 Note about installing `devtools`
 ==============================================
 
 - Useful for building packages
-- Download and install from github
-- Installation dependent on OS (Rtools)
+- Download and install from GitHub
+- Installation dependent on OS ([\color{hunterpurple}{Rtools}](https://cran.r-project.org/bin/windows/Rtools/) for Windows)
 
 
 Functions for handling files
@@ -97,7 +119,6 @@ Using R for data importing and manipulation
 
 ```{r, eval = FALSE}
 BiocInstaller::biocLite("hadley/readr") 
-devtools::github_install("hadley/readr") 
 browseVignettes("readr")
 ```
 
