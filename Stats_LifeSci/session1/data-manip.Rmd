@@ -85,10 +85,12 @@ Bioconductor Packages
 
 - See the [\color{hunterpurple}{Bioconductor}](http://www.bioconductor.org/) site for more info
 
+Pseudo code: 
+
 ```{r, eval = FALSE}
 source("https://bioconductor.org/biocLite.R")
 packages <- c("packagename", "githubuser/repository", "bioconductorpackage")
-BiocInstaller::biocLite()
+BiocInstaller::biocLite(packages)
 ```
 
 - Works for CRAN, GitHub, and Bioconductor packages!
