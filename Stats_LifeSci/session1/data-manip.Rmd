@@ -1,0 +1,347 @@
+---
+  title: "Handling Data in R"
+  subtitle: readr, dplyr, tidyr, haven
+  author: |
+    | Marcel Ramos
+    |  CUNY School of Public Health
+    |   Hunter College
+  date: "`r format(Sys.time(), '%B %d, %Y')`"
+  fontsize: 10pt
+  output: 
+    beamer_presentation: 
+      theme: "CambridgeUS"
+      colortheme: "dolphin"
+      fonttheme: "structureitalicserif"
+      includes: 
+        in_header: ~/Documents/GitHub/Book_Club/Stats_LifeSci/session1/hunter-header.txt
+---
+
+Introduction
+==============================================
+
+- Tips/Resources for learning R
+- Installing packages
+- Importing in data
+    - readr, haven
+- Manipulating data
+    - dplyr, tidyr
+- Mathematical Notation
+
+
+Tips for learning R (general)
+==============================================
+
+* Learning R may become frustrating at times
+* Learning a language
+* It's a matter of practice
+
+
+Useful tips for learning R (stand-alone)
+==============================================
+Pseudo code                                   |   Example code
+--------------------------------------------  |   -------------------
+install.packages(packagename)                 | library(dplyr) 
+?functionname                                 | ?select
+?package::functionname                        | ?dplyr::select
+? 'Reserved keyword or symbol' \color{blue}{(or backticks)} | ? '%>%'
+??searchforpossiblyexistingfunctionandortopic | ??simulate
+help(package = "loadedpackage")               | help("dplyr")
+browseVignettes("packagename")                | browseVignettes("dplyr")
+
+
+Learning R via online courses
+==============================================
+* [Coursera](https://www.coursera.org)
+* [edX](https://www.edX.org)
+* [RStudio](https://www.rstudio.com/resources/training/online-learning/#R)
+* [Quick-R](http://www.statmethods.net/) -
+Mostly for basic and base functions
+* [RStudio Cheatcheets](https://www.rstudio.com/resources/cheatsheets/)
+
+
+Installing packages
+==============================================
+
+- Depends on source of package
+- GitHub, CRAN, Bioconductor
+- Packages
+    - `devtools` 
+    - `utils`
+    - `BiocInstaller` 
+
+
+Note about installing `devtools`
+==============================================
+
+- Useful for building packages
+- Download and install from github
+- Installation dependent on OS (Rtools)
+
+
+Functions for handling files
+==============================================
+
+- File management 
+
+```{r, eval = FALSE}
+dir()
+file.path()
+list.files()
+untar(); unzip()
+```
+
+
+Using R for data importing and manipulation
+==============================================
+
+```{r, eval = FALSE}
+BiocInstaller::biocLite("hadley/readr") 
+devtools::github_install("hadley/readr") 
+browseVignettes("readr")
+```
+
+* Fast way to read in large files 
+
+Available functions in `readr`
+==============================================
+
+- `read_delim()`
+
+- `read_tsv()`
+
+- `read_fwf()`
+
+- `read_table()`
+
+- `read_lines()`
+
+- `read_file()`
+
+
+Demo
+==============================================
+
+* session1script.Rmd
+
+Results are in...
+==============================================
+
+1.33 Gb file
+
+Function         | Elapsed Time (seconds)
+---------------- | ------------
+utils::read.csv  | ~ 137.83
+readr::read_csv  | ~ 38.99
+
+
+Using data.table
+==============================================
+
+- Consider using `data.table::fread()` for max performance
+- data.table syntax although data.table = FALSE
+
+```{r, eval = FALSE}
+library(data.table)
+?fread
+```
+
+
+The `haven` package
+==============================================
+
+- Great for reading in foreign data formats
+- SAS, SPSS, Stata
+- sas7bdat
+
+```{r, eval = FALSE}
+devtools::install_github("hadley/haven")
+library(haven)
+?read_sas
+?read_sav
+?read_dta
+```
+
+Principles of Tidy Data
+==============================================
+* Often said: 80% of data analysis is cleaning/munging
+* Provide a standard way of organizing data\footnote{\tiny{http://vita.had.co.nz/papers/tidy-data.pdf}}
+1. Each variable forms a column
+2. Each observation forms a row
+3. Each type of observational unit forms a table
+
+Dataset     | Variable    | Variable
+----------- | ----------- | -----------
+Observation | Value       | Value
+Observation | Value       | Value
+
+
+Principles of Tidy Data (2)
+==============================================
+* Why is tidy data important? 
+* Easier for the analyst and the computer to extract knowledge from a set of values
+* Saves a *lot* of time
+
+Data Munging using `tidyr`
+==============================================
+* `tidyr` faciliates reshaping of data
+1. spread vs. gather \color{purple}{*most likely to use}\color{black}
+2. extract/separate vs. unite
+3. nest vs. unnest
+
+Data Manipulation using `dplyr`
+==============================================
+* `dplyr` convention aims to ease cognitive burden
+* Function names are easy to remember
+1. select (Y)
+2. mutate/transmute (add Ys / new Y)
+3. filter (get Xs based on condition)
+4. slice (get Xs specified)
+5. summarise (reduce to single observation) 
+6. arrange (re-order observations)
+
+The `tbl_df` class and show method
+==============================================
+* Data frame print is messy
+* `tbl_df` provides same functionality (i.e. data.frame methods work)
+* Output is neat and descriptive
+* See: `?tbl_df`
+
+```{r, message = FALSE}
+library(dplyr)
+tbl_df(mtcars)
+```
+
+Examples of use
+==============================================
+* Create an example of messy data: 
+
+```{r, echo = TRUE, message = FALSE}
+library(tidyr)
+data("mtcars")
+mtcars <- tbl_df(mtcars)
+mtcars <- select(mtcars, c(mpg:hp, wt, vs:carb))
+mtcars <- unite(mtcars, cylgear, cyl, gear)
+separate(mtcars, cylgear, c("cyl0", "gear0"))
+```
+
+mtcars <- select(mtcars, c(1:4, 5, 7:11))
+
+Mutate & Transumte
+==============================================
+```{r, echo = TRUE, message = FALSE}
+head(mutate(mtcars, displ_l = disp/61.0237), 2)
+head(transmute(mtcars, disp_l = disp/61.0237),2)
+```
+
+Example with base functions
+==============================================
+```{r, eval = TRUE, echo = TRUE}
+data("mtcars")
+mtcars <- mtcars[,c("mpg", "cyl", "disp", "hp",
+                    "wt", "vs", "am", "gear", "carb")]
+mtcars$cylgear <- with(mtcars, paste(cyl, gear, sep = "."))
+mtcars[, c("cyl1", "gear1")] <- NA
+mtcars[, c("cyl1", "gear1")] <-
+  t(sapply(strsplit(mtcars$cylgear, ".", fixed = TRUE), FUN = "[", c(1,2)))
+head(mtcars, 3)
+```
+
+Considerations
+==============================================
+**Be careful of loss of information!**
+
+* Row names were lost when converting to `table_df`
+* Solution: add rownames as variable
+
+```{r, echo = TRUE}
+data(mtcars)
+carrows <- rownames(mtcars)
+mtcars <- tbl_df(mtcars)
+mtcars <- mutate(mtcars, models = carrows)
+```
+
+Functional programming example
+==============================================
+```{r, eval = FALSE, echo = TRUE}
+hourly_delay <- filter(
+  summarise(
+    group_by(
+      filter(
+        flights,
+        !is.na(dep_delay)
+      ),
+      date, hour
+    ), 
+    delay = mean(dep_delay),
+    n = n()
+  ), 
+  n > 10
+)
+```
+
+Pipes for fluid and readable programming
+==============================================
+* Piping operator: %>%
+* Consider the previous example with pipes:
+
+```{r, echo = TRUE, eval = FALSE}
+hourly_delay <- flights %>% 
+  filter(!is.na(dep_delay)) %>%
+  group_by(date, hour) %>%
+  summarise(delay = mean(dep_delay), n = n()) %>%
+  filter(n > 10)
+```
+
+More piping
+==============================================
+```{r, echo = TRUE, message = FALSE, warning = FALSE}
+library(nycflights13)
+flights %>% group_by(carrier) %>% 
+  summarise(avg_depdelay = mean(dep_delay, na.rm = TRUE),
+            count = n()) %>% left_join(airlines) %>% 
+    arrange(avg_depdelay) %>% head
+```
+
+Using `separate`
+==============================================
+```{r , echo = TRUE, message = FALSE}
+data(iris)
+longdata <- gather(tbl_df(iris), key = measure, n,
+  Sepal.Length:Petal.Width) %>%  separate(measure, c("type",
+    "dimension"))
+longdata %>% group_by(Species, type, dimension) %>%
+  summarise(avg_dim = mean(n, na.rm = TRUE))
+```
+
+Piping with `tidyr`
+==============================================
+```{r, echo = TRUE}
+library(readr)
+(pew <- read_csv("./data/pew.csv"))
+```
+
+Using `gather`
+==============================================
+
+```{r, echo = TRUE}
+pew %>% gather(income, n, -religion) %>% head
+```
+
+income, religion : variables to gather 
+n : variable in cells 
+-religion means all except religion
+
+Using `group_by`
+==============================================
+```{r, echo = TRUE}
+pew %>% gather(income, n, -religion) %>%
+  group_by(income) %>% summarise(totals = sum(n))
+```
+
+Using `group_by` (2)
+==============================================
+```{r, echo = TRUE}
+pew %>% gather(income, n, -religion) %>%
+  group_by(religion) %>% summarise(totals = sum(n))
+```
+
