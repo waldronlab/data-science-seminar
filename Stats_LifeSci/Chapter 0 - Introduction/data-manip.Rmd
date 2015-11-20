@@ -13,7 +13,7 @@
       colortheme: "dolphin"
       fonttheme: "structureitalicserif"
       includes: 
-        in_header: ~/Documents/GitHub/Book_Club/Stats_LifeSci/session1/hunter-header.txt
+        in_header: ~/Documents/GitHub/Book_Club/Stats_LifeSci/Chapter 0 - Introduction/hunter-header.txt
 ---
 
 Introduction
@@ -369,3 +369,11 @@ pew %>% gather(income, n, -religion) %>%
   group_by(religion) %>% summarise(totals = sum(n))
 ```
 
+P.S. Differences between integer and numeric
+==============================================
+```{r, echo = TRUE}
+a <- 1:1000 
+class(a)
+object.size(a)
+object.size(as.numeric(a))
+```

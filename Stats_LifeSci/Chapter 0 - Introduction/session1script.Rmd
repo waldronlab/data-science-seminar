@@ -8,7 +8,7 @@
 
 ```{r}
 getwd()
-setwd("~/Documents/Present/StatsLifeSci/exData")
+setwd("./data/")
 dir()
 ```
 
