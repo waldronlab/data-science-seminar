@@ -12,8 +12,8 @@
       theme: "CambridgeUS"
       colortheme: "dolphin"
       fonttheme: "structureitalicserif"
-      includes: 
-        in_header: ~/Documents/GitHub/Book_Club/Stats_LifeSci/Chapter 0 - Introduction/hunter-header.txt
+        includes:
+          in_header: ~/Documents/GitHub/Book_Club/Stats_LifeSci/Chapter 0 - Introduction/hunter-header.txt
 ---
 
 Introduction
