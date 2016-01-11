@@ -1,0 +1,57 @@
+---
+title: "Confidence Intervals (p. 53)"
+author: |
+  | Data Analysis for the Life Sciences
+  | CUNY School of Public Health
+  | Waldron Book Club
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+fontsize: 12pt
+output: html_document 
+---
+
+```{r, message = FALSE}
+library(downloader)
+library(dplyr)
+url <- "https://raw.githubusercontent.com/genomicsclass/dagdata/master/inst/extdata/mice_pheno.csv"
+filename <- "mice_pheno.csv"
+if (!file.exists(filename)) {
+  download(url, destfile = filename)
+  }
+dat <- read.csv("mice_pheno.csv")
+```
+
+```{r}
+chowPopulation <- dat[dat$Sex=="F" & dat$Diet=="chow",3]
+(mu_chow <- mean(chowPopulation))
+```
+
+```{r}
+set.seed(1) # set a seed for random number generation
+chow <- sample(chowPopulation, 30)
+chow %>% mean
+```
+
+With a sample size of 30, we will use the CLT. The CLT tells us that $\bar{X}$ or `mean(chow)` follows a normal distribution with mean $\mu_X$ or `mean(chowPopulation)` and standard error approximately  $s_X/\sqrt{N}$ or:
+
+```{r}
+N <- 30
+sampl <- rep(NA, 3000)
+for(i in 1:3000){
+  sampl[i] <- sample(chowPopulation, N) %>% mean
+}
+h <- hist(sampl, 50, main = "Histogram of Sample Means", xlab = "mean")
+xfit<-seq(min(sampl),max(sampl),length=40) 
+yfit<-dnorm(xfit,mean=mean(sampl),sd=sd(sampl)) 
+yfit <- yfit*diff(h$mids[1:2])*length(sampl) 
+lines(xfit, yfit, col="blue", lwd=2)
+abline(v = mu_chow, col = "red", lwd = 2)
+text(x = mu_chow, y = -5, labels = "mu_chow", col = "red", pos = 4)
+```
+
+```{r}
+(se <- sd(chow)/sqrt(N))
+```
+
+$$
+-2 \leq \sqrt{N} (\bar{X}-\mu_X)/s_X \leq 2
+$$  
