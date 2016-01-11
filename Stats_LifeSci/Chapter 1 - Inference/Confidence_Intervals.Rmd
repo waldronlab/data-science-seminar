@@ -9,6 +9,8 @@ fontsize: 12pt
 output: html_document 
 ---
 
+### Get started downloading the data 
+
 ```{r, message = FALSE}
 library(downloader)
 library(dplyr)
@@ -20,10 +22,16 @@ if (!file.exists(filename)) {
 dat <- read.csv("mice_pheno.csv")
 ```
 
+Reporting just p-values is not enough. p-values only indicate statistical significance which does not guarantee scientific/clinical significance. A large sample size allows the detection of a tiny difference that may not be relevant to clinical outcomes. p-values do not report effect size (observed difference). 
+
+### Confidence Interval for Population Mean (female mice on chow diet)
+
 ```{r}
 chowPopulation <- dat[dat$Sex=="F" & dat$Diet=="chow",3]
 (mu_chow <- mean(chowPopulation))
 ```
+
+In practice, we don't know the true population parameter. We rely on random samples to estimate the population mean. Let's take a sample size of 30 (N = 30). 
 
 ```{r}
 set.seed(1) # set a seed for random number generation
@@ -31,7 +39,7 @@ chow <- sample(chowPopulation, 30)
 chow %>% mean
 ```
 
-With a sample size of 30, we will use the CLT. The CLT tells us that $\bar{X}$ or `mean(chow)` follows a normal distribution with mean $\mu_X$ or `mean(chowPopulation)` and standard error approximately  $s_X/\sqrt{N}$ or:
+With a sample size of 30, we will use the CLT. The CLT tells us that $\bar{X}$ or `mean(chow)` follows a normal distribution with mean $\mu_X$ or `mean(chowPopulation)` 
 
 ```{r}
 N <- 30
@@ -48,10 +56,57 @@ abline(v = mu_chow, col = "red", lwd = 2)
 text(x = mu_chow, y = -5, labels = "mu_chow", col = "red", pos = 4)
 ```
 
+and standard error approximately  $s_X/\sqrt{N}$ or:
+
 ```{r}
 (se <- sd(chow)/sqrt(N))
 ```
 
+### Defining the Interval
+
+The 95% confidence interval is commonly used although percentages other than 95 can be used. It is a random interval with a 95% probability of falling on the parameter we are estimating. This is **_not_** the same as saying there is a 95% chance that the true value falls in our interval. To construct it, we note that the CLT tells us that $\sqrt{N} (\bar{X}-\mu_X) / s_X$ follows a normal distribution with mean 0 and SD 1. This implies that the probability of this event:
+
 $$
 -2 \leq \sqrt{N} (\bar{X}-\mu_X)/s_X \leq 2
 $$  
+
+```{r}
+pnorm(2) - pnorm(-2)
+Q <- qnorm(1-0.05/2)
+pnorm(Q) - pnorm(-Q)
+```
+
+After basic algebra: 
+
+$$
+\bar{X}-2 s_X/\sqrt{N} \leq \mu_X \leq \bar{X}+2s_X/\sqrt{N}
+$$  
+
+Let's demonstrate this logic through simulation. We can construct this
+interval with R relatively easily: 
+
+```{r}
+interval <- c(mean(chow)-Q*se, mean(chow)+Q*se )
+interval
+interval[1] < mu_chow & interval[2] > mu_chow
+```
+
+```{r confidence_interval_n30,fig.cap="We show 250 random realizations of 95% confidence intervals. The color denotes if the interval fell on the parameter or not.",fig.height=8}
+library(rafalib)
+B <- 250 # number of iterations
+mypar() 
+plot(mean(chowPopulation)+c(-7,7),c(1,1),type="n",
+     xlab="weight",ylab="interval",ylim=c(1,B)) # draw an empty plot with allocated space
+abline(v=mean(chowPopulation), col = "red", lwd = 2) # add line denoting population mean
+for (i in 1:B) {
+  chow <- sample(chowPopulation,N)
+  se <- sd(chow)/sqrt(N)
+  interval <- c(mean(chow)-Q*se, mean(chow)+Q*se)
+  covered <- 
+    mean(chowPopulation) <= interval[2] & mean(chowPopulation) >= interval[1]
+  color <- ifelse(covered,"darkorange","darkblue")
+  lines(interval, c(i,i),col=color)
+} # run loop by plotting a line for each iteration
+```
+
+Run repeatedly to see what happens... (shortcut keys = Ctrl + Alt + C)
