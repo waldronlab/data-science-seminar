@@ -13,14 +13,16 @@ output: html_document
 
 #### Introduction
 
-We have used the example of the effects of two different diets on the weight of mice. Since in this illustrative example we have access to the population, we know that in fact there is a substantial (about 10%) difference between the average weights of the two populations:
-
-```{r,message=FALSE,echo=FALSE}
+```{r}
 library(downloader)
 url <- "https://raw.githubusercontent.com/genomicsclass/dagdata/master/inst/extdata/mice_pheno.csv"
 filename <- "mice_pheno.csv"
-if(!file.exists(filename)) download(url,destfile=filename)
+if(!file.exists(filename)) {
+  download(url,destfile=filename)
+}
 ```
+
+We have used the example of the effects of two different diets on the weight of mice. Since in this illustrative example we have access to the population, we know that in fact there is a substantial (about 10%) difference between the average weights of the two populations:
 
 ```{r,message=FALSE}
 library(dplyr)
@@ -37,3 +39,18 @@ mu_control <- mean(controlPopulation)
 print(mu_hf - mu_control)
 print((mu_hf - mu_control)/mu_control * 100) # percent increase
 ```
+
+We've seen that when sample sizes are small, they don't always approximate the population parameter. In this case we take $N = 5$ and we get p-value that is not statistically significant. 
+
+```{r}
+set.seed(1)
+N <- 5
+hf <- sample(hfPopulation,N)
+control <- sample(controlPopulation,N)
+t.test(hf,control)$p.value
+```
+
+How do we determine the appropriate power to be able to detect a significant effect? 
+
+#### Types of Error
+
