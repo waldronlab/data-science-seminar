@@ -110,3 +110,86 @@ for (i in 1:B) {
 ```
 
 Run repeatedly to see what happens... (shortcut keys = Ctrl + Alt + C)
+
+#### Small Sample Size And The CLT
+
+For $N=30$, the CLT works very well. However, if $N=5$, do these confidence intervals work as well? We used the CLT to create our intervals, and with $N=5$ it may not be as useful an approximation. We can confirm this with a simulation:
+
+
+```{r confidence_interval_n5,fig.cap="We show 250 random realizations of 95% confidence intervals, but now for a smaller sample size. The confidence interval is based on the CLT approximation. The color denotes if the interval fell on the parameter or not.",fig.height=8}
+mypar()
+plot(mean(chowPopulation)+c(-7,7),c(1,1),type="n",
+     xlab="weight",ylab="interval",ylim=c(1,B))
+abline(v=mean(chowPopulation))
+Q <- qnorm(1- 0.05/2)
+N <- 5
+for (i in 1:B) {
+  chow <- sample(chowPopulation,N)
+  se <- sd(chow)/sqrt(N)
+  interval <- c(mean(chow)-Q*se, mean(chow)+Q*se)
+  covered <- mean(chowPopulation) <= interval[2] & mean(chowPopulation) >= interval[1]
+  color <- ifelse(covered,"darkorange","darkblue")
+  lines(interval, c(i,i),col=color)
+}
+```
+
+The CLT is incorrectly telling us that the distribution of the `mean(chow)` is approximately normal when it has a __fatter__ tail. The t-distribution might be more appropriate. Re-run the above using the t-distribution for Q. (use qt() instead of qnorm())
+
+```{r confidence_interval_tdist_n5,fig.cap="We show 250 random realizations of 95% confidence intervals, but now for a smaller sample size. The confidence is now based on the t-distribution approximation. The color denotes if the interval fell on the parameter or not.",fig.height=8}
+mypar()
+plot(mean(chowPopulation) + c(-7,7), c(1,1), type="n",
+     xlab="weight", ylab="interval", ylim=c(1,B))
+abline(v=mean(chowPopulation))
+##Q <- qnorm(1- 0.05/2) ##no longer normal so use:
+Q <- qt(1- 0.05/2, df=4)
+N <- 5
+for (i in 1:B) {
+  chow <- sample(chowPopulation, N)
+  se <- sd(chow)/sqrt(N)
+  interval <- c(mean(chow)-Q*se, mean(chow)+Q*se )
+  covered <- mean(chowPopulation) <= interval[2] & mean(chowPopulation) >= interval[1]
+  color <- ifelse(covered,"darkorange","darkblue")
+  lines(interval, c(i,i),col=color)
+}
+```
+
+Now the intervals are made bigger. This is because the t-distribution has fatter tails and therefore:
+
+```{r}
+qt(1- 0.05/2, df=4)
+```
+
+is bigger than...
+
+```{r}
+qnorm(1- 0.05/2)
+```
+
+Using the t-distribution, the size of the intervals increase and cross $\mu_X$ more frequently, about 95% of the time.
+
+#### Connection Between Confidence Intervals and p-values
+
+Confidence intervals provide the same information as p-values. 
+
+```{r,echo=FALSE}
+url2 <- "https://raw.githubusercontent.com/genomicsclass/dagdata/master/inst/extdata/femaleMiceWeights.csv"
+filename2 <- "femaleMiceWeights.csv"
+if (!file.exists(filename2)) {
+  download(url2, destfile = filename2)
+}
+```
+
+```{r}
+dat2 <- read.csv("femaleMiceWeights.csv")
+controlIndex <- which(dat2$Diet=="chow")
+treatmentIndex <- which(dat2$Diet=="hf")
+control <- dat2[controlIndex,2]
+treatment <- dat2[treatmentIndex,2]
+t.test(treatment,control)$conf.int
+```
+
+Changing to a 90% confidence interval...
+
+```{r}
+t.test(treatment, control, conf.level = 0.9)$conf.int
+```

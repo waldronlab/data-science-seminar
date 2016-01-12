@@ -1,0 +1,39 @@
+---
+title: "Power Calculations (p. 62)"
+author: |
+  | Data Analysis for the Life Sciences
+  | CUNY School of Public Health
+  | Waldron Book Club
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+fontsize: 12pt
+output: html_document
+---
+
+## Power Calculations 
+
+#### Introduction
+
+We have used the example of the effects of two different diets on the weight of mice. Since in this illustrative example we have access to the population, we know that in fact there is a substantial (about 10%) difference between the average weights of the two populations:
+
+```{r,message=FALSE,echo=FALSE}
+library(downloader)
+url <- "https://raw.githubusercontent.com/genomicsclass/dagdata/master/inst/extdata/mice_pheno.csv"
+filename <- "mice_pheno.csv"
+if(!file.exists(filename)) download(url,destfile=filename)
+```
+
+```{r,message=FALSE}
+library(dplyr)
+dat <- read.csv("mice_pheno.csv") #Previously downloaded 
+
+controlPopulation <- filter(dat,Sex == "F" & Diet == "chow") %>%  
+  select(Bodyweight) %>% unlist
+
+hfPopulation <- filter(dat,Sex == "F" & Diet == "hf") %>%  
+  select(Bodyweight) %>% unlist
+
+mu_hf <- mean(hfPopulation)
+mu_control <- mean(controlPopulation)
+print(mu_hf - mu_control)
+print((mu_hf - mu_control)/mu_control * 100) # percent increase
+```
