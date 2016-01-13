@@ -54,7 +54,12 @@ How do we determine the appropriate power to be able to detect a significant eff
 
 #### Types of Error
 
-# **Enter plot here**
+_Plot from Behavioral Research Data Analysis with R by Yuelin Li and Jonathan Baron_
+
+```{r}
+source("powerFig.t.R")
+```
+
 
 |                    |                         The null hypothesis ($H_O$) is...                                |
 |--------------------|:---------------------------------------:|:------------------------------------------------:|
