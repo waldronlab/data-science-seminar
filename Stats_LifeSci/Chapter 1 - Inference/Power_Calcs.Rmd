@@ -54,3 +54,10 @@ How do we determine the appropriate power to be able to detect a significant eff
 
 #### Types of Error
 
+# **Enter plot here**
+
+|                    |                         The null hypothesis ($H_O$) is...                                |
+|--------------------|:---------------------------------------:|:------------------------------------------------:|
+| __Statistical Result__ | $H_0$ = TRUE                          | $H_0$ = FALSE                                    |
+| Reject $H_0$       | $\alpha$ or **Type I Error**: falsely reject $H_0$ | Power (1-$\beta$: correctly reject $H_0$ |
+| Accept $H_0$       | 1-$\alpha$: correctly accepting $H_0$ | $\beta$ or **Type II error**: falsely accept $H_0$    |
