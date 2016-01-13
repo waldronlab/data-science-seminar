@@ -9,3 +9,4 @@
 *.js
 .Rproj.user
 dataanalysisforthelifesciences.pdf
+Stats_LifeSci/**/*.html

@@ -56,10 +56,7 @@ How do we determine the appropriate power to be able to detect a significant eff
 
 _Plot from Behavioral Research Data Analysis with R by Yuelin Li and Jonathan Baron_
 
-```{r}
-source("powerFig.t.R")
-```
-
+[ShinyAppLive](https://mramos.shinyapps.io/PowerCalc/)
 
 |                    |                         The null hypothesis ($H_O$) is...                                |
 |--------------------|:---------------------------------------:|:------------------------------------------------:|
