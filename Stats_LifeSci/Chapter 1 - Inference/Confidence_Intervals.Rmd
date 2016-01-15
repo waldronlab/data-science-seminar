@@ -94,6 +94,7 @@ interval[1] < mu_chow & interval[2] > mu_chow
 ```{r confidence_interval_n30,fig.cap="We show 250 random realizations of 95% confidence intervals. The color denotes if the interval fell on the parameter or not.",fig.height=8}
 library(rafalib)
 B <- 250 # number of iterations
+N <- 30
 mypar() 
 plot(mean(chowPopulation)+c(-7,7),c(1,1),type="n",
      xlab="weight",ylab="interval",ylim=c(1,B)) # draw an empty plot with allocated space
