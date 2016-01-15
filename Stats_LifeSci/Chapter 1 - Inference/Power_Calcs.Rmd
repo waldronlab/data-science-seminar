@@ -63,3 +63,72 @@ _Plot from Behavioral Research Data Analysis with R by Yuelin Li and Jonathan Ba
 | __Statistical Result__ | $H_0$ = TRUE                          | $H_0$ = FALSE                                    |
 | Reject $H_0$       | $\alpha$ or **Type I Error**: falsely reject $H_0$ | Power (1-$\beta$: correctly reject $H_0$ |
 | Accept $H_0$       | 1-$\alpha$: correctly accepting $H_0$ | $\beta$ or **Type II error**: falsely accept $H_0$    |
+
+Suppose we have a sample size of 12 at an alpha level of 0.05. Now we can simulate 2000 times: 
+
+```{r}
+N <- 12
+alpha <- 0.05
+B <- 2000
+```
+
+```{r}
+reject <- function(N, alpha=0.05){
+   hf <- sample(hfPopulation,N) 
+   control <- sample(controlPopulation,N)
+   pval <- t.test(hf,control)$p.value
+   pval < alpha
+}
+```
+
+Run one simulation for a simple size of 12. Did we reject? 
+
+```{r}
+reject(12)
+```
+
+Repeat this $B$ times when $N=12$: 
+We get a vector of logicals... 
+
+```{r}
+rejections <- replicate(B, reject(N))
+```
+
+We can calculate the proportion of times we correctly reject. So with $N = 12$, power is:
+
+```{r}
+mean(rejections)
+```
+
+Let's take a vector of possible values we want to pass on to our calculations: 
+
+```{r}
+Ns <- seq(5, 50, 5)
+```
+
+Using the "simple apply" `sapply` function, we can do it for all the values of N that we want to use. 
+
+```{r}
+power <- sapply(Ns, function(N) {
+  rejections <- replicate(B, reject(N))
+  mean(rejections)
+})
+```
+
+We can plot the result like so: 
+
+```{r}
+plot(Ns, power, type = "b")
+```
+
+We can also vary the alpha level and trade off between the types of errors as showin in the shiny app. 
+
+```{r}
+N <- 30
+alphas <- c(0.1,0.05,0.01,0.001,0.0001)
+power <- sapply(alphas,function(alpha){
+  rejections <- replicate(B,reject(N,alpha=alpha))
+  mean(rejections)
+})
+plot(alphas, power, xlab="alpha", type="b", log="x")
+```
