@@ -1,0 +1,63 @@
+---
+title: "Exercises (p. 70)"
+author: |
+  | Data Analysis for the Life Sciences
+  | CUNY School of Public Health
+  | Waldron Book Club
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+fontsize: 12pt
+output: html_document
+---
+  
+```{r}
+suppressWarnings(library(downloader))
+url <- "https://raw.githubusercontent.com/genomicsclass/dagdata/master/inst/extdata/babies.txt"
+filename <- basename(url)
+download(url, destfile=filename)
+babies <- read.table("babies.txt", header=TRUE)
+```
+
+```{r}
+suppressMessages(library(dplyr))
+bwt.nonsmoke <- filter(babies, smoke==0) %>% select(bwt) %>% unlist
+bwt.smoke <- filter(babies, smoke==1) %>% select(bwt) %>% unlist
+```
+
+```{r}
+suppressWarnings(library(rafalib)) 
+mean(bwt.nonsmoke)-mean(bwt.smoke)
+popsd(bwt.nonsmoke)
+popsd(bwt.smoke)
+```
+
+### 1. 
+
+```{r}
+set.seed(1)
+N <- 25
+dat.ns <- sample(bwt.nonsmoke, N)
+dat.s <- sample(bwt.smoke, N)
+tval <- t.test(dat.s, dat.ns)$statistic
+```
+
+### 3. Due to symmetry of the standard normal distribution, what simplified calculation do we use? 
+# D
+
+```{r}
+2*pnorm(-abs(tval))
+```
+
+### 4. What quantity do we add and subtract to the estimates to obtain a 99% confidence interval? 
+
+```{r}
+(CLTQuantity <- qnorm(1-0.01/2))
+```
+
+### 5. 
+
+```{r}
+(tQuantity <- qt(1- 0.01/2, df=(2*N-2)))
+```
+
+### 6. 
+# C
