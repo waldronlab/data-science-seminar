@@ -1,12 +1,30 @@
 # Remove tracking of files
-*.Rproj
 *.Rhistory
 *.RData
+
+# Mac files
 .DS_Store
+
+# Vim files
 *~
 *.swp
+
+# Data files
 *.csv
+*.txt
+
+# JavaScript files
 *.js
+
+# RStudio files
 .Rproj.user
+*.Rproj
+
+# Ignore textbook file
 dataanalysisforthelifesciences.pdf
+
+# Output files
 Stats_LifeSci/**/*.html
+
+# Rmd cache
+Stats_LifeSci/**/*_cache
