@@ -172,11 +172,12 @@ mc <-  apply(X, 2, FUN=function(X){(mean(X) * sqrt(samplesize)/ sd(X))})
 qqplot(qt(ps,df=samplesize-1), mc, 
        main=paste("n=",samplesize,sep="")
 )
-abline(mean(mc),1)
+qqline(mc)
+hist(mc)
 
 ```
 
-The mean of the distribution is nowhere near zero, so the answer depends - it's a decent approximation if you assume a normal distribution centered around `r format(mean(mc), digits=2)` is acceptable.
+TRUE
 
 
 Question 7:
@@ -196,7 +197,7 @@ Consider the sample median as an example. Use a Monte Carlo to determine which o
 ```{r question7}
 
 #Looking at a normal distribution - totally not it.
-
+set.seed(1)
 par(mfrow=c(2,2))
 for(samplesize in c(3,10,100,1000)) {
   mc <- replicate(1000, median(rnorm(n=samplesize)))
@@ -207,17 +208,19 @@ for(samplesize in c(3,10,100,1000)) {
            " mean=", format(mean(mc), digits=2), 
            " sd=", format(sd(mc), digits=2),
            sep=""
-         ),
-         ylim=c(-6,6),
-         xlim=c(-6,6))
-  abline(0,1)
+         )
+         )
+  qqline(mc)
 }
 
 ```
 
-Looking at these plots, the distribution of medians does not look like a t-distribution. Let's compare it to a normal distribution with mean 0 and sd=1/sqrt(N). 
+Looking at these plots, the distribution of medians does not look like a t-distribution for small sample sizes. Let's compare it to a normal distribution with mean 0 and sd=1/sqrt(N).
+
+Note that the abline line (red) is more useful than the qqline (green) is here. 
 
 ```{r}
+set.seed(1)
 par(mfrow=c(2,2))
 for(samplesize in c(3,10,100,1000)) {
   mc <- replicate(1000, median(rnorm(n=samplesize)))
@@ -231,12 +234,35 @@ for(samplesize in c(3,10,100,1000)) {
            sep=""
          )
   )
-  abline(0,1)
+  abline(0,1, col="red")
+  #qqline(mc, col="green")
 
   print(paste("samplesize =", samplesize))
   print(paste("mean=", format(mean(mc), digits=2), sep=""))
   print(paste("sd=", format(sd(mc), digits=2), sep=""))
   print(paste("1/sqrt(", samplesize, ")=", format(1/sqrt(samplesize), digits=2), sep=""))  
+}
+
+```
+
+Let's also compare the medians against a normal distribution with mean 0 and sd 1. 
+
+```{r}
+set.seed(1)
+par(mfrow=c(2,2))
+for(samplesize in c(3,10,100,1000)) {
+  mc <- replicate(1000, median(rnorm(n=samplesize)))
+
+  
+  qqplot(rnorm(10000, mean=0, sd=1), mc, 
+         main=paste(
+           "n=",samplesize, 
+           " mean=", format(mean(mc), digits=2), 
+           " sd=", format(sd(mc), digits=2),
+           sep=""
+         )
+  )
+  abline(0,1)
 }
 
 ```
