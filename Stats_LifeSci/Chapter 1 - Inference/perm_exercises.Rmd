@@ -5,9 +5,11 @@ date: "February 5, 2016"
 output: html_document
 ---
 
-```{r, echo=FALSE, message=FALSE}
-library(dplyr)
+# The Exercises
+
+```{r echo=FALSE, message=FALSE}
 library(downloader)
+library(dplyr)
 ```
 
 # The Exercises
