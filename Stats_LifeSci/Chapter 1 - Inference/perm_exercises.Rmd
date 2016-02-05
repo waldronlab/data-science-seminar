@@ -31,8 +31,8 @@ obs <- mean(smokers) - mean(nonsmokers)
 The question is whether this observed difference is statistically significant. We do not want to rely on the assumptions needed for the normal or t-distribution approximations to hold, so instead we will use permutations. We will reshuffle the data and recompute the mean. We can create one permuted sample with the following code:
 
 ```{r}
-dat <- c(smokers,nonsmokers) 
-shuffle <- sample( dat ) 
+dat <- c(smokers,nonsmokers)
+shuffle <- sample(dat) 
 smokersstar <- shuffle[1:N] 
 nonsmokersstar <- shuffle[(N+1):(2*N)] 
 mean(smokersstar)-mean(nonsmokersstar)
@@ -42,12 +42,27 @@ The last value is one observation from the null distribution we will construct. 
 
 ```{r}
 set.seed(1)
+avgdiff <- replicate(1000, {
+  dat <- c(smokers,nonsmokers)
+  shuffle <- sample(dat) 
+  smokersstar <- shuffle[1:N] 
+  nonsmokersstar <- shuffle[(N+1):(2*N)]
+  return(mean(smokersstar)-mean(nonsmokersstar))
+})
+hist(avgdiff)
 
 ```
 
 2. Repeat the above exercise, but instead of the differences in mean, consider the differences in median obs <- median(smokers) - median(nonsmokers). What is the permutation based p-value?
 
 ```{r}
-obs <- median(smokers) - median(nonsmokers)
-
+set.seed(1)
+avgdiff <- replicate(1000, {
+  dat <- c(smokers,nonsmokers)
+  shuffle <- sample(dat) 
+  smokersstar <- shuffle[1:N] 
+  nonsmokersstar <- shuffle[(N+1):(2*N)]
+  return(median(smokersstar)-median(nonsmokersstar))
+})
+hist(avgdiff)
 ```
