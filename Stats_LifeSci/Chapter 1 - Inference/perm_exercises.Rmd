@@ -59,7 +59,8 @@ avgdiff <- replicate(1000, {
 })
 hist(avgdiff)
 abline(v = obsdiff, col = "red", lwd = 2)
-(sum(abs(avgdiff) > abs(obsdiff)) + 1) / (length(avgdiff) + 1)
+# Mean observed difference p-value
+mean.p <- (sum(abs(avgdiff) > abs(obsdiff)) + 1) / (length(avgdiff) + 1)
 ```
 
 2. Repeat the above exercise, but instead of the differences in mean, consider the differences in median obs <- median(smokers) - median(nonsmokers). What is the permutation based p-value?
@@ -76,5 +77,11 @@ avgdiff2 <- replicate(1000, {
 })
 hist(avgdiff2)
 abline(v = obs2, col = "darkgreen", lwd = 2)
-(sum(abs(avgdiff2) > abs(obs2)) + 1) / (length(avgdiff2) + 1)
+# Median observed difference p-value
+median.p <- (sum(abs(avgdiff2) > abs(obs2)) + 1) / (length(avgdiff2) + 1)
+```
+
+```{r}
+mean.p
+median.p
 ```
