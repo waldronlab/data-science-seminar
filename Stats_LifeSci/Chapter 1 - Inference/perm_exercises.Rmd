@@ -5,6 +5,11 @@ date: "February 5, 2016"
 output: html_document
 ---
 
+```{r, echo=FALSE, message=FALSE}
+library(dplyr)
+library(downloader)
+```
+
 # The Exercises
 
 We will use the following dataset to demonstrate the use of permutations:
@@ -12,7 +17,7 @@ We will use the following dataset to demonstrate the use of permutations:
 ```{r}
 url <- "https://raw.githubusercontent.com/genomicsclass/dagdata/master/inst/extdata/babies.txt"
 filename <- basename(url)
-download(url, destfile=filename)
+downloader::download(url, destfile=filename)
 babies <- read.table("babies.txt", header=TRUE)
 bwt.nonsmoke <- filter(babies, smoke==0) %>% select(bwt) %>% unlist 
 bwt.smoke <- filter(babies, smoke==1) %>% select(bwt) %>% unlist
