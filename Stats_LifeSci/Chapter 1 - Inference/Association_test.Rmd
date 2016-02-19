@@ -1,0 +1,77 @@
+---
+title: "Association Tests Exercises"
+author: "Kezhen Fei"
+date: "Thursday, February 04, 2016"
+output: html_document
+---
+
+In the lecture, the authors showed how to calculate a Chi-square test from a table.
+
+Association Test Exercises ask us to generate a table from a dataframe, and then perform an association test to see if two variables (columns) have an association (enrichment or depletion of shared occurrences)
+
+
+First we download the .csv file into our R working directory, and then read it into R
+
+```{r,}
+d=read.csv("https://studio.edx.org/c4x/HarvardX/PH525.1x/asset/assoctest.csv")
+
+head(d)
+```
+Question 1. This dataframe reflects the allele status (either AA/Aa or aa) and the case/control status for 72 individuals. Compute the Chi-square test for the association of genotype with case/control status (using the table function and the chisq.test function). Examine the table to see if there appears to be an association. What is the X-squared statistic?
+
+First of all we need to create a table: 
+```{r,}
+
+allele<-as.vector(d[,1])
+table(allele)
+case<-as.vector(d[,2])
+table(case)
+
+tabQ1<-table(allele,case)
+tabQ1
+
+```
+
+We can also do what's been done in the lecture, find out the prevalence of the disease, then use this prevalence and the marginal total to calculate the expected values in each cell combination:
+```{r,}
+pQ1=mean(case=='1')
+pQ1
+
+expectedQ1 <-rbind(c(1-pQ1,pQ1)*sum(allele=="1"),
+                   c(1-pQ1,pQ1)*sum(allele=="0"))
+dimnames(expectedQ1)<-dimnames(tabQ1)
+
+expectedQ1
+```
+
+Now we have the expected value, we can compare this with the the observed cell values, maybe there is an association? And calculate the chi-square statistics:
+
+```{r,}
+tabQ1
+
+chisq.test(tabQ1)
+
+```
+
+So the answer to Question 1 is: 3.3437 with 1 df, p=0.07. We can also get the 95% CI of odds ratio for this association by first fit the data into generalized linear model to get the estimates of log odds ratio:
+
+```{r,}
+fitQ1 <- glm(case~allele,family="binomial",data=d)
+coefQ1<- summary(fitQ1)$coef
+coefQ1
+```
+
+```{r,}
+ci <- coefQ1[2,1] + c(-2,2) * coefQ1[2,2]
+exp(ci)
+
+```
+So interestingly, here the odds ratio =2.8 is greater than 1 and the 95% confidence interval does not include the null value of 1, which is showing a statistically significant positive (enrichment) association between positive allele and case.  
+
+Question 2. Compute Fisher’s exact test fisher.test for the same table. What is the p-value?
+
+```{r,}
+tabQ2<-table(d$allele, d$case)
+fisher.test(tabQ2, alternative = "two.sided", conf.int=TRUE, conf.level=0.95)
+```
+So the answer to Question 2 is 0.05194, for the same odds ratio, the 95% CI includes the null value of 1, so we can't reject the null hypothesis based on Fisher's exact test. Maybe the positive (?) allele does not increase an individuals chance of have the case. Is the generalized linear model not appropriate here?   

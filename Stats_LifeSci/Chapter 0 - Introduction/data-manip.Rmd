@@ -309,11 +309,12 @@ Pipes for fluid and readable programming
 * Consider the previous example with pipes:
 
 ```{r, echo = TRUE, eval = FALSE}
-hourly_delay <- flights %>% 
+delays <- flights %>% 
   filter(!is.na(dep_delay)) %>%
-  group_by(date, hour) %>%
+  group_by(day, hour) %>%
   summarise(delay = mean(dep_delay), n = n()) %>%
   filter(n > 10)
+hist(delays$delay, main="Mean hourly delay", xlab="Delay (hours)")
 ```
 
 More piping
