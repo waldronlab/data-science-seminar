@@ -1,0 +1,204 @@
+```{r echo=FALSE}
+library(UsingR)
+library(rafalib)
+```
+
+Exploratory Data Analysis
+========================================================
+author: Lucas Schiffer
+date: February 25, 2016
+autosize: true
+Data Analysis for the Life Sciences
+
+
+Topics
+========================================================
+- Introduction
+- Quantile Quantile Plots
+- Boxplots
+- Scatterplots And Correlation
+- Stratification
+- Bi-variate Normal Distribution
+- Plots To Avoid
+- Misunderstanding Correlation
+
+Introduction
+========================================================
+incremental: true
+> “The greatest value of a picture is when it forces us to notice what we never expected to see.” - John W. Tukey
+
+- Discover biases, systematic errors and unexpected variability in data
+- Graphical approach to detecting these issues
+- Represents a first step in data analysis and guides hypothesis testing
+- Opportunities for discovery in the outliers
+
+Quantile Quantile Plots
+========================================================
+incremental: true
+- Quantiles divide a distribution into equally sized bins
+- Division into 100 bins gives percentiles
+- Quantiles of a theoretical distribution are plotted against an experimental distribution
+- Given a perfect fit, $latex x=y $
+- Useful in determining data distribution (normal, t, etc.)
+
+Quantile Quantile Plots
+========================================================
+incremental: true
+```{r echo=FALSE, fig.width=4.3}
+# height qq plot
+x <- father.son$fheight
+ps <- (seq(0,99) + 0.5 ) / 100
+qs <- quantile(x, ps)
+normalqs <- qnorm(ps, mean(x), popsd(x))
+plot(normalqs, qs, xlab = "Normal Percentiles", ylab = "Height Percentiles", main = "Height Q-Q Plot")
+abline(0,1)
+```
+```{r echo=FALSE, fig.width=4.3}
+# t-distributed for 3 df
+x <- rt(1000, 3)
+qqnorm(x, xlab="t quantiles", main = "T Quantiles (df=3) Q-Q Plot", ylim=c(-6,6))
+qqline(x)
+```
+```{r echo=FALSE, fig.width=4.3}
+# t-distributed for 12 df
+x <- rt(1000, 12)
+qqnorm(x, xlab="t quantiles", main = "T Quantiles (df=12) Q-Q Plot", ylim=c(-6,6))
+qqline(x)
+```
+
+Boxplots
+========================================================
+incremental: true
+- Provide a graph that is easy to interpret where data is not normally distributed
+- Would be an appropriate choice to explore income data, as distribution is highly skewed
+- Particularly informative in relation to outliers and range
+- Possible to compare multiple distributions side by side
+
+Boxplots
+========================================================
+incremental: true
+```{r echo=FALSE, fig.width=4.3}
+hist(exec.pay, main = "CEO Compensation")
+```
+```{r echo=FALSE, fig.width=4.3}
+qqnorm(exec.pay, main = "CEO Compensation")
+```
+```{r echo=FALSE, fig.width=4.3}
+boxplot(exec.pay, ylab="10,000s of dollars", ylim=c(0,400), main = "CEO Compensation")
+```
+
+Scatterplots And Correlation
+========================================================
+incremental: true
+- Where data is not univariate but is normally distributed
+- A scatter plot and calculation of correlation is useful
+- Provides a graphical and numeric estimation of relationships
+- Quick and easy with plot() and cor()
+
+Scatterplots And Correlation
+========================================================
+incremental: true
+```{r echo=FALSE, fig.width=4.3}
+plot(father.son$fheight, father.son$sheight,xlab="Father's height in inches",ylab="Son's height in inches",main=paste("correlation =",signif(cor(father.son$fheight, father.son$sheight),2)))
+```
+```{r echo=FALSE, fig.width=4.3}
+plot(cars$speed, cars$dist,xlab="Speed",ylab="Stopping Distance",main=paste("correlation =",signif(cor(cars$speed, cars$dist),2)))
+```
+```{r echo=FALSE, fig.width=4.3}
+plot(faithful$eruptions, faithful$waiting,xlab="Eruption Duration",ylab="Waiting Time",main=paste("correlation =",signif(cor(faithful$eruptions, faithful$waiting),2)))
+```
+
+Stratification
+========================================================
+incremental: true
+- Useful where a hypothesized difference exist between groups
+- Can also stratify bivariate data into bins, instead of scatterplot
+- When stratified data is displayed as a boxplot, trends become obvious
+- Bin trends are a stronger predictor of the estimated parameter
+
+Stratification
+========================================================
+incremental: true
+```{r echo=FALSE, fig.width=4.3}
+boxplot(split(father.son$sheight,round(father.son$fheight)))
+```
+```{r echo=FALSE, fig.width=4.3}
+boxplot(split(cars$dist, round(cars$speed)))
+```
+```{r echo=FALSE, fig.width=4.3}
+boxplot(split(faithful$waiting, round(faithful$eruptions)))
+```
+
+Bi-variate Normal Distribution
+========================================================
+incremental: true
+<span style="font-size: smaller;">
+$\int_{-\infty}^{a} \int_{-\infty}^{b} \frac{1}{2\pi\sigma_x\sigma_y\sqrt{1-\rho^2}} \exp{ \left( \frac{1}{2(1-\rho^2)} \left[\left(\frac{x-\mu_x}{\sigma_x}\right)^2 -
+2\rho\left(\frac{x-\mu_x}{\sigma_x}\right)\left(\frac{y-\mu_y}{\sigma_y}\right)+ \left(\frac{y-\mu_y}{\sigma_y}\right)^2 \right] \right) }$
+</span>
+- Difficult equation but logical explanation
+- Hold a value of x constant and plot normally distributed (x,y) pairs
+- Referred to conditioning in statistics
+- Theoretical quartiles can be plotted and compared to regression line
+
+Bi-variate Normal Distribution
+========================================================
+incremental: true
+```{r echo=FALSE, fig.width=4.3}
+x <- father.son$fheight
+y <- father.son$sheight
+groups <- split(y,round(x))
+for(i in c(8,11,14)){
+qqnorm(groups[[i]],main=paste0("X=",names(groups)[i]," strata"),
+ylim=range(y),xlim=c(-2.5,2.5))
+qqline(groups[[i]])
+}
+```
+
+Plots To Avoid
+========================================================
+incremental: true
+> "Pie charts are a very bad way of displaying information." - R Help
+
+- Always avoid pie charts
+- Avoid doughnut charts too
+- Avoid pseudo 3D and most Excel defaults
+- Effective graphs use color judiciously
+
+Plots To Avoid
+========================================================
+```{r echo=FALSE, fig.width=6.45}
+pie(table(chickwts$feed))
+plot(chickwts$feed)
+```
+
+Plots To Avoid
+========================================================
+![](doughnut.png)
+```{r echo=FALSE, fig.width=6.45}
+plot(chickwts$feed)
+```
+
+Plots To Avoid
+========================================================
+![](cylinder.png)
+```{r echo=FALSE, fig.width=6.45}
+plot(chickwts$feed)
+```
+
+Plots To Avoid
+========================================================
+```{r echo=FALSE, fig.width=6.45}
+plot(chickwts$feed, col = rainbow(6))
+plot(chickwts$feed)
+```
+
+Misunderstanding Correlation
+========================================================
+incremental: true
+> "Correlation does not imply causation!"
+
+- Even where hypothesis test produce highly correlated results, they must be reproducible 
+- For example, gene expression data tends to be skewed and not approximated by normal distribution
+- It is essential to select the correct distribution for data analysis, as given by theory
+- Exploratory data analysis is an important tool, but theoretical knowledge is essential
