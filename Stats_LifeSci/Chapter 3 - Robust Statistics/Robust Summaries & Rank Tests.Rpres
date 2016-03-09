@@ -1,11 +1,6 @@
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, fig.align = "center")
+knitr::opts_chunk$set(echo = FALSE, fig.align = "center")
 ```
-
-```{r echo=FALSE}
-library(rafalib)
-```
-
 
 Robust Summaries & Rank tests
 ========================================================
@@ -54,7 +49,7 @@ FTIR Spectrometer
 Introduction
 ========================================================
 left: 35%
-```{r echo=FALSE}
+```{r}
 set.seed(1)
 x=c(rnorm(100,0,1)) ##real distribution
 x[23] <- 100 ##mistake made in 23th measurement
@@ -79,7 +74,7 @@ $$\sum_{i=1}^{j} f_i ≥ \frac{n+1}{2}$$
 
 Median
 ========================================================
-```{r echo=FALSE}
+```{r}
 set.seed(1)
 x=c(rnorm(100,0,1)) ##real distribution
 x[23] <- 100 ##mistake made in 23th measurement
@@ -87,13 +82,12 @@ boxplot(x, pch = 16, cex = 3)
 cat("Mean = ",round(mean(x), digits = 2),"\nSD =",round(sd(x), digits = 2),"\nMedian =",round(median(x), digits = 2))
 ```
 ***
-```{r echo=FALSE}
+```{r}
 set.seed(1)
 x=c(rnorm(100,0,1)) ##real distribution
 boxplot(x, pch = 16, cex = 3)
 cat("Mean = ",round(mean(x), digits = 2),"\nSD =",round(sd(x), digits = 2),"\nMedian =",round(median(x), digits = 2))
 ```
-
 
 Median Absolute Deviation
 ========================================================
@@ -105,7 +99,7 @@ $$\operatorname{MAD} = \operatorname{median}_{i}\left(\ \left| X_{i} - \operator
 
 Median Absolute Deviation
 ========================================================
-```{r echo=FALSE}
+```{r}
 set.seed(1)
 x=c(rnorm(100,0,1)) ##real distribution
 x[23] <- 100 ##mistake made in 23th measurement
@@ -113,7 +107,7 @@ boxplot(x, pch = 16, cex = 3)
 cat("SD =",round(sd(x), digits = 2))
 ```
 ***
-```{r echo=FALSE}
+```{r}
 set.seed(1)
 x=c(rnorm(100,0,1)) ##real distribution
 x[23] <- 100 ##mistake made in 23th measurement
@@ -132,7 +126,7 @@ $$r_s = \rho_{\operatorname{rg}_X,\operatorname{rg}_Y} = \frac {\operatorname{co
 
 Spearman Correlation
 ========================================================
-```{r echo=FALSE}
+```{r}
 set.seed(1)
 x=c(rnorm(100,0,1)) ##real distribution
 x[23] <- 100 ##mistake made in 23th measurement
@@ -142,7 +136,7 @@ plot(x,y,main=paste0("correlation=",round(cor(x,y),3)),bg=1,xlim=c(-3,100),ylim=
 abline(0,1)
 ```
 ***
-```{r echo=FALSE}
+```{r}
 set.seed(1)
 x=c(rnorm(100,0,1)) ##real distribution
 x[23] <- 100 ##mistake made in 23th measurement
@@ -163,14 +157,14 @@ $$\log(x/y)=\log(x)-\log(y)=-(\log(y)-\log(x))=\log(y/x)$$
 
 Symmetry of Log Ratios
 ========================================================
-```{r echo=FALSE}
+```{r}
 x <- 2^(rnorm(100))
 y <- 2^(rnorm(100))
 ratios <- x / y
 hist(ratios)
 ```
 ***
-```{r echo=FALSE}
+```{r}
 x <- 2^(rnorm(100))
 y <- 2^(rnorm(100))
 ratios <- x / y
@@ -179,7 +173,7 @@ hist(log2(ratios))
 
 Symmetry of Log Ratios
 ========================================================
-```{r echo=FALSE}
+```{r}
 x=2^seq(1,5)
 y=c(rev(1/x),1,x)
 Names=c(paste0("1/",rev(x)),1,x)
@@ -188,7 +182,7 @@ text(seq(along=y),y,Names,cex=1.2)
 abline(h=1)
 ```
 ***
-```{r echo=FALSE}
+```{r}
 plot(seq(along=y),y,xlab="",ylab="",type="n",log="y",xaxt="n")
 text(seq(along=y),y,Names,cex=1.2)
 abline(h=1)
@@ -203,7 +197,7 @@ Wilcoxon Rank Sum Test
 
 Wilcoxon Rank Sum Test
 ========================================================
-```{r echo=FALSE}
+```{r}
 set.seed(779) ##779 picked for illustration purposes
 N=25
 x<- rnorm(N,0,1)
@@ -215,7 +209,7 @@ abline(h=0)
 cat("t-test pval:",t.test(x,y)$p.value)
 ```
 ***
-```{r echo=FALSE}
+```{r}
 xrank<-rank(c(x,y))[seq(along=x)]
 yrank<-rank(c(x,y))[-seq(along=y)]
 stripchart(list(xrank,yrank),vertical=TRUE,ylab="Ranks",pch=21,bg=1,cex=1.25)

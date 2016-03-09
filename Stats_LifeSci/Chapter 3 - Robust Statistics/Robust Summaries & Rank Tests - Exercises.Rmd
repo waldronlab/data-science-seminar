@@ -105,12 +105,12 @@ chick = na.omit(chick)
 
 8. We will now investigate a possible downside to the Wilcoxon-Mann-Whitney test statistic. Using the following code to make three boxplots, showing the true Diet 1 vs 4 weights, and then two altered versions: one with an additional difference of 10 grams and one with an additional difference of 100 grams. Use the x and y as defined above, NOT the ones with the added outlier.
 
-    ```{r eval = FALSE}
-    library(rafalib)
-    mypar(1,3) 
-    boxplot(x,y)
-    boxplot(x,y+10) 
-    boxplot(x,y+100)
+    ```{r}
+    #library(rafalib)
+    #mypar(1,3) 
+    #boxplot(x,y)
+    #boxplot(x,y+10) 
+    #boxplot(x,y+100)
     ```
 
     What is the difference in t-test statistic (obtained by t.test(x,y)$statistic) between adding 10 and adding 100 to all the values in the group ‘y’? Take the the t-test statistic with x and y+10 and subtract the t-test statistic with x and y+100. The value should be positive.
