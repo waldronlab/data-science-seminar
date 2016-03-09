@@ -28,3 +28,5 @@ Stats_LifeSci/**/*.html
 
 # Rmd cache
 Stats_LifeSci/**/*_cache
+
+*.dcf
