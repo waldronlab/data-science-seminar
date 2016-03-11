@@ -30,3 +30,5 @@ Stats_LifeSci/**/*.html
 Stats_LifeSci/**/*_cache
 
 *.dcf
+
+unnamed-*.png
