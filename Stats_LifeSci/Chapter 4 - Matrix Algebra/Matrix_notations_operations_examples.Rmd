@@ -19,9 +19,9 @@ for any number of predictors, $p$.
 
 ## Recall: Least-Squares estimation
 
-$$RSS = argmin \sum_{i=1}^n \left(Y_i - \left( \beta_0+\sum_{j=1}^p\beta_jx_{i,j} \right) \right)^2$$
+$$\hat{\beta_i} = argmin \sum_{i=1}^n \left(Y_i - \left( \beta_0+\sum_{j=1}^p\beta_jx_{i,j} \right) \right)^2$$
 
-When we find the values of $\beta_i$s that minimize this equation, we call them the "least squares estimates" and denote them $\hat{\beta_i}$s. 
+When we find the values of $\beta_i$s that minimize the right hand side, we call them the "least squares estimates" and denote them $\hat{\beta_i}$s. 
 
 Question: How to find $\hat{\beta_i}$s?
 
@@ -190,8 +190,9 @@ Least squares equation $(Y - X \beta)^T (Y - X \beta)$.
 Optimizing least squares (using matrix notation of multivariable calculus)
 $$2X^T(Y - X\hat \beta) = 0$$
 $$X^TX\hat \beta = X^TY$$
-$$\hat \beta = (X^TX)^{-1}X^TY.$$
-dimensions $(p+1,N) (N,p+1) (p+1,N) (N,1) = (p+1,1)$
+$$\hat \beta = (X^TX)^{-1}X^TY. $$
+
+Note: $X^TX^{-1}$ exists if and only if the columns are linearly independent. Let's say if columns of $X$ are not linearly independent, i.e., we can write a column (corresponding to a predictor $x_r$) of $X$ as a linear combination of other column vectors. So, we could have dropped the predictor $x_r$!! 
 
 ## Galileo's Example
 $$Y_i=\beta_0+\beta_1x_i+\beta_2x^2_i+\epsilon_i,i=1,\cdots,n$$
