@@ -1,0 +1,236 @@
+---
+title: "Matrix Algebra - Notations, Operations and Examples"
+author: "Lavanya Kannan"
+date: "April 1, 2016"
+output: ioslides_presentation
+---
+
+## Recall: Linear models in general
+
+Linear models can be written as
+
+$$Y_i=\beta_0+\beta_1x_{i,1}+\beta_2x_{i,2}+...+\beta_2x_{i,p}+\varepsilon_i,i=1,...,n$$
+
+(simply written as)
+
+$$Y_i=\beta_0+\sum_{j=1}^p\beta_jx_{i,j}+\varepsilon_i,i=1,...,n$$
+
+for any number of predictors, $p$.
+
+## Recall: Least-Squares estimation
+
+$$RSS = argmin \sum_{i=1}^n \left(Y_i - \left( \beta_0+\sum_{j=1}^p\beta_jx_{i,j} \right) \right)^2$$
+
+When we find the values of $\beta_i$s that minimize this equation, we call them the "least squares estimates" and denote them $\hat{\beta_i}$s. 
+
+Question: How to find $\hat{\beta_i}$s?
+
+## Matrix Notations
+
+Matrix - a rectagular array arranged in rows and columns
+
+- Write the linear models using the matrix notation: 
+If $Y = \begin{bmatrix}
+Y_1 \\
+Y_2 \\
+\vdots \\
+Y_N
+\end{bmatrix}$, 
+$X = \begin{bmatrix}
+1 & x_{1,1} & \cdots & x_{1,p} \\ 
+1 & x_{2,1} & \cdots & x_{2,p} \\ 
+ & & \vdots &  & \\
+1 & x_{N,1} & \cdots & x_{N,p} 
+\end{bmatrix}$, 
+$\beta = \begin{bmatrix}
+\beta_0 \\
+\beta_1 \\
+\vdots \\
+\beta_p 
+\end{bmatrix}$, $\varepsilon = \begin{bmatrix}
+\varepsilon_0 \\
+\varepsilon_1 \\
+\vdots \\
+\varepsilon_N 
+\end{bmatrix}$, then 
+$Y=X \beta + \varepsilon$.
+
+- Least squares equation $(Y - X \beta)^T (Y - X \beta)$.
+
+- Solving the least squares equation $\hat \beta = (X^TX)^{-1}X^TY$.
+
+
+## Background: Solving System of Equations 
+Solve
+$$ a+b+c = 6$$
+$$ 3a−2b+c = 2 $$ 
+$$ 2a+b−c =1$$
+Matrix notation:
+$$\begin{bmatrix}
+1 & 1 & 1 \\
+3 & -2 & 1 \\
+2 & 1 & 1
+\end{bmatrix} \begin{bmatrix} a\\b\\c \end{bmatrix} = \begin{bmatrix} 6 \\ 2 \\ 1 \end{bmatrix} \implies \begin{bmatrix} a\\b\\c \end{bmatrix} = \begin{bmatrix}1 & 1 & 1 \\
+3 & -2 & 1 \\
+2 & 1 & 1
+\end{bmatrix}^{-1} \begin{bmatrix} 6\\2\\1 \end{bmatrix}.$$
+ 
+
+
+## Exercises on Notations
+
+```{r}
+rbind(c(1,5,3,4),c(2,3,4,5))
+cbind(c(1,2),c(5,3),c(3,4),c(4,5))
+matrix(1:6,2,3)
+```
+
+
+
+## Matrix Operations
+Multiplying by scalar 
+```{r}
+A = matrix(1:6,2,3)
+A
+0.5 * A
+```
+
+## Matrix Operations
+Transpose
+```{r}
+dim(A)
+t(A)
+dim(t(A))
+```
+
+## Matrix Multiplication
+Product of vectors (inner product)
+```{r}
+x = 1:3 # Matrix dim (3,1)
+y = c(2,3,4) # Matrix dim (3,1)
+x %*% y # Same as sum(x * y); crossprod(x,y)
+```
+Multiplying a matrix by a vector 
+```{r}
+A = matrix(1:6,2,3) # dim (2,3)
+A %*% y # dim (2,3) * (3,1) = (2,1)
+```
+
+## Matrix Multiplication
+is a set of vector inner products with all combinations of row vectors the first matrix and column vectors of the second matrix.
+```{r}
+A = matrix(1:6,2,3) # dim (2,3)
+B = matrix(rnorm(12),3,4)
+prod = A %*% B # dim (2,3) * (3,4) = (2,4); 
+# same as crossprod(t(x),y) which may be faster
+prod
+sum(A[2,]*B[,3]) # same as prod[2,3]
+```
+## Identity Matrix and Inverse of a Matrix
+Identity Matrix
+```{r}
+diag(2) # Identity matrix of dimension (2,2)
+```
+
+Inverse of a (square) matrix $A$ is such that $AA^{-1} = A^{-1}A =I$.
+```{r}
+A = matrix(rnorm(9),3,3)
+solve(A) # this is A inverse, if it exists!
+```
+
+## Exercises on Matrix Operations
+- Check if two matrices are the same
+- Matrix operations
+- Solve a system of equations ($AX = B$)
+- Question: What is the solution of the system of equations if $A^{-1}$ does not exist? 
+
+## Linear Algebra Examples
+- Mean of $Y_1, Y_2, \cdots, Y_N$ is
+$$\bar Y = \frac{1}{N}\begin{bmatrix} 1 &1 &\cdots 1\end{bmatrix}\begin{bmatrix} Y_1 \\ Y_2\\ \cdots \\ Y_N\end{bmatrix} = \frac{1}{N}\sum_{i=1}^N Y_i.$$
+
+- Variance of $Y_1, Y_2, \cdots, Y_N$ is
+$$\frac{1}{N} r^Tr = \frac{1}{N}\sum_{i=1}^N (Y_i - \bar Y)^2, \text{where} \quad r = \begin{bmatrix} Y_1 - \bar Y \\ Y_2- \bar Y \\ \vdots \\ Y_N - \bar Y \end{bmatrix}.$$
+
+
+
+## Matrix Notation for Linear Models
+
+If $Y = \begin{bmatrix}
+Y_1 \\
+Y_2 \\
+\vdots \\
+Y_N
+\end{bmatrix}$, 
+$X = \begin{bmatrix}
+1 & x_{1,1} & \cdots & x_{1,p} \\ 
+1 & x_{2,1} & \cdots & x_{2,p} \\ 
+ & & \vdots &  & \\
+1 & x_{N,1} & \cdots & x_{N,p} 
+\end{bmatrix}$, 
+$\beta = \begin{bmatrix}
+\beta_0 \\
+\beta_1 \\
+\vdots \\
+\beta_p 
+\end{bmatrix}$, $\varepsilon = \begin{bmatrix}
+\varepsilon_0 \\
+\varepsilon_1 \\
+\vdots \\
+\varepsilon_N 
+\end{bmatrix}$, then 
+$Y=X \beta + \varepsilon$.
+
+Least squares equation is $(Y - X \beta)^T (Y - X \beta)$ (matrix crossproduct!).
+
+
+
+## Solving the least squares equation
+Least squares equation $(Y - X \beta)^T (Y - X \beta)$.
+
+Optimizing least squares (using matrix notation of multivariable calculus)
+$$2X^T(Y - X\hat \beta) = 0$$
+$$X^TX\hat \beta = X^TY$$
+$$\hat \beta = (X^TX)^{-1}X^TY.$$
+dimensions $(p+1,N) (N,p+1) (p+1,N) (N,1) = (p+1,1)$
+
+## Galileo's Example
+$$Y_i=\beta_0+\beta_1x_i+\beta_2x^2_i+\epsilon_i,i=1,\cdots,n$$
+
+```{r}
+set.seed(1)
+g <- 9.8 #meters per second
+n <- 25
+tt <- seq(0,3.4,len=n) #time in secs, t is a base function
+y <- 56.67  - 0.5*g*tt^2 + rnorm(n,sd=1) # simulate y
+y
+```
+
+## Galileo's Example
+```{r}
+X <- cbind(1,x1 = tt,x2 = tt^2)
+head(X)
+```
+
+## Galileo's Example
+```{r}
+betahat <- solve(crossprod(X))%*%crossprod(X,y)
+betahat
+```
+We were measuring $$d - u_0t - \frac{1}{2}gt^2$$ at different time points.
+The Tower of Pisa is about 56 meters high ($d$). Since we are just dropping the object there is no initial velocity ($u_0$), and half the constant of gravity $g$ is 9.8/2=4.9 meters per second squared.
+
+## Galileo's Example
+```{r}
+newtt <- seq(min(tt),max(tt),len=100)
+X <- cbind(1,newtt,newtt^2)
+fitted <- X%*%betahat
+plot(tt,y,xlab="Time",ylab="Height")
+lines(newtt,fitted,col=2)
+```
+
+## The lm function in R
+```{r}
+tt2 <-tt^2
+fit <- lm(y~tt+tt2)
+summary(fit)$coef
+```
