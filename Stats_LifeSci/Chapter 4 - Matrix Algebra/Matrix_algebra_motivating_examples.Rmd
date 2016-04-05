@@ -176,7 +176,7 @@ These $\hat{\beta}$s are random variables.
 
 Equation for falling objects
 
-$$d=h_0+v_0t - 0.5 × 9.8t^2$$
+$$d=h_0+v_0t - 0.5 ? 9.8t^2$$
 
 We simulated Galileo's grad students' data with this equation, using $h_0=56.67$ and $v_0=0$. 
 
