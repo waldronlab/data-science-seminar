@@ -1,0 +1,92 @@
+---
+title: "Standard Errors Exercises"
+author: "Kezhen Fei"
+date: "April 28, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Exercises
+
+In the previous assessment, we used a Monte Carlo technique to see that the linear model coefficients are random variables when the data is a random sample. Now we will use the previously seen matrix algebra to try to estimate the standard error of the linear model coefficients. Again, take a random sample of the father.son heights data:
+
+```{r, message=FALSE}
+library(UsingR)
+n <- nrow(father.son)
+N <- 50
+set.seed(1)
+index <- sample(n,N)
+sampledat <- father.son[index,]
+x <- sampledat$fheight
+y <- sampledat$sheight
+betahat <- lm(y~x)$coef
+```
+The formula for the standard error is:
+$$ \mathbf{SE}(\boldsymbol{\hat{\beta}})   =  \sqrt{\boldsymbol{var}(\boldsymbol{\hat{\beta}})}$$
+
+with: 
+$$ \mathbf{var}(\boldsymbol{\hat{\beta}}) = \boldsymbol\sigma^2\mathbf{(X^\top X)^{-1}}$$
+
+We will estimate or calculate each part of this equation and then combine them.
+
+First, we want to estimate $\boldsymbol\sigma^2$, the variance of $Y$. As we have seen in the previous unit, the random part of $Y$ is only coming from $\mathbf{\epsilon}$, because we assume $\mathbf{X}\mathbf\beta$ is fixed. So we can try to estimate the variance of the $\mathbf{\epsilon}$ s from the residuals, the $Y_i$ minus the fitted values from the linear model.
+
+1. The fitted values $\hat{Y}$ from a linear model can be obtained with:
+```{r}
+fit <- lm(y ~ x) 
+fit$fitted.values
+```
+What is the sum of the squared residuals, where residuals are given by ${r_i} = {Y_i} - \hat{Y_i}$?
+
+Because $Y_i$ is the linear combination of $X_i$, matrix $AY$ where $\mathbf{A}=\mathbf{(X^\top X)^{-1}X}^\top$ 
+```{r}
+X <- cbind(rep(1,N), x)
+
+XtXinv <- solve(crossprod(X))
+
+resid <- y - X %*% XtXinv %*% crossprod(X,y)
+
+residsumsq <- sum(resid^2)
+
+```
+
+```{r}
+residsumsq
+```
+2. Our estimate of $\sigma^2$ will be the sum of squared residuals divided by $N − p$, the sample size minus the number of terms in the model. Since we have a sample of 50 and 2 terms in the model (an intercept and a slope), our estimate of $\sigma^2$ will be the sum of squared residuals divided by 48. Use the answer from exercise 1 to provide an estimate of $\sigma^2$.
+```{r}
+sigma2 <- residsumsq/48
+sigma2
+```
+
+3. Form the design matrix X (Note: use a capital X). This can be done by combining a column of 1’s with a column containg ‘x’ , the fathers’ heights.
+
+X <- cbind(rep(1,N), x) #equivalent to X <- cbind(rep(1,N), x); 
+
+Now calculate $\mathbf{(X^\top X)^{-1}}$. Use the solve function for the inverse and t for the transpose. What is the element in the first row, first column?
+```{r}
+XT <- t(X)
+A <- solve(XT %*% X)
+A[1,1]
+
+resid <- y - X %*% XtXinv %*% crossprod(X,y)
+
+s <- sqrt( sigma2)
+ses <- sqrt(diag(XtXinv))*s 
+
+ses
+```
+4. Now we are one step away from the standard error of $\hat{\beta}$. Take the diagonals from the $\mathbf{(X^\top X)^{-1}}$ matrix above, using the diag function. Multiply our estimate of $\sigma^2$ and the diagonals of this matrix. This is the estimated variance of $\hat{\beta}$, so take the square root of this. You should end up with two numbers: the standard error for the intercept and the standard error for the slope.
+
+What is the standard error for the slope?
+```{r}
+D <- diag(A)
+V <- sqrt(D * sigma2)
+V
+```
+
+Compare your answer to this last question, to the value you estimated using Monte Carlo in the previous set of exercises. It will not be the same because we are only estimating the standard error given a particular sample of 50 (which we obtained with set.seed(1)).
+
