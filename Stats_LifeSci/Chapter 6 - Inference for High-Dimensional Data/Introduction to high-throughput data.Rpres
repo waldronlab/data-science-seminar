@@ -1,0 +1,71 @@
+Introduction to high throughput data
+========================================================
+author: Lucas Schiffer
+date: July 8, 2016
+autosize: true
+
+Overview
+========================================================
+- The high throughput paradigm shift
+
+- Tools to work with "big data" in R
+
+- The structure of "omics" data in R
+
+- An example analysis of 175K data points
+
+- On to the exercises
+
+
+The high throughput paradigm shift
+========================================================
+<p style="text-align: center">
+<img src="paper.png" style="max-width: 75%; box-shadow: none;">
+<br>
+Paper chromotography
+<a href="https://tinyurl.com/jl76ab9" style="display: block; font-size: small">https://tinyurl.com/jl76ab9</a>
+</p>
+***
+<p style="text-align: center">
+<img src="microarray.png" style="max-width: 75%; box-shadow: none;">
+<br>
+Microarray platforms
+<a href="https://tinyurl.com/johvypu" style="display: block; font-size: small">https://tinyurl.com/johvypu</a>
+</p>
+
+Tools to work with "big data" in R
+========================================================
+## The devtools way
+```{r, eval = FALSE}
+install.packages("devtools")
+library(devtools)
+install_github("genomicsclass/GSE5859Subset")
+```
+## The Bioconductor way
+```{r, eval = FALSE}
+source("https://bioconductor.org/biocLite.R")
+biocLite()
+library(BiocInstaller)
+biocLite("genomicsclass/GSE5859Subset")
+```
+
+The structure of "omics" data in R
+========================================================
+High throughput experiments are usually made up of three table - the measurements, their annotations, and information about the samples. The data are stored with the following structure:
+
+Samples (rownames) - genes, single base locations of the genome, genomic regions, image pixel intensities, etc.
+
+Features (colnames) - gene expression, methylation, mutations, variations, etc.
+
+An example analysis of 175K data points
+========================================================
+<p style="text-align: center">
+<img src="nyc.png" style="max-width: 75%; max-height: 75%; box-shadow: none;">
+<br>
+NYC noise pollution
+<a href="https://github.com/schifferl/cityNoise" style="display: block; font-size: small">https://github.com/schifferl/cityNoise</a>
+</p>
+
+On to the exercises
+========================================================
+#### The Exercises <- http://rpubs.com/schifferl/htde
