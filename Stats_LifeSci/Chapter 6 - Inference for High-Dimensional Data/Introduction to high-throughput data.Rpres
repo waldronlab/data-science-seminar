@@ -1,8 +1,9 @@
-Introduction to high throughput data
+Introduction to High Throughput Data
 ========================================================
 author: Lucas Schiffer
 date: July 8, 2016
 autosize: true
+Data Analysis for the Life Sciences
 
 Overview
 ========================================================
@@ -22,7 +23,7 @@ The high throughput paradigm shift
 <p style="text-align: center">
 <img src="paper.png" style="max-width: 75%; box-shadow: none;">
 <br>
-Paper chromotography
+Paper chromatography
 <a href="https://tinyurl.com/jl76ab9" style="display: block; font-size: small">https://tinyurl.com/jl76ab9</a>
 </p>
 ***

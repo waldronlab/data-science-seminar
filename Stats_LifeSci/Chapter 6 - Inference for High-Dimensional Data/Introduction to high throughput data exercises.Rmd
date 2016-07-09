@@ -43,7 +43,7 @@ dim(subset(geneAnnotation, CHR == "chrY"))
 3. What is the log expression value of the for gene ARPC1A on the one subject that we measured on 2005-06-10 ?
 
 ```{r}
-subset(geneAnnotation, SYMBOL == "ARPC1A")
-subset(sampleInfo, date == "2005-06-10")
-log(geneExpression[489,15])
+matched_row <- match(subset(geneAnnotation, SYMBOL == "ARPC1A")$PROBEID, rownames(geneExpression))
+matched_col <- match(subset(sampleInfo, date == "2005-06-10")$filename, colnames(geneExpression))
+log(geneExpression[matched_row, matched_col])
 ```
