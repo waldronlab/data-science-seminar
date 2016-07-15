@@ -1,0 +1,183 @@
+---
+title: "Inference for high-throughput data"
+author: "KEZHEN FEI"
+date: "July 13, 2016"
+output: ioslides_presentation
+---
+
+
+## Inference in Practice
+
+- For several individuals in two populations
+- To report which genes have different average expression levels in the two populations
+- For just one gene, we could simply apply the inference techniques we learned before:
+  t-test 
+- Instead of one gene, we are given thousands of genes' experession data (high-throughput data). 
+- What do we do? 
+
+
+## p-values are random variables
+
+- An important concept to remember
+- Consider the example in which we define a p-value from a t-test with a large enough sample size to use the CLT approximation
+- Our p-value is defined as the probability that a normally distributed random variable is larger, in absolute value, than the observed t-test, call it $Z$. So for a two sided test the p-value is:
+
+$$ p = 2 \{ 1 - \Phi(\mid Z \mid)\} $$
+
+## p-values are random variables
+
+In R this is expressed as: 
+
+>2*(1-pnorm(Z))
+
+- $Z$ is a random variable 
+- $\Phi$ is a deterministic function
+- $p$ is also a random variable We will create a 
+
+## Example: Monte Carlo simulation shows how the values of $p$ change
+
+Read in the data femaleControlsPopulation.csv, then use replicate to repeatedly create p-values
+```{r}
+library(downloader)
+filename <-"https://raw.githubusercontent.com/genomicsclass/dagdata/master/inst/extdata/femaleControlsPopulation.csv"
+population <- read.csv(filename)
+population <- unlist(population) # turn it into a numeric
+set.seed(1)
+N <- 12
+B <- 10000
+pvals <- replicate(B,{
+  control = sample(population,N)
+  treatment = sample(population,N)
+  t.test(treatment,control)$p.val 
+  })
+hist(pvals)
+```
+
+## The histogram of p-values
+
+```{r, echo=FALSE}
+library(downloader)
+filename <- "https://raw.githubusercontent.com/genomicsclass/dagdata/master/inst/extdata/femaleControlsPopulation.csv"
+#if (!file.exists(filename)) download(url,destfile=filename)
+population <- read.csv(filename)
+population <- unlist(population) # turn it into a numeric
+set.seed(1)
+N <- 12
+B <- 10000
+pvals <- replicate(B,{
+  control = sample(population,N)
+  treatment = sample(population,N)
+  t.test(treatment,control)$p.val 
+  })
+hist(pvals)
+```
+
+##The histogram implies that the p-value is uniformly distributed
+
+When the null hypothesis is true this is always the case
+
+Use the CLT, the null hypothesis  $H_0$ implies that our test statistic $Z$ follows a normal distribution with mean 0 and SD 1 thus:
+
+$$ p_a = \mbox{Pr}(Z < a \mid H_0) = \Phi(a) $$
+
+This implies that:
+
+$$ \begin{align} \mbox{Pr}(p < p_a) &= \mbox{Pr}[ \Phi^{-1}(p) < \Phi^{-1}(p_a) ] \ & = \mbox{Pr}(Z < a) = p_a \end{align} $$
+
+which is the definition of a uniform distribution.
+
+## Comparison 
+In this data we have two groups denoted with 0 and 1:
+
+```{r, echo=FALSE}
+library(devtools)
+
+install_github("genomicsclass/GSE5859Subset")
+
+library(GSE5859Subset)
+data(GSE5859Subset) ##this loads the three tables
+g <- sampleInfo$group
+g
+
+dim(geneExpression)
+```
+
+## To do a comparison on a particular genen
+Arbitrarily pick the one on the 25th row, we would simply compute a t-test. 
+To compute a p-value, we will use the t-distribution approximation and therefore we need the population data to be approximately normal. We check this assumption with a qq-plot:
+
+```{r}
+e <- geneExpression[25,]
+
+library(rafalib)
+mypar(1,2)
+
+qqnorm(e[g==1])
+qqline(e[g==1])
+
+qqnorm(e[g==0])
+qqline(e[g==0])
+```
+
+## The qq-plot shows that the data is normally approximated. 
+```{r, echo=FALSE}
+e <- geneExpression[25,]
+
+library(rafalib)
+mypar(1,2)
+
+qqnorm(e[g==1])
+qqline(e[g==1])
+
+qqnorm(e[g==0])
+qqline(e[g==0])
+```
+
+## The t-test does not find this gene to be statistically significant different by the two groups:
+```{r}
+t.test(e[g==1],e[g==0])$p.value
+```
+
+## To answer the same question for each gene, we simply repeat the above for each gene. Here we will define our own function and use apply:
+```{r}
+myttest <- function(x) t.test(x[g==1],x[g==0],var.equal=TRUE)$p.value
+pvals <- apply(geneExpression,1,myttest)
+```
+
+## We can now see which genes have p-values less than, say, 0.05. For example, right away we see that...
+```{r}
+sum(pvals<0.05)
+```
+So 1383 genes had p-values less than 0.05. But we have to be careful in interpreting this result because we have performed over 8,000 test.
+
+## To demonstrate: 
+If we performed the same procedure on random data, for which the null hypothesis is true for all features, we obtain the following results:
+
+```{r}
+set.seed(1)
+m <- nrow(geneExpression)
+n <- ncol(geneExpression)
+randomData <- matrix(rnorm(n*m),m,n)
+nullpvals <- apply(randomData,1,myttest)
+sum(nullpvals<0.05)
+```
+This is to be expected: 419 is roughly 0.05*8192 and we will describe the theory that tells us why this prediction works.
+More to come later in the chapter...
+
+## Faster t-test implementation
+
+The above implementation is very inefficient. There are several faster implementations that perform t-test for high-throughput data. We make use of a function that is not available from CRAN, but rather from the Bioconductor project.
+
+To download and install packages from Bioconductor, we can use the install_bioc function in rafalib to install the package:
+ 
+```{r} 
+library(rafalib)
+install_bioc("genefilter")
+```
+
+## Now we can show that this function "rowtest" is much faster than our code above and produce practically the same answer:
+```{r}
+library(genefilter)
+results <- rowttests(geneExpression,factor(g))
+max(abs(pvals-results$p))
+```
