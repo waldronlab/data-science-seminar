@@ -32,7 +32,7 @@ In R this is expressed as:
 
 - $Z$ is a random variable 
 - $\Phi$ is a deterministic function
-- $p$ is also a random variable We will create a 
+- $p$ is also a random variable 
 
 ## Example: Monte Carlo simulation shows how the values of $p$ change
 
@@ -89,7 +89,7 @@ which is the definition of a uniform distribution.
 ## Comparison 
 In this data we have two groups denoted with 0 and 1:
 
-```{r, echo=FALSE}
+```{r,  message=FALSE}
 library(devtools)
 
 install_github("genomicsclass/GSE5859Subset")
@@ -102,11 +102,11 @@ g
 dim(geneExpression)
 ```
 
-## To do a comparison on a particular genen
-Arbitrarily pick the one on the 25th row, we would simply compute a t-test. 
+## To do a comparison on a particular gene
+Arbitrarily pick the one on the 25th row, we would simply apply a t-test. 
 To compute a p-value, we will use the t-distribution approximation and therefore we need the population data to be approximately normal. We check this assumption with a qq-plot:
 
-```{r}
+```{r, message=FALSE}
 e <- geneExpression[25,]
 
 library(rafalib)
@@ -119,7 +119,7 @@ qqnorm(e[g==0])
 qqline(e[g==0])
 ```
 
-## The qq-plot shows that the data is normally approximated. 
+## The qq-plots show that the data is normally approximated 
 ```{r, echo=FALSE}
 e <- geneExpression[25,]
 
@@ -170,14 +170,18 @@ The above implementation is very inefficient. There are several faster implement
 
 To download and install packages from Bioconductor, we can use the install_bioc function in rafalib to install the package:
  
-```{r} 
+```{r, message=FALSE} 
 library(rafalib)
 install_bioc("genefilter")
 ```
 
-## Now we can show that this function "rowtest" is much faster than our code above and produce practically the same answer:
+## Now we can show that this function "rowtest" which is much faster than our code above and produce practically the same answer:
 ```{r}
 library(genefilter)
 results <- rowttests(geneExpression,factor(g))
 max(abs(pvals-results$p))
+```
+
+```{r}
+sum(results$p.value < 0.05)
 ```
