@@ -5,13 +5,12 @@ library(GSE5859Subset)
 library(rafalib)
 library(Biobase)
 library(GSE5859)
-library(ggplot2)
 ```
 
 EDA for High-Throughput Data
 ========================================================
 author: Lucas Schiffer
-date: August 5, 2016
+date: August 12, 2016
 autosize: true
 Data Analysis for the Life Sciences
 
@@ -36,9 +35,9 @@ Volcano Plots
 ========================================================
 incremental: true
 <p style="text-align: center">
-<img src="https://tinyurl.com/hdrqhye" style="max-width: 75%; box-shadow: none;">
+<img src="https://tinyurl.com/zxr4s8u" style="max-width: 75%; box-shadow: none;">
 <br>
-<a href="https://tinyurl.com/hdrqhye" style="display: block; font-size: small">https://tinyurl.com/hdrqhye</a>
+<a href="https://tinyurl.com/zxr4s8u" style="display: block; font-size: small">https://tinyurl.com/zxr4s8u</a>
 </p>
 ********************************************************
 - Plot of -log(p-values) vs. effect size
@@ -69,13 +68,11 @@ plot(results$dm, -log10(results$p.value), xlab = "Effect Size", ylab = "-log(p-v
 p-value Histograms
 ========================================================
 ```{r, grdevice = svg, fig.align = "center"}
-hist(nullpvals,
-     ylim = c(0, 1400))
+hist(nullpvals, ylim = c(0, 1400))
 ```
 ********************************************************
 ```{r, grdevice = svg, fig.align = "center"}
-hist(pvals,
-     ylim = c(0, 1400))
+hist(pvals, ylim = c(0, 1400))
 ```
 
 p-value Histograms
@@ -99,16 +96,14 @@ Data Boxplots and Histograms
 data(GSE5859) 
 ge <- exprs(e) ##ge for gene expression
 ge[, 49] <- ge[, 49]/log2(exp(1)) ##error
-boxplot(ge, range = 0, names = 1:ncol(e),
-        col = ifelse(1:ncol(ge) == 49, 1, 2))
+boxplot(ge, range = 0, names = 1:ncol(e), col = ifelse(1:ncol(ge) == 49, 1, 2))
 ```
 
 Data Boxplots and Histograms
 ========================================================
 ### No boxes, no problem... kaboxplot!
 ```{r, fig.align = "center", fig.width = 16}
-qs <- t(apply(ge, 2, quantile, 
-              prob=c(0.05, 0.25, 0.5, 0.75, 0.95)))
+qs <- t(apply(ge, 2, quantile, prob=c(0.05, 0.25, 0.5, 0.75, 0.95)))
 matplot(qs,type="l",lty=1)
 ```
 
@@ -140,11 +135,13 @@ incremental: true
 ```{r, fig.align = "center", echo = FALSE}
 x <- ge[, 1]
 y <- ge[, 2]
-qplot(x, y)
+plot(x, y)
 ```
+- Approximate ```sd(y-x)``` ?
+
 ********************************************************
 ```{r, fig.align = "center", echo = FALSE}
-qplot((x+y)/2,x-y)
+plot((x+y)/2,x-y)
 ```
 ```{r}
 sd(y-x)

@@ -14,22 +14,28 @@ knitr::opts_chunk$set(echo = TRUE)
 
 We will be using a handful of Bioconductor packages. These are installed using the function biocLite which you can source from the web:
 
-```{r}
+```{r, eval = FALSE}
 source("http://www.bioconductor.org/biocLite.R")
+biocLite()
 ```
 
 or you can run the bioc_install in the rafalib package.
 
-```{r}
+```{r, eval = FALSE}
 library(rafalib)
 bioc_install()
 ```
 
-Download and install the Bioconductor package SpikeInSubset and then load the library and the mas133 data:
+Download and install the Bioconductor package SpikeInSubset
 
-```{r}
-library(rafalib)
-install_bioc("SpikeInSubset")
+```{r, eval = FALSE}
+library(BiocInstaller)
+biocLite("SpikeInSubset")
+```
+
+and then load the library and the mas133 data:
+
+```{r, message = FALSE}
 library(SpikeInSubset)
 data(mas133)
 ```
@@ -53,7 +59,10 @@ polygon(c(-b,k,k,-b),c(-b,-b,k,k),col="red",density=0,border="red")
 2. Now make the sample plot with log:
 
 ```{r}
-plot(log2(e[,1]),log2(e[,2])) k <- log2(3000) b <- log2(0.5) polygon(c(b,k,k,b),c(b,b,k,k),col="red",density=0,border="red")
+plot(log2(e[,1]),log2(e[,2])) 
+k <- log2(3000)
+b <- log2(0.5) 
+polygon(c(b,k,k,b),c(b,b,k,k),col="red",density=0,border="red")
 ```
 
 What is an advantage of taking the log?
