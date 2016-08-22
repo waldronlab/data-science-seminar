@@ -1,16 +1,15 @@
 ```{r, echo = FALSE}
-.libPaths(c("~/Library/R/3.3-bioc-devel/library/", "~/Library/R/3.3/library/"))
 library(genefilter)
-library(GSE5859Subset)
+library(GSE5859Subset) #https://github.com/genomicsclass/GSE5859Subset
 library(rafalib)
 library(Biobase)
-library(GSE5859)
+library(GSE5859) #https://github.com/genomicsclass/GSE5859
 ```
 
 EDA for High-Throughput Data
 ========================================================
 author: Lucas Schiffer
-date: August 12, 2016
+date: August 19, 2016
 autosize: true
 Data Analysis for the Life Sciences
 
@@ -52,6 +51,7 @@ data(GSE5859Subset)
 g <- factor(sampleInfo$group)
 results <- rowttests(geneExpression,g)
 pvals <- results$p.value
+
 # nullified p-values
 m <- nrow(geneExpression)
 n <- ncol(geneExpression)
