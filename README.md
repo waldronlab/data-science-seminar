@@ -4,7 +4,7 @@ The Statistical Learning Book Club is led by epidemiology DPH student Jesica
 Rodriguez-Lopez and epidemiology MPH student Lucas Schiffer. This group meets 
 once a week on Fridays from 10 to 11 AM EST and members take turns presenting 
 sections of the textbook Data Analysis for the Life Sciences. All are welcome to 
-join and only a curiousity for statistics is required.
+join and only a curiosity for statistics is required.
 
 Data Analysis for the Life Sciences can be found:
 
