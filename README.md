@@ -19,7 +19,7 @@ Other useful information:
 * If you want to participate, please join our 
 [mailing list](https://groups.google.com/forum/#!forum/stat_learning).
 * The presentation schedule is available at 
-[www.tinyurl.com/statbookclub2015](www.tinyurl.com/statbookclub2015)
+[www.tinyurl.com/statbookclub2015](http://tinyurl.com/huw8cb5)
 * We have a shared 
 [Google Drive Directory](https://drive.google.com/drive/#folders/0B37LTUTfIpszWHJxVVNOVHNKVUU)
 * Here is a short video showing 
