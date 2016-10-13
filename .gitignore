@@ -20,15 +20,8 @@
 .Rproj.user
 *.Rproj
 
-# Ignore textbook file
-dataanalysisforthelifesciences.pdf
-
-# Output files
-Stats_LifeSci/**/*.html
-
-# Rmd cache
-Stats_LifeSci/**/*_cache
-
+# Knitr files
+*.html
+*_cache
 *.dcf
-
 unnamed-*.png
