@@ -1,0 +1,668 @@
+Multiple testing
+======================================================== 
+author: Jennifer Brite 
+date: July 22, 2016 
+#autosize: true
+
+Data Analysis for the Life Sciences 
+ 
+```{r setup, include=FALSE}
+opts_chunk$set(cache=TRUE)
+``` 
+ 
+Error rates 
+======================================================== 
+ 
+ <img src="error_rates.jpg"> 
+ 
+ V=false positives
+ S=true positives
+ R=everything we call a positive
+ m1=false negatives
+
+Only R and m are known; everything else is unknown
+
+m0 is almost always bigger than m1
+
+ 
+Data example 1
+======================================================== 
+
+Monte Carlo simulation to simulation 10,000 test for fad diets, none of which work. Sample size =12
+
+```{r}
+setwd("H:/Infection Control/1_Jennifer/CUNY/book club")
+
+set.seed(1)
+population = unlist( read.csv("femaleControlsPopulation.csv") )
+alpha <- 0.05
+N <- 12
+m <- 10000
+pvals <- replicate(m,{
+  control = sample(population,N)
+  treatment = sample(population,N)
+  t.test(treatment,control)$p.value
+})
+```
+
+Data example 1
+======================================================== 
+We know V=R because no diets are associated with weight loss (all positives are false positives in other words)
+```{r}
+sum(pvals < 0.05) ##This is R
+```
+
+
+Data example 2
+======================================================== 
+This time 10% of diets are effective with an effect size of 3 oz.  
+
+Code to define the truth: 
+ 
+```{r}
+alpha <- 0.05
+N <- 12
+m <- 10000
+p0 <- 0.90 ##10% of diets work, 90% don't
+m0 <- m*p0
+m1 <- m-m0
+nullHypothesis <- c( rep(TRUE,m0), rep(FALSE,m1))
+delta <- 3
+```
+ 
+Data example 2
+========================================================
+Simulation of 10,000 tests, with a t-test on each:
+
+```{r}
+set.seed(1)
+calls <- sapply(1:m, function(i){
+  control <- sample(population,N)
+  treatment <- sample(population,N)
+  if(!nullHypothesis[i]) treatment <- treatment + delta
+  ifelse( t.test(treatment,control)$p.value < alpha, 
+          "Called Significant",
+          "Not Called Significant")
+})
+``` 
+
+
+Data example 2
+======================================================== 
+Because we know the "truth," We can calcualte the table (normally can't do this).
+V=421 
+S=520
+
+Note: We did a terrible job because we have not only 421 type I errors, but also 480 type II errors (Remember 1,000 diets actually work.)
+
+
+```{r}
+null_hypothesis <- factor( nullHypothesis, levels=c("TRUE","FALSE"))
+table(null_hypothesis,calls)
+
+``` 
+
+Data example 2
+======================================================== 
+However, V and S are random variables. If we run simulations repeatedly, we can see this.
+
+```{r eval=FALSE}
+B <- 10 ##number of simulations
+VandS <- replicate(B,{
+  calls <- sapply(1:m, function(i){
+    control <- sample(population,N)
+    treatment <- sample(population,N)
+    if(!nullHypothesis[i]) treatment <- treatment + delta
+    t.test(treatment,control)$p.val < alpha
+  })
+  cat("V =",sum(nullHypothesis & calls), "S =",sum(!nullHypothesis & calls),"\n")
+  c(sum(nullHypothesis & calls),sum(!nullHypothesis & calls))
+  })
+
+``` 
+
+Data example 2
+======================================================== 
+However, V and S are random variables. If we run simulations repeatedly, we can see this.
+
+```{r echo=FALSE}
+B <- 10 ##number of simulations
+VandS <- replicate(B,{
+  calls <- sapply(1:m, function(i){
+    control <- sample(population,N)
+    treatment <- sample(population,N)
+    if(!nullHypothesis[i]) treatment <- treatment + delta
+    t.test(treatment,control)$p.val < alpha
+  })
+  cat("V =",sum(nullHypothesis & calls), "S =",sum(!nullHypothesis & calls),"\n")
+  c(sum(nullHypothesis & calls),sum(!nullHypothesis & calls))
+  })
+
+``` 
+
+Family Wide Error Rate
+======================================================== 
+- Through these simulations, we can estimate the probabililty V is greater than 0
+  -- This is the probability of making a type I error among 10,000 tests
+- In every simulation we had V much greater than 1, so the probability is basically 1.0
+  --Another way to look at it is we did all these tests and there wasn't one where we had a false positive and in fact all had about 400 false positives, so the probability of a false positive in any one test is 100%
+- If m=1 (in other words just one test), this probability represents the p-value
+- If m=multiple tests, this probability is called the Family Wide Error Rate (FWER)
+
+Estimating FWER
+========================================================
+- To estimate FWER choose a procedure, any procedure, and try to estimate FWER (or as we will see below other error metrics) for that procedure  
+- Can be as simple as saying reject all p-values below <0.01
+
+Should this be 0.99?
+
+<img src="one_reject.jpg"> 
+
+Estimating FWER
+========================================================
+
+Simulation that shows if we do 10,000 multiple comparisons the FWER is 100% if we just reject all p-valeus above 0.01:
+
+```{r}
+B<-10000
+minpval <- replicate(B, min(runif(10000,0,1))<0.01)
+mean(minpval>=1)
+``` 
+
+FWER is 1, so not good!!
+
+Sidak's procedure
+========================================================
+- Similar idea as last example, but here instead of rejecting all p-values below a certain pre-determined level, we instead work backwards and set the FWER at a certain level (usually 0.05) and determiend threshold we should use for calling p-values significant. 
+- Assumes all observations independent
+- Using the example in the last side, we would have to set p-value cut off below which we would count significance (k) as 0.000005 
+
+
+<img src="sidak.jpg"> 
+
+ 
+The Bonferroni Correction
+========================================================
+- The Bonferroni procedure sets k=alpha/m 
+
+- Where alpha is a pre-determined p-value (generally 0.05) that we want to keep the FWER below.
+
+- In other words, divide the FWER you want (alpha) by the number of trials/comparisons you are conducting to get k, the p-value maximum threshold you should use to reject the null.
+ 
+- However, this is a very conservative approach as we will see
+ 
+ 
+The Bonferroni Correction example
+========================================================
+Using the same diet examle, here we see only 2 would be called significant even though we know 1,000 work.
+
+
+```{r}
+set.seed(1)
+pvals <- sapply(1:m, function(i){
+  control <- sample(population,N)
+  treatment <- sample(population,N)
+  if(!nullHypothesis[i]) treatment <- treatment + delta
+  t.test(treatment,control)$p.value
+})
+
+sum(pvals < 0.05/10000)
+
+```
+
+The Bonferroni Correction another example
+========================================================
+Imagine you have a small gene study of 10 candidate genes and a sample size of 6. If we require FWER below or equal to 0.05, we will likely get 0 significant results. In other words, we are practically guaranteeing no sensitivity.
+
+
+```{r}
+set.seed(1)
+pvals <- sapply(1:m, function(i){
+  control <- sample(population,6)
+  treatment <- sample(population,6)
+  if(!nullHypothesis[i]) treatment <- treatment + delta
+  t.test(treatment,control)$p.value
+  })
+sum(pvals < 0.05/10000)
+
+```
+ 
+False Discovery Rate
+========================================================
+-Focuses on the random variable Q, which is defiend as V/R with Q = 0 when R=0 and V=0.
+-In other words, false positives over total observations called signficant.
+- When R=0 we call nothing signficant; when V=0 there are no false positives
+- Q can take values between 0 and 1 and we define a rate by considering the average of Q
+
+
+
+Vectorizing code
+========================================================
+This code does the same thing as sapply in the simulations above examples above, but it creates a data matrix and runs faster. It generates a Monte Carlo simulation that generates 10,000 experiments, 1,000 times, each time saving the observed Q.
+
+**had to set repository to bioc to get this to work
+
+```{r}
+library(genefilter) ##rowttests is here
+set.seed(1)
+##Define groups to be used with rowttests
+g <- factor( c(rep(0,N),rep(1,N)) )
+B <- 1000 ##number of simulations
+Qs <- replicate(B,{
+  ##matrix with control data (rows are tests, columns are mice)
+  controls <- matrix(sample(population, N*m, replace=TRUE),nrow=m)
+  
+  ##matrix with control data (rows are tests, columns are mice)
+  treatments <-  matrix(sample(population, N*m, replace=TRUE),nrow=m)
+  
+  ##add effect to 10% of them
+  treatments[which(!nullHypothesis),]<-treatments[which(!nullHypothesis),]+delta
+  
+  ##combine to form one matrix
+  dat <- cbind(controls,treatments)
+  
+ calls <- rowttests(dat,g)$p.value < alpha
+ R=sum(calls)
+ Q=ifelse(R>0,sum(nullHypothesis & calls)/R,0)
+ return(Q)
+})
+```
+
+
+
+Controlling FDR
+========================================================
+
+
+```{r}
+library(rafalib)
+mypar(1,1)
+hist(Qs) ##Q is a random variable, this is its distribution
+
+```
+
+Controlling FDR
+========================================================
+The FDR is the average of Q, here 0.44, so about half our significant results will be false positives. This is pretty high (book doesn't say what the cut off should be for FDR.) Can think of it this way: FDR tells us approximately what percerntage of our significant results are probably false positives.
+
+
+```{r}
+
+FDR=mean(Qs)
+print(FDR)
+
+```
+
+
+Controlling FDR 
+======================================================== 
+Code to graph histogram with higher m:
+
+
+```{r eval=FALSE}
+
+set.seed(1)
+controls <- matrix(sample(population, N*m, replace=TRUE),nrow=m)
+treatments <-  matrix(sample(population, N*m, replace=TRUE),nrow=m)
+treatments[which(!nullHypothesis),]<-treatments[which(!nullHypothesis),]+delta
+dat <- cbind(controls,treatments)
+pvals <- rowttests(dat,g)$p.value 
+
+h <- hist(pvals,breaks=seq(0,1,0.05))
+polygon(c(0,0.05,0.05,0),c(0,0,h$counts[1],h$counts[1]),col="grey")
+abline(h=m0/20)
+
+```
+
+Controlling FDR 
+======================================================== 
+
+This code builds a graph that uses a higher M tells us the frequency of various p-values from the 10,000 simulations. 
+
+```{r eval=FALSE}
+
+set.seed(1)
+controls <- matrix(sample(population, N*m, replace=TRUE),nrow=m)
+treatments <-  matrix(sample(population, N*m, replace=TRUE),nrow=m)
+treatments[which(!nullHypothesis),]<-treatments[which(!nullHypothesis),]+delta
+dat <- cbind(controls,treatments)
+pvals <- rowttests(dat,g)$p.value 
+
+h <- hist(pvals,breaks=seq(0,1,0.05))
+polygon(c(0,0.05,0.05,0),c(0,0,h$counts[1],h$counts[1]),col="grey")
+abline(h=m0/20)
+
+```
+
+Controlling FDR 
+======================================================== 
+The horizontal bar represents the uniform distrubtion for the number of cases that are called non-significant and actually are. In other words, <b>below</b> that horizontal line are the false positives. Here we see we have about a 50% FDR, out of 1,000 tests we can signficant, only about slightly less than 500 really are.
+
+
+```{r echo=FALSE}
+
+set.seed(1)
+controls <- matrix(sample(population, N*m, replace=TRUE),nrow=m)
+treatments <-  matrix(sample(population, N*m, replace=TRUE),nrow=m)
+treatments[which(!nullHypothesis),]<-treatments[which(!nullHypothesis),]+delta
+dat <- cbind(controls,treatments)
+pvals <- rowttests(dat,g)$p.value 
+
+h <- hist(pvals,breaks=seq(0,1,0.05))
+polygon(c(0,0.05,0.05,0),c(0,0,h$counts[1],h$counts[1]),col="grey")
+abline(h=m0/20)
+
+```
+
+Controlling FDR 
+======================================================== 
+Code for same histogram, setting bar p-value cut off at 0.01
+
+```{r  eval=FALSE}
+h <- hist(pvals,breaks=seq(0,1,0.01))
+polygon(c(0,0.01,0.01,0),c(0,0,h$counts[1],h$counts[1]),col="grey")
+abline(h=m0/100)
+
+
+```
+
+Controlling FDR 
+========================================================
+As we would expect, FDR is far lower, but we call far fewer tests signficant (only about 400 and remember should be 1,000.) In other words it is a trade off between sensitivity and specificity.So how do we decide on this cut-off? One approach is to set a desired FDR level or alpha, and then develop procedures that control the error rate: FDR greater than or equal to alpha 
+
+
+```{r  echo=FALSE}
+h <- hist(pvals,breaks=seq(0,1,0.01))
+polygon(c(0,0.01,0.01,0),c(0,0,h$counts[1],h$counts[1]),col="grey")
+abline(h=m0/100)
+
+
+```
+
+
+Controlling FDR 
+========================================================
+
+Code to confirm the new FDR:
+
+```{r echo=FALSE}
+library(genefilter) ##rowttests is here
+set.seed(1)
+##Define groups to be used with rowttests
+g <- factor( c(rep(0,N),rep(1,N)) )
+B <- 1000 ##number of simulations
+Qs <- replicate(B,{
+  ##matrix with control data (rows are tests, columns are mice)
+  controls <- matrix(sample(population, N*m, replace=TRUE),nrow=m)
+  
+  ##matrix with control data (rows are tests, columns are mice)
+  treatments <-  matrix(sample(population, N*m, replace=TRUE),nrow=m)
+  
+  ##add effect to 10% of them
+  treatments[which(!nullHypothesis),]<-treatments[which(!nullHypothesis),]+delta
+  
+  ##combine to form one matrix
+  dat <- cbind(controls,treatments)
+  
+ calls <- rowttests(dat,g)$p.value < .01
+ R=sum(calls)
+ Q=ifelse(R>0,sum(nullHypothesis & calls)/R,0)
+ return(Q)
+})
+FDR=mean(Qs)
+print(FDR)
+
+
+```
+
+
+Benjamini-Hochberg (Advanced)
+========================================================
+- In order to estimate FDR, we need a procedure to simulate over and over
+- Benjamini-Hochberg (1995) procedure is easy because it simply requires computing p-values for each of the individual tests
+    - P-values p(1),...,p(m) are then ordered in increasing order. Finally we define k as the largest i for which 
+    
+p(i) <= i/m(alpha)
+
+
+This procedure rejects tests with p-values smaller or equal to p(k).  (Little confusing because here k is different than k in Bonferonni example.)
+
+Benjamini-Hochberg example
+========================================================
+What if we pick a p-value of 3.763357e-05 and k of 11. We can show mathematically this procedure would produce FDR <.05 (Benjamini-Hochberg, 1995). If we set our FDR to 50%, we would now have a k of 1,063. The FWER cannot handle large sample sizes because a dataset of any substantial size will have an FWER of 1. 
+
+
+
+```{r}
+alpha <- 0.05
+i = seq(along=pvals)
+
+k <- max( which( sort(pvals) < i/m*alpha) )
+cutoff <- sort(pvals)[k]
+cat("k =",k,"p-value cutoff=",cutoff)
+
+```
+
+Direct Approach to FDR and q-values (Advanced)
+========================================================
+- In this approach, we don't have to choose alpha level a priori (don't have to specify what FDR we want to be under)
+- Instead we consider all p-values smaller than 0.01 and attach an estimate rate.
+- Because of this we are guarantee to call at least some test significant (R>0)
+
+Direct Approach to FDR and q-values (Advanced)
+========================================================
+- Moreover Benjamini-Hochberg account for worst-case scenario (that all null hypotheses are true), but this approach suggests we estimate m0 (number of true null cases) from the data
+- To do this we create a procedure by choosing a relatively high p-value cut off, call it lambda, and then assume tests obtaining p-values greater than lambda are true negatives
+
+Direct Approach to FDR and q-values example
+========================================================
+Here the horizontal line is pi0, or (pvals> lambda) /((1-lambda)*m), so proportion of true negatives. 
+
+
+```{r echo=FALSE}
+hist(pvals,breaks=seq(0,1,0.05),freq=FALSE)
+lambda = 0.1
+pi0=sum(pvals> lambda) /((1-lambda)*m)
+abline(h= pi0)
+```
+
+
+Direct Approach to FDR and q-values example
+========================================================
+Here the horizontal line is pi0, or (pvals> lambda) /((1-lambda)*m), so proportion of true negatives. 
+
+
+```{r eval=FALSE}
+hist(pvals,breaks=seq(0,1,0.05),freq=FALSE)
+lambda = 0.1
+pi0=sum(pvals> lambda) /((1-lambda)*m)
+abline(h= pi0)
+```
+
+Direct Approach to FDR and q-values example
+========================================================
+
+```{r}
+print(pi0) ##this is close to the trye pi0=0.9
+
+```
+
+Direct Approach to FDR and q-values example
+========================================================
+-Now that we have pi0, we can calculate the q-value for each test (in the next slide the q value is the estimated pFDR* for all features at least as small as p)
+-In R, this can be computed with the qvalue function in the qvalue package
+
+*pFDR is just FDR where R doesn't equal 0
+
+Direct Approach to FDR and q-values example
+========================================================
+
+```{r}
+
+library(qvalue)
+res <- qvalue(pvals)
+qvals <- res$qvalues
+plot(pvals,qvals)
+
+```
+
+Exercise 1
+======================================================== 
+
+1.Assume the null is true and denote the p-value you would get if you ran a test as P. 
+ Define the function f(x)=Pr(P>x)  What does f(x) look like? 
+ 
+A) A uniform distribution.
+B) The identity line.
+C) A constant at 0.05.
+D) P is not a random value.
+
+
+
+Exercise 1
+======================================================== 
+
+A) A uniform distribution.
+
+
+Exercise 2
+========================================================
+In the previous exercises, we saw how the probability of incorrectly rejecting the null for at least one of 20 experiments  for which the null is true, is well over 5%. Now let's consider a case in which we run thousands of tests, as we would do in a high throughput experiment.
+
+We previously learned that under the null, the probability of a p-value < p is p. If we run 8,793 independent tests, what it the probability of incorrectly rejecting at least one of the null hypothesis?
+
+
+
+Exercise 2
+========================================================
+<b>Reminder</b> 10 control mice, 10 treated mice, mean 30 g, SD 2
+
+```{r}
+
+set.seed(100)
+N <- 10
+B <- 8793
+pvals <- replicate(B,{
+  cases = sample(rnorm(200,30,2), N)
+  controls = sample(rnorm(200,30,2), N)
+  t.test(cases,controls)$p.val 
+  })
+
+sum(pvals)/8793
+```
+
+Exercise 3
+========================================================
+  <img src="question3.jpg">
+  
+  Exercise 4
+========================================================
+  <img src="question3.jpg">
+  
+Exercise 4
+========================================================
+```{r}
+a <-.05/1
+b<- .05/ 2
+c <- .05/3
+d <- .05/4
+
+bonferrioni <- c(a, b, c, d)
+
+e<-1-((1-.05)^ (1/1))
+f<-1-((1-.05)^ (1/2))
+g<-1-((1-.05)^ (1/3))
+h<-1-((1-.05)^ (1/4))
+
+sidek <- c(e, f, g, h)
+
+m <- c(1, 2, 3, 4)
+
+```
+
+Exercise 4
+========================================================
+```{r}
+par(mfrow=c(2,1)) 
+plot (m, bonferrioni)
+plot (m, sidek)
+```
+
+Exercise 4
+========================================================
+  
+Which procedure is more conservative Bonferroni's or Sidek's?
+A) They are the same.
+B) Bonferroni's.
+C) Depends on m.
+D) Sidek's.
+
+Exercise 4
+========================================================
+  
+Which procedure is more conservative Bonferroni's or Sidek's?
+A) They are the same.
+
+Exercise 5
+========================================================
+
+
+To simulate the p-value results of, say 8,792 t-tests for which the null is true, we don't actually have to generate the original data. We can generate p-values for a uniform distribution like this: 'pvals <- runif(8793,0,1)`. Using what we have learned, set the cutoff using the Bonferroni correction and report back the FWER. Set the seed at 1 and run 10,000 simulation.
+
+
+
+```{r}
+set.seed(1)
+B<-10000
+minpval <- replicate(B, min(runif(8793,0,1))<(0.05/10000))
+mean(minpval>=1)
+
+```
+
+Exercise 6
+========================================================
+Using the same seed, repeat exercise 5, but for Sidek's cutoff.
+
+```{r}
+set.seed(1)
+B<-10000
+minpval <- replicate(B, min(runif(8793,0,1))< (1-((1-.05)^ (1/10000))))
+mean(minpval>=1)
+
+```
+
+
+Exercise 7
+========================================================
+
+7.In the following exercises, we will define error controlling procedures for experimental data. We will make a list of genes based on q-values. We will also assess your understanding of false positives rates and false negative rates by asking you to create a Monte Carlo simulation.
+
+Load the gene expression data:
+
+r library(GSE5859Subset) data(GSE5859Subset) 
+
+We are interested in comparing gene expression between the two groups defined in the sampleInfo table.
+
+Compute a p-value for each gene using the function rowttests from the genefilter package.
+
+r library(genefilter) ?rowttests 
+
+How many genes have p-values smaller than 0.05?
+
+Exercise 7
+========================================================
+
+
+```{r}
+library(devtools)
+
+library(GSE5859Subset)
+
+install_github("genomicsclass/GSE5859Subset")
+
+data(GSE5859Subset)
+
+```
+
+Exercise 8
+========================================================
