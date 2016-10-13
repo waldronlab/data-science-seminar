@@ -1,26 +1,26 @@
-# Remove tracking of files
+# remove tracking of files
 *.Rhistory
 *.RData
 
-# Mac files
+# mac files
 .DS_Store
 
-# Vim files
+# vim files
 *~
 *.swp
 
-# Data files
+# data files
 *.csv
 *.txt
 
-# JavaScript files
+# javascript files
 *.js
 
-# RStudio files
+# rstudio files
 .Rproj.user
 *.Rproj
 
-# Knitr files
+# knitr files
 *.html
 *_cache
 *.dcf
