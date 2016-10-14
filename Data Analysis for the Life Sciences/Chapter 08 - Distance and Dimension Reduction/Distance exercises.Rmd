@@ -1,0 +1,68 @@
+---
+title: "Distance Exercises"
+author: "Levi Waldron"
+date: "Oct 14, 2016"
+output: 
+  html_document: 
+    number_sections: yes
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tissuesGeneExpression)
+data(tissuesGeneExpression)
+head(e)
+head(tissue)
+```
+
+# How many biological replicates for hippocampus?
+
+```{r}
+table(tissue)
+sum(tissue == "hippocampus")
+```
+
+# What is the distance between samples 3 and 45?
+
+```{r}
+dist(t(e[, c(3, 45)]))
+```
+
+# What is the distance between gene 210486_at and 200805_at?
+
+```{r}
+dist(e[c("210486_at", "200805_at"), ])
+```
+
+# If I run the command (don’t run it!):
+
+`d = as.matrix( dist(e) )`
+
+How many cells (number of rows times number of columns) will this matrix have?
+
+The answer is: `r nrow(e)` x `r nrow(e)` = `r nrow(e)^2`
+
+# Compute the distance between all pair of samples:
+
+```{r}
+d = dist( t(e) )
+```
+
+# How many distances are stored in d? Hint: What is the length of d?
+
+```{r}
+length(d)
+```
+
+# Why is the answer to exercise 5 not ncol(e)^2?
+
+The answer is C:
+
+```{r}
+ncol(e)*(ncol(e)-1)/2
+```
+
