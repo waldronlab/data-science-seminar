@@ -181,6 +181,9 @@ $$x_{gi} \leftarrow \frac{(x_{gi} - \bar{x}_g)}{s_g}$$
 
 - A built [html][] version of my full Chapter 8 lecture is available.
 - The [source][] R Markdown is also available from Github.
+- Source for this file is also availble from the [Book Club Github]
+    - See folder: Data Analysis for the Life Sciences/Chapter 08 - Distance and Dimension Reduction/
 
 [html]: http://rpubs.com/lwaldron/TrentoSession5Lecture
 [source]: https://github.com/lwaldron/AppStatTrento
+[Book Club Github]: https://github.com/jsrodriguezl/Book_Club
