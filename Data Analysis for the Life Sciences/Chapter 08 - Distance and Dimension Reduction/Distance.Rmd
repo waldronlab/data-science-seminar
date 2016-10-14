@@ -4,10 +4,10 @@ title: "Chapter 8 section 1 - distances"
 author: "Levi Waldron"
 date: "Oct 14, 2016"
 output:
-  slidy_presentation: default
   ioslides_presentation:
     css: styles.css
     logo: logo.png
+  slidy_presentation: default
 ---
 
 ## Outline
@@ -63,10 +63,9 @@ A **metric** satisfies the following five properties:
 3. identification mark $d(a, a) = 0$
 4. definiteness $d(a, b) = 0$ if and only if $a=b$
 5. triangle inequality $d(a, b) + d(b, c) \ge d(a, c)$
-
-- A **distance** is only required to satisfy 1-3.
-- A **similarity function** satisfies 1-2, and **increases** as $a$ and $b$ become more similar
-- A **dissimilarity function** satisfies 1-2, and **decreases** as $a$ and $b$ become more similar
+    - A **distance** is only required to satisfy 1-3.
+    - A **similarity function** satisfies 1-2, and **increases** as $a$ and $b$ become more similar
+    - A **dissimilarity function** satisfies 1-2, and **decreases** as $a$ and $b$ become more similar
 
 
 ## Euclidian distance (metric)
