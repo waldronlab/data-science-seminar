@@ -53,9 +53,7 @@ What kind of projects is GitHub useful for?
 
 GitHub is really useful in software development
 
-<p style="text-align: center">
-<img src="https://git-scm.com/images/about/branches@2x.png">
-</p>
+![github branches](https://git-scm.com/images/about/branches@2x.png)
 
 Code bases can be split into multiple branches and merged back together
 
