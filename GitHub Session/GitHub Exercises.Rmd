@@ -1,0 +1,77 @@
+---
+title: "GitHub Exercises"
+author: "Lucas Schiffer"
+date: "October 21, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+We will start out today by installing GitHub and then go on to some exercises.
+
+In this tutorial, I will have you install GitHub Desktop because it is easier to
+use. Be aware that the GUI (graphical user interface) version has fewer features
+than the CLI (command line interface) version.
+
+## Installing GitHub
+
+0. Ensure you have a GitHub username and password
+
+1. Go to https://desktop.github.com/ and download the installer that's 
+appropriate for your system.
+
+2. Run the installer
+
+3. Have your GitHub username and password ready
+
+4. Open GitHub Desktop
+
+5. When asked enter your username and password
+
+6. You should now be ready to work
+
+## Clone the book club "repo" (repository)
+
+1. Open RStudio
+
+2. File > New Project > Version Control > Git
+
+3. Enter the book club url https://github.com/jsrodriguezl/Book_Club
+
+4. Hit tab and the name should populate automatically
+
+5. Hit Create Project and wait for the files to download
+
+## Experiment with version control
+
+1. In the top right pane of the RStudio editor you should now have a git tab, 
+switch to it
+
+2. Press the Diff button and see what happens
+
+3. Plot a normal curve and save it as a .png file in the GitHub Session 
+directory
+    
+    ```{r, eval=FALSE}
+    x <- seq(-4, 4, length = 100)
+    y <- dnorm(x)
+    png(filename = "./GitHub Session/yourName.png")
+    plot(x, y, main = "Standard Normal Distrubition")
+    dev.off()
+    ```
+    
+4. Now press the Diff button and see what happens
+
+5. Check the box next to the file you've just created
+
+6. Add a commit message something like "Lucas' plot"
+
+7. Press the commit button and then the push button
+
+8. Close the Diff screen and return to RStudio
+
+9. In the top right pane and the Git tab hit pull
+
+10. You should now be able to see the changes others have committed
