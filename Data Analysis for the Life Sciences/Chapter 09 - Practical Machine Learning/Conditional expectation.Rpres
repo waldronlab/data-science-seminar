@@ -1,0 +1,10 @@
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, fig.align = "center")
+```
+
+Conditional Expectation
+========================================================
+author: Lucas Schiffer
+date: January 20, 2016
+autosize: true
+Data Analysis for the Life Sciences

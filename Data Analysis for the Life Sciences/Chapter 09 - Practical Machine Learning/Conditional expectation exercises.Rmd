@@ -1,0 +1,11 @@
+---
+title: "Conditional Expectation Exercises"
+author: "Lucas Schiffer"
+date: "January 20, 2016"
+output: html_document
+css: style.css
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.align = "center", tidy = TRUE, results = "hold", warning = FALSE)
+```
