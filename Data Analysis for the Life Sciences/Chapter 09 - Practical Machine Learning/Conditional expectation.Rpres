@@ -63,6 +63,7 @@ incremental: true
 Conditional Expectation / Optimal Prediction
 ========================================================
 incremental: true
+<br><br>
 ```{r, fig.width=12}
 mypar(1,2)
 plot(x,y,xlab="Father's height in inches",ylab="Son's height in inches",main=paste("correlation =",signif(cor(x,y),2)))
@@ -70,6 +71,7 @@ abline(v=c(-0.35,0.35)+71,col="red")
 hist(y[x==71],xlab="Heights",nc=8,main="",xlim=range(y))
 ```
 ***
+<br><br>
 ```{r, fig.width=12}
 mypar(1,2)
 plot(x,y,xlab="Father's height in inches",ylab="Son's height in inches",main=paste("correlation =",signif(cor(x,y),2)))

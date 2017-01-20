@@ -44,14 +44,20 @@ mean(y)
 2. Using the data generated above, what is the $E(Y\ |\ X=176)$?
 
     ```{r}
-    
+    theData <- data.frame(x, y)
+    exactHeight <- subset(theData, x == 176)
+    round(mean(exactHeight$y))
     ```
 
 3. Now make a plot of $E(Y\ |\ X = x)$ for `x = seq(160, 178)` using the data 
 generated in exercise 1. If you are predicting female or male based on height 
 and want your probability of success to be larger than 0.5, what is the largest 
 height where you predict female?
-
-    ```{r}
     
+    ```{r}
+    hts = seq(160, 178)
+    prop = sapply(hts, function(x1) sum(y[x == x1]) / sum(x == x1))
+    plot(hts, prop)
+    abline(h = 0.5, v = mean(hts))
+    mean(hts)
     ```
