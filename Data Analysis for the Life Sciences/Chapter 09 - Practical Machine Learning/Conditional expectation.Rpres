@@ -8,3 +8,43 @@ author: Lucas Schiffer
 date: January 20, 2016
 autosize: true
 Data Analysis for the Life Sciences
+
+Today's Topics
+========================================================
+incremental: true
+- Introduction
+- Conditional Probability / Conditional Expectation
+- Galton Height Data
+- Regression as Machine Learning
+- Conditional Expectation / Optimal Prediction
+- Exercises
+
+Introduction
+========================================================
+incremental: true
+
+
+Conditional Probability / Conditional Expectation
+========================================================
+incremental: true
+
+
+Galton Height Data
+========================================================
+incremental: true
+
+
+Regression as Machine Learning
+========================================================
+incremental: true
+
+
+Conditional Expectation / Optimal Prediction
+========================================================
+incremental: true
+
+
+Exercises
+========================================================
+incremental: true
+#### The Exercises <- http://rpubs.com/schifferl/cee
