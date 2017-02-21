@@ -7,22 +7,62 @@ Data Analysis for the Life Sciences
 
 Overview
 ========================================================
+- Foundations of Cross-Validation
+- Rubber Ducks Example
+- Gene Expression / Tissue Example
+- Exercises
 
-
-Overview
+Foundations of cross-validation
 ========================================================
+incremental: true
+- Machine learning technique
+- Split dataset into N folds
+- Train on $N-1$ folds, $N$ times
+- Find an optimal value for $M$ parameters
+- Will have $N \times M$ iterations
 
-
-Overview
+Rubber Ducks Example
 ========================================================
+<br>
+<br>
+<p style="text-align: center">
+  <img src="https://tinyurl.com/jt2huxm">
+  <br>
+  <a href="https://tinyurl.com/jt2huxm">https://tinyurl.com/jt2huxm</a>
+</p>
 
-
-Overview
+Rubber Ducks Example
 ========================================================
+```{r}
+ducks <- c("yellow", "yellow", "red", "yellow", "yellow", "yellow")
+colors <- c("red", "green", "blue", "cyan", "magenta", "yellow")
+```
+<br>
+```{r}
+library(magrittr)
+library(caret)
 
+ducks %<>%
+  rep(50)
 
-Overview
+N <-
+  ducks %>%
+  rep(50) %>%
+  createFolds(10)
+
+M <-
+  colors
+```
+
+Rubber Ducks Example
 ========================================================
+```{r}
+library(class)
+
+sapply(N, length)
+
+knn()
+```
 
 
 Overview
