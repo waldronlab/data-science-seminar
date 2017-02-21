@@ -1,3 +1,11 @@
+```{r, include=FALSE}
+library(magrittr)
+library(caret)
+library(class)
+library(rafalib)
+library(tissuesGeneExpression)
+```
+
 Cross-Validation
 ========================================================
 author: Lucas Schiffer
@@ -39,9 +47,6 @@ colors <- c("red", "green", "blue", "cyan", "magenta", "yellow")
 ```
 <br>
 ```{r}
-library(magrittr)
-library(caret)
-
 ducks %<>%
   rep(50)
 
@@ -54,24 +59,68 @@ M <-
   colors
 ```
 
-Rubber Ducks Example
+Gene Expression / Tissue Example
 ========================================================
 ```{r}
-library(class)
-
-sapply(N, length)
-
-knn()
+data(tissuesGeneExpression)
+ind <- which(tissue != "placenta")
+y <- tissue[ind]
+X <- t(e[, ind])
+set.seed(1)
+idx <- createFolds(y, k = 10)
+```
+***
+```{r, echo=FALSE, fig.align="center", fig.width=8}
+mypar()
+Xsmall <- cmdscale(dist(X))
+plot(Xsmall, col = as.fumeric(y))
+legend("topleft", levels(factor(y)), fill = seq_along(levels(factor(y))))
 ```
 
-
-Overview
+Gene Expression / Tissue Example
 ========================================================
+```{r}
+set.seed(1)
+ks <- 1:12
+res <- sapply(ks, function(k) {
+    res.k <- sapply(seq_along(idx), function(i) {
+        pred <- knn(train = Xsmall[-idx[[i]], ],
+                    test = Xsmall[idx[[i]], ],
+                    cl = y[-idx[[i]]], k = k)
+        mean(y[idx[[i]]] != pred)
+    })
+    mean(res.k)
+})
+```
 
-
-Overview
+Gene Expression / Tissue Example
 ========================================================
+```{r, echo=FALSE, fig.align="center", fig.width=8}
+plot(ks, res, type = "o", ylab = "misclassification error")
+```
 
+Gene Expression / Tissue Example
+========================================================
+```{r}
+Xsmall <- cmdscale(dist(X), k = 5)
+set.seed(1)
+ks <- 1:12
+res <- sapply(ks, function(k) {
+    res.k <- sapply(seq_along(idx), function(i) {
+        pred <- knn(train = Xsmall[-idx[[i]], ],
+                    test = Xsmall[idx[[i]], ],
+                    cl = y[-idx[[i]]], k = k)
+        mean(y[idx[[i]]] != pred)
+    })
+    mean(res.k)
+})
+```
+
+Gene Expression / Tissue Example
+========================================================
+```{r, echo=FALSE, fig.align="center", fig.width=8}
+plot(ks, res, type = "o", ylim = c(0, 0.2), ylab = "misclassification error")
+```
 
 On to the exercises
 ========================================================
