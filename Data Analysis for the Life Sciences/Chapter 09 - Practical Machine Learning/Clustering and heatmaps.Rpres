@@ -1,0 +1,112 @@
+```{r, echo = FALSE}
+# library(BiocInstaller)
+# biocLite("genomicsclass/tissuesGeneExpression")
+library(tissuesGeneExpression)
+library(magrittr)
+library(rafalib)
+library(RColorBrewer)
+library(genefilter)
+library(gplots)
+```
+
+Clustering and Heatmaps
+========================================================
+author: Lucas Schiffer
+date: December 02, 2016
+autosize: true
+Data Analysis for the Life Sciences
+
+Overview
+========================================================
+incremental: true
+- Machine learning
+
+- Hierarchical clustering
+
+- K-means clustering
+
+- Heatmaps
+
+- On to the exercises
+
+Machine Learning
+========================================================
+incremental: true
+- Machine teaching
+
+- Measured predictors
+
+- Outcome discovery
+
+- Epistatic interaction
+
+- Limits of human RAM
+
+Hierarchical Clustering
+========================================================
+incremental: true
+- What if we made a tree of similarity
+
+- Iteratively group two most similar items
+
+- Stop once there is a single group
+
+- For example, tissue type prediction from gene expression
+
+
+Hierarchical Clustering
+========================================================
+```{r, echo=FALSE, fig.align='center', fig.height=10, fig.width=24}
+data(tissuesGeneExpression)
+d <- dist(t(e))
+hc <- hclust(d)
+myplclust(hc, labels=tissue, lab.col=as.fumeric(tissue), cex=0.5)
+```
+
+
+K-means Clustering
+========================================================
+incremental: true
+- Maybe there isn't much similarity between items
+
+- K-means can use a measure of distance instead
+
+- Uses multidimensional scaling to produce classification
+
+- Specification of the number of clusters is required
+
+K-means Clustering
+========================================================
+```{r, echo=FALSE, fig.align='center', fig.height=10, fig.width=24}
+km <- kmeans(t(e), centers=7)
+mds <- cmdscale(d)
+mypar(1,2)
+plot(mds[,1], mds[,2]) 
+plot(mds[,1], mds[,2], col=km$cluster, pch=16)
+```
+
+
+Heatmaps
+========================================================
+incremental: true
+- Ubiquitous in genomics, as they provide a good visual
+
+- Constructed of two dendrograms, with concordance shading
+
+- Rows represent the experimental clustering (i.e. gene expression)
+
+- Columns represent represent the theoretical clusting (i.e. tissue type)
+
+Heatmaps
+========================================================
+```{r, echo=FALSE, fig.align='center', fig.height=10, fig.width=24}
+hmcol <- colorRampPalette(brewer.pal(9, "GnBu"))(100)
+rv <- rowVars(e)
+idx <- order(-rv)[1:40]
+cols <- palette(brewer.pal(8, "Dark2"))[as.fumeric(tissue)]
+heatmap.2(e[idx,], labCol=tissue, trace="none", ColSideColors=cols, col=hmcol)
+```
+
+On to the exercises
+========================================================
+#### The Exercises <- http://rpubs.com/schifferl/cahe

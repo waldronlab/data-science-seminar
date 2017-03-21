@@ -1,0 +1,76 @@
+10.1 Batch effects
+========================================================
+author: Jennifer Brite
+date: 3/7/2017
+
+What are batch effects?
+========================================================
+
+Measurements affected by: 
+
+- Laboratory conditions
+- Reagent lots
+- Personnel differences
+
+<br />Biggest challenge faced by genomics research (according to the book)
+
+<br />Reported among most, if not all, high-throughput technologies [Leek et al. (2010) Nature Reviews Genetics 11, 733-739]
+
+
+When is this a problem?
+========================================================
+
+- When batch effects are confounded with an outcome of interest and lead to incorrect conclusions
+- When establishing trends over time
+  <br />e.g. swtich to a new lab and observe artificial "increase" in rates
+
+Let's look at an example
+========================================================
+
+-  In a 1972 paper, WJ Youden describes batch effects in the context of empirical estimates of physical constants
+- Specifically the astronomical unit, which is a unit of measurement equal to the mean distance from the center of the earth to the center of the sun
+- Unfortuantely different labs provided different estimates for this 
+
+
+Estimates of astronomical unit by lab
+========================================================
+
+<img src="http://genomicsclass.github.io/book/pages/figure/intro_to_batch_effects-astronomical_units-1.png" />
+
+Batch effects are clear
+========================================================
+
+- More variability between labs than within
+- Two labs reported two different lengths
+
+Mathematical notation
+========================================================
+
+
+<p>We can use statistical notation to precisely describe the problem. The scientists making these measurements assumed they observed:</p>
+
+$$ Y_{i,j} = \mu + \varepsilon_{i,j}, j=1,\dots,N $$ <br /><br />
+
+If we calculate CI's the standard way: <br /><br />
+
+$$ \bar{Y}i \pm 2 s_i / \sqrt{N} \mbox{ with } s_i^2= \frac{1}{N-1} \sum{i=1}^N (Y_{i,j} - \bar{Y}_i)^2 $$<br /> <br />
+
+A more appropriate model
+========================================================
+
+$$ Y_{i,j} = \mu + \gamma_i + \varepsilon_{i,j}, j=1, \dots, N $$<br /><br />
+
+However can never actually calculate $\gamma$ with data from just one lab.
+
+A solution
+========================================================
+
+- Use data from all labs and average them and then calcualate CI from that data
+
+avg <- mean(dat[,3])<br />
+se <- sd(dat[,3]) / sqrt(nrow(dat))
+ 
+
+
+
+

@@ -1,0 +1,127 @@
+```{r, include=FALSE}
+library(magrittr)
+library(caret)
+library(class)
+library(rafalib)
+library(tissuesGeneExpression)
+```
+
+Cross-Validation
+========================================================
+author: Lucas Schiffer
+date: Feburay 21, 2017
+autosize: true
+Data Analysis for the Life Sciences
+
+Overview
+========================================================
+- Foundations of Cross-Validation
+- Rubber Ducks Example
+- Gene Expression / Tissue Example
+- Exercises
+
+Foundations of cross-validation
+========================================================
+incremental: true
+- Machine learning technique
+- Split dataset into N folds
+- Train on $N-1$ folds, $N$ times
+- Find an optimal value for $M$ parameters
+- Will have $N \times M$ iterations
+
+Rubber Ducks Example
+========================================================
+<br>
+<br>
+<p style="text-align: center">
+  <img src="https://tinyurl.com/jt2huxm">
+  <br>
+  <a href="https://tinyurl.com/jt2huxm">https://tinyurl.com/jt2huxm</a>
+</p>
+
+Rubber Ducks Example
+========================================================
+```{r}
+ducks <- c("yellow", "yellow", "red", "yellow", "yellow", "yellow")
+colors <- c("red", "green", "blue", "cyan", "magenta", "yellow")
+```
+<br>
+```{r}
+ducks %<>%
+  rep(50)
+
+N <-
+  ducks %>%
+  rep(50) %>%
+  createFolds(10)
+
+M <-
+  colors
+```
+
+Gene Expression / Tissue Example
+========================================================
+```{r}
+data(tissuesGeneExpression)
+ind <- which(tissue != "placenta")
+y <- tissue[ind]
+X <- t(e[, ind])
+set.seed(1)
+idx <- createFolds(y, k = 10)
+```
+***
+```{r, echo=FALSE, fig.align="center", fig.width=8}
+mypar()
+Xsmall <- cmdscale(dist(X))
+plot(Xsmall, col = as.fumeric(y))
+legend("topleft", levels(factor(y)), fill = seq_along(levels(factor(y))))
+```
+
+Gene Expression / Tissue Example
+========================================================
+```{r}
+set.seed(1)
+ks <- 1:12
+res <- sapply(ks, function(k) {
+    res.k <- sapply(seq_along(idx), function(i) {
+        pred <- knn(train = Xsmall[-idx[[i]], ],
+                    test = Xsmall[idx[[i]], ],
+                    cl = y[-idx[[i]]], k = k)
+        mean(y[idx[[i]]] != pred)
+    })
+    mean(res.k)
+})
+```
+
+Gene Expression / Tissue Example
+========================================================
+```{r, echo=FALSE, fig.align="center", fig.width=8}
+plot(ks, res, type = "o", ylab = "misclassification error")
+```
+
+Gene Expression / Tissue Example
+========================================================
+```{r}
+Xsmall <- cmdscale(dist(X), k = 5)
+set.seed(1)
+ks <- 1:12
+res <- sapply(ks, function(k) {
+    res.k <- sapply(seq_along(idx), function(i) {
+        pred <- knn(train = Xsmall[-idx[[i]], ],
+                    test = Xsmall[idx[[i]], ],
+                    cl = y[-idx[[i]]], k = k)
+        mean(y[idx[[i]]] != pred)
+    })
+    mean(res.k)
+})
+```
+
+Gene Expression / Tissue Example
+========================================================
+```{r, echo=FALSE, fig.align="center", fig.width=8}
+plot(ks, res, type = "o", ylim = c(0, 0.2), ylab = "misclassification error")
+```
+
+On to the exercises
+========================================================
+#### The Exercises <- http://rpubs.com/schifferl/cve

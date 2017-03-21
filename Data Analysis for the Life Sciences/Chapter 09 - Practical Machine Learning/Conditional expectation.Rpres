@@ -1,0 +1,90 @@
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, fig.align = "center")
+```
+
+Conditional Expectation
+========================================================
+author: Lucas Schiffer
+date: January 20, 2016
+autosize: true
+Data Analysis for the Life Sciences
+
+Today's Topics
+========================================================
+incremental: true
+- Introduction
+- Conditional Probability / Conditional Expectation
+- Galton Height Data
+- Regression as Machine Learning
+- Conditional Expectation / Optimal Prediction
+- Exercises
+
+Introduction
+========================================================
+incremental: true
+- Conditional probability and conditional expectation are slightly different
+- Both are often useful as machine learning techniques
+- Helpful in solving classification and prediction problems
+- Generally useful for categorical and continuous outcomes
+
+Conditional Probability / Conditional Expectation
+========================================================
+incremental: true
+- Conditional probability
+- What is the probability that the next marble is green given that the first was yellow?
+- $$f_{k}(x)=Pr(Y=k\ |\ X = x)$$
+- Conditional Expectation
+- Given that the first marble was yellow, what color is expected next?
+- $$E[(\hat{Y}-Y)^2|X=x]$$
+
+Galton Height Data
+========================================================
+- Francis Galton created a height dataset (1885)
+- Useful for conditional expectation practice
+
+```{r}
+library(rafalib)
+mypar(1, 1)
+library(UsingR)
+data("father.son")
+x = round(father.son$fheight) ##round to nearest inch
+y = round(father.son$sheight)
+hist(y, breaks = seq(min(y), max(y)))
+abline(v = mean(y), col = "red", lwd=2)
+```
+
+Regression as Machine Learning
+========================================================
+incremental: true
+- Suppose we want to predict a random son's height
+- Suppose we want to predict a son's height who's father is 71 inches tall
+- $$E[(\hat{Y}-Y)^2|X=71]$$
+
+Conditional Expectation / Optimal Prediction
+========================================================
+incremental: true
+<br><br>
+```{r, fig.width=12}
+mypar(1,2)
+plot(x,y,xlab="Father's height in inches",ylab="Son's height in inches",main=paste("correlation =",signif(cor(x,y),2)))
+abline(v=c(-0.35,0.35)+71,col="red")
+hist(y[x==71],xlab="Heights",nc=8,main="",xlim=range(y))
+```
+***
+<br><br>
+```{r, fig.width=12}
+mypar(1,2)
+plot(x,y,xlab="Father's height in inches",ylab="Son's height in inches",main=paste("correlation =",signif(cor(x,y),2)))
+abline(v=c(-0.35,0.35)+71,col="red")
+
+fit <- lm(y~x)
+abline(fit,col=1)
+
+hist(y[x==71],xlab="Heights",nc=8,main="",xlim=range(y))
+abline(v = fit$coef[1] + fit$coef[2]*71, col=1)
+```
+
+Exercises
+========================================================
+incremental: true
+#### The Exercises <- http://rpubs.com/schifferl/cee

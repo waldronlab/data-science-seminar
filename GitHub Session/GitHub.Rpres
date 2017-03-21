@@ -1,0 +1,63 @@
+GitHub
+========================================================
+author: Lucas Schiffer
+date: October 21, 2016
+autosize: true
+
+Today's Topics
+========================================================
+incremental: true
+
+Today I will provide a brief overview of how to work with GitHub
+
+Some of the topics we will cover:
+
+- What is GitHub
+- Why use GitHub
+- Practical applications
+- Introductory exercises
+
+What is GitHub
+========================================================
+incremental: true
+
+Did anyone watch the [video](https://vimeo.com/41027679)?
+
+> Git is a free and open source distributed version control system designed to handle everything from small to very large projects with speed and efficiency. - [git website](https://git-scm.com/)
+
+- FOSS (free and open source)
+- Distributed
+- Robust
+- Efficient
+
+Why use GitHub
+========================================================
+incremental: true
+
+Any idea why we use GitHub for the book club?
+
+GitHub excels at collaboration
+
+Some of the reasons we use it:
+
+- Content repository
+- Multiple editors
+- Frequent changes
+- RStudio integration
+
+Practical applications
+========================================================
+incremental: true
+
+What kind of projects is GitHub useful for?
+
+GitHub is really useful in software development
+
+![github branches](https://git-scm.com/images/about/branches@2x.png)
+
+Code bases can be split into multiple branches and merged back together
+
+Introductory exercises
+========================================================
+
+#### The Exercises <- http://rpubs.com/schifferl/ghe
