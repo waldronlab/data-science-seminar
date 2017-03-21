@@ -1,0 +1,60 @@
+---
+title: "Modeling"
+author: "Lavanya Kannan"
+date: "September 9, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Exercises
+```{r, eval = FALSE}
+library(dplyr)
+```
+
+Suppose you have an urn with blue and red balls. If $N$ balls are selected at random with replacement (you put the ball back after you pick it), we can denote the outcomes as random variables $X_1,\dots ,X_N$ that are 1 or 0. If the proportion of red balls is $p$, then the distribution of each of these is $Pr(X_i=1)=p$.
+
+These are also called Bernoulli trials. These random variables are independent because we replace the balls. Flipping a coin is an example of this with $p=0.5$.
+
+You can show that the mean and variance are $p$ and $p(1−p)$ respectively. The binomial distribution gives us the distribution of the sum $S_N$ of these random variables. The probability that we see $k$ red balls is given by:
+
+$$Pr(S_N=k)=\binom Nk p^k(1−p)^{N−k}$$
+
+In R, the function 'dbimom' gives you this result. The function 'pbinom' gives us $Pr(S_N≤k)$.
+
+This equation has many uses in the life sciences. We give some examples below.
+
+##### 1. The probability of conceiving a girl is 0.49. What is the probability that a family with 4 children has 2 girls and 2 boys (you can assume that the outcomes are independent)?
+
+```{r}
+dbinom(size = 4,x = 2,prob = 0.49) ## same as dim(combn(4,2))[2]*(0.49)^2*(1 - 0.49)^(4-2)
+```
+
+Use what you learned in Question 1 to answer these questions:
+
+##### 2. What is the probability that a family with 10 children has 6 girls and 4 boys (assume no twins)?
+```{r}
+dbinom(size = 10,x = 6,prob = 0.49) 
+```
+
+##### 3. The genome has 3 billion bases. About 20% are C, 20% are G, 30% are T, and 30% are A. Suppose you take a random interval of 20 bases, what is the probability that the GC-content (proportion of Gs of Cs) is strictly above 0.5 in this interval?
+```{r}
+p_gc = (20 + 20) /sum(20,20,30,30)
+prob_gc_less_than_or_equal_0.5 = 
+  lapply(0:10,function (i) dbinom(size = 20,x = i,prob = p_gc)) %>% unlist %>% sum
+## I did not figure out how to use pbinom
+prob_gc_more_than_0.5 = 1 - prob_gc_less_than_or_equal_0.5
+prob_gc_more_than_0.5
+```
+
+##### 4. The probability of winning the lottery is 1 in 175,223,510. If 20,000,000 people buy a ticket, what is the probability that more than one person wins?
+```{r}
+p = 1/175223510
+prob_less_than_2_wins = 
+  lapply(0:1,function (i) dbinom(size = 20000000,x = i,prob = p)) %>% unlist %>% sum
+prob_more_than_1_wins = 1 - prob_less_than_2_wins
+prob_more_than_1_wins
+```
+

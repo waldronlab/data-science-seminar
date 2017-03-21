@@ -1,17 +1,26 @@
-Statistical Learning Book Club 2014-2015
-========================================
-This group is being led by Epidemiology DPH student Jesica Rodriguez-Lopez, 
-and will meet weekly on Fridays 10-11am and take turns presenting sections
-of the textbook [Genomic Data Science](https://leanpub.com/dataanalysisforthelifesciences/) or [online version](http://genomicsclass.github.io/book/).
+## Statistical Learning Book Club
 
-The first book we read was Introduction to Statistical Learning with Applications in 
-R](http://www-bcf.usc.edu/~gareth/ISL/).
+The Statistical Learning Book Club is led by epidemiology DPH student Jesica 
+Rodriguez-Lopez and epidemiology MPH student Lucas Schiffer. This group meets 
+once a week on Fridays from 10 to 11 AM EST and members take turns presenting 
+sections of the textbook Data Analysis for the Life Sciences. All are welcome to 
+join and only a curiosity for statistics is required.
+
+Data Analysis for the Life Sciences can be found:
+
+[Print Version](https://leanpub.com/dataanalysisforthelifesciences/)
+
+[Online Version](http://genomicsclass.github.io/book/)
+
+The first book we read was 
+[An Introduction to Statistical Learning](https://tinyurl.com/zxof7p2).
 
 Other useful information:
-* If you want to participate, please join our [mailing list](https://groups.google.com/forum/#!forum/stat_learning).
-* The presentation schedule is available at www.tinyurl.com/statbookclub2015
-* We have a shared [Google
-Drive Directory](https://drive.google.com/drive/#folders/0B37LTUTfIpszWHJxVVNOVHNKVUU)
-* Here is a short video showing [how to use RStudio to contribute to
-this Github](http://youtu.be/uHYcDQDbMY8).
-
+* If you want to participate, please join our 
+[mailing list](https://groups.google.com/forum/#!forum/stat_learning).
+* The presentation schedule is available at 
+[www.tinyurl.com/statbookclub2015](http://tinyurl.com/huw8cb5)
+* We have a shared 
+[Google Drive Directory](https://drive.google.com/drive/#folders/0B37LTUTfIpszWHJxVVNOVHNKVUU)
+* Here is a short video showing 
+[how to use RStudio to contribute to this Github](http://youtu.be/uHYcDQDbMY8).

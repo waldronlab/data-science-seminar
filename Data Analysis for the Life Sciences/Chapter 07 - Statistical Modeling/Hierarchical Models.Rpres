@@ -1,0 +1,43 @@
+```{r, echo = FALSE}
+library(SpikeInSubset)
+library(genefilter)
+library(knitr)
+```
+
+Hierarchical Models
+========================================================
+author: Lucas Schiffer
+date: October 07, 2016
+autosize: true
+Data Analysis for the Life Sciences
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.align = "center", fig.width = 10)
+```
+
+
+Introduction
+========================================================
+```{r, echo=FALSE}
+data(rma95)
+fac <- factor(rep(1:2,each=3))
+tt <- rowttests(exprs(rma95),fac)
+smallp <- with(tt, p.value < .01)
+spike <- rownames(rma95) %in% colnames(pData(rma95))
+cols <- ifelse(spike,"dodgerblue",ifelse(smallp,"red","black"))
+
+with(tt, plot(-dm, -log10(p.value), cex=.8, pch=16,
+     xlim=c(-1,1), ylim=c(0,4.5),
+     xlab="difference in means",
+     col=cols))
+abline(h=2,v=c(-.2,.2), lty=2)
+```
+
+```{r}
+table(top50=rank(tt$p.value)<= 10, spike) %>%
+kable()
+```
+
+Exercises
+========================================================
+#### Exercises <- http://rpubs.com/schifferl/hme

@@ -1,0 +1,28 @@
+example
+========================================================
+author: Levi Waldron
+date: Oct 3, 2014
+
+A first plot
+========================================================
+This presentation uses knitr.
+
+```{r, echo=FALSE}
+plot(1:20, pch=1:20)
+```
+
+
+
+Slide With Code
+========================================================
+
+```{r}
+summary(cars)
+```
+
+Slide With Plot
+========================================================
+
+```{r, echo=FALSE}
+plot(cars)
+```

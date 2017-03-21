@@ -1,0 +1,325 @@
+---
+title: "Intro to Statistical Learning with R, Chapter 2 exercises"
+author: "Levi Waldron"
+date: "October 17, 2014"
+output: html_document
+---
+
+A built html version of this document is available at http://rpubs.com/lwaldron/islrchapter2
+
+# Problem 8
+First load the data using the ISLR package:
+```{r}
+library(ISLR)
+data(College)
+```
+
+## Part c
+**i. Use the summary() function to produce a numerical summary of the variables in the data set.**
+```{r}
+summary(College)
+```
+
+
+**ii. Use the pairs() function to produce a scatterplot matrix of the first ten columns or variables of the data. Recall that you can reference the first ten columns of a matrix A using A[,1:10].**
+
+```{r}
+pairs(College[, 1:10])
+```
+
+**iii. Use the plot() function to produce side-by-side boxplots of Outstate versus Private.**
+
+Since the problem doesn't say which variable to make the boxplot for, I use all 16 other quantitative variables.  In the par() command, mfrow=c(4, 4) makes a 4x4 panel plot, and mar=c(3,2,0,0) makes smaller margins around each plot - see ?par for explanations of these arguments.  See ?boxplot for explanations of xlab, ylab, and main.
+
+```{r}
+par(mfrow=c(4,4), mar=c(2, 2, 1, 0))
+for (i in 2:17)
+  boxplot(College[, i] ~ College[, 1], xlab="", main=colnames(College)[i])
+```
+
+**iv. Create a new qualitative variable, called Elite, by binning the Top10perc variable. We are going to divide universities into two groups based on whether or not the proportion of students coming from the top 10% of their high school classes exceeds 50 %.  Use the summary() function to see how many elite univer- sities there are.**
+
+```{r}
+College$Elite <- College$Top10perc > 50
+summary(College[, c("Top10perc", "Elite")])
+```
+
+**Now use the plot() function to produce side-by-side boxplots of Outstate versus Elite.**
+
+```{r}
+boxplot(Outstate ~ Elite, data=College)
+```
+
+
+**v. Use the hist() function to produce some histograms with differing numbers of bins for a few of the quantitative vari- ables. You may find the command par(mfrow=c(2,2)) useful: it will divide the print window into four regions so that four plots can be made simultaneously. Modifying the arguments to this function will divide the screen in other ways.**
+
+Just one example:
+```{r}
+par(mfrow=c(2,2))
+hist(College$Top10perc, breaks=5)
+hist(College$Top10perc, breaks=10)
+hist(College$Top10perc, breaks=20)
+hist(College$Top10perc, breaks=40)
+```
+
+**vi. Continue exploring the data, and provide a brief summary of what you discover.**
+
+How about a heatmap of the data.  To help with interpretation, here's the codebook:
+
+* *Private*: Public/private indicator
+* *Apps*: Number of applications received
+* *Accept*: Number of applicants accepted
+* *Enroll*: Number of new students enrolled
+* *Top10perc*: New students from top 10 % of high school class 
+* *Top25perc*: New students from top 25 % of high school class 
+* *F.Undergrad*: Number of full-time undergraduates
+* *P.Undergrad*: Number of part-time undergraduates
+* *Outstate*: Out-of-state tuition
+* *Room.Board*: Room and board costs
+* *Books*: Estimated book costs
+* *Personal*: Estimated personal spending
+* *PhD*: Percent of faculty with Ph.D.’s
+* *Terminal*: Percent of faculty with terminal degree
+* *S.F.Ratio*: Student/faculty ratio
+* *perc.alumni*: Percent of alumni who donate
+* *Expend*: Instructional expenditure per student
+* *Grad.Rate*: Graduation rate
+
+Note that for this plot, we:
+1. standardize each variable to mean 0 and standard deviation 1 using scale(), 
+2. convert the data.frame to a matrix as required by heatmap functions,
+3. transpose the matrix to show the variables as rows rather than columns, just for convenient viewing,
+4. use the pheatmap library, just because it by default produces a prettier heatmap than the built-in heatmap, and
+5. Annotate the columns by whether the university is private or not.
+
+```{r}
+library(pheatmap)
+pheatmap(t(as.matrix(scale(College[, 2:18]))),
+         annotation=College[1],
+         show_colnames=FALSE)
+```
+
+## Problem 9. 
+**This exercise involves the Auto data set studied in the lab. Make sure that the missing values have been removed from the data.**
+
+```{}
+data(Auto)
+```
+
+Are there any missing values?  No:
+```{r}
+summary(complete.cases(Auto))
+```
+
+**(a) Which of the predictors are quantitative, and which are qualitative?**
+
+```{r}
+sapply(Auto, class)
+```
+
+Name is qualitative, the rest are quantitative.  However, looking at summary(), we notice that the "origin" variable takes only values of 1, 2, 3 and should probably be treated as factor:
+```{r}
+summary(Auto)
+```
+
+Looking at some representative names for each origin, it's clear that origin=1 is U.S.-made, origin=2 is European, and origin=3 is Japanese:
+```{r}
+head(unique(Auto$name[Auto$origin==1]), 10)
+head(unique(Auto$name[Auto$origin==2]), 10)
+head(unique(Auto$name[Auto$origin==3]), 10)
+```
+
+So let's fix this and turn it into a factor:
+```{r}
+Auto$origin <- factor(Auto$origin, levels=1:3, labels=c("U.S.", "Europe", "Japan"))
+```
+
+Now we've corrected origin so that both origin and name are factors:
+```{r}
+sapply(Auto, class)
+```
+
+Let's create a logical vector indicating which variables are quantitative (numeric):
+```{r}
+quant <- sapply(Auto, is.numeric)
+quant
+```
+
+
+**(b) What is the range of each quantitative predictor? You can answer this using the range() function.**
+```{r}
+sapply(Auto[, quant], range)
+```
+
+**(c) What is the mean and standard deviation of each quantitative predictor?**
+
+I'll round to two significant digits using signif(). Note first row is mean, second is sd:
+```{r}
+sapply(Auto[, quant], function(x) signif(c(mean(x), sd(x)), 2))
+```
+
+**(d) Now remove the 10th through 85th observations. What is the range, mean, and standard deviation of each predictor in the subset of the data that remains?**
+
+For the heck of it, I'll add rownames.  And round to two decimal places, rather than two significant digits (using round() instead of signif()):
+```{r}
+output <- sapply(Auto[-10:-85, quant], function(x) round(c(range(x), mean(x), sd(x)), 2))
+rownames(output) <- c("min", "max", "mean", "sd")
+output
+```
+
+**(e) Using the full data set, investigate the predictors graphically, using scatterplots or other tools of your choice. Create some plots highlighting the relationships among the predictors. Comment on your findings.**
+
+How about a heatmap again:
+```{r}
+library(pheatmap)
+pheatmap(t(scale(as.matrix(Auto[, quant]))), 
+         annotation=Auto["origin"],
+         show_colnames=FALSE)
+```
+
+**(f) Suppose that we wish to predict gas mileage (mpg) on the basis of the other variables. Do your plots suggest that any of the other variables might be useful in predicting mpg? Justify your answer.**
+
+Yes, it would appear that year, acceleration, and origin would be decent predictors of mpg.
+
+## Problem 10. 
+
+**This exercise involves the Boston housing data set. (a) To begin, load in the Boston data set. The Boston data set is part of the MASS library in R.**
+```{r}
+library(MASS)
+```
+**Now the data set is contained in the object Boston.  Read about the data set:** (note I use eval=FALSE in this code chunk so it isn't actually evaluated by R, just shown on the screen)
+```{r, eval=FALSE}
+?Boston
+```
+
+**How many rows are in this data set? How many columns? What do the rows and columns represent?**
+
+```{r}
+dim(Boston)
+```
+506 rows, 14 columns.
+
+```{r}
+summary(Boston)
+```
+Columns are variables, rows are observations.
+
+**(b) Make some pairwise scatterplots of the predictors (columns) in this data set. Describe your findings.**
+```{r}
+pairs(Boston)
+```
+That's a lot of small scatterplots.  Maybe a heatmap will be easier to read:
+```{r}
+pheatmap(t(scale(as.matrix(Boston))), 
+         show_colnames=FALSE)
+```
+Notice "chas" is a binary variable.  "crim" has outliers.  There are some collinear variables, like rad/tax, and rad/tax have a lot of constant values:
+```{r}
+summary(Boston$rad)
+table(Boston$rad)
+```
+It's those 24's that stand out in the heatmap - I'll bet these are some kind of weird coding and not real values of 24.  Let's set those to NA:
+```{r}
+Boston$rad[Boston$rad==24] <- NA
+```
+
+tax has a lot of "666" values that I don't believe are really 666:
+```{r}
+table(Boston$tax)
+```
+so let's set those to NA as well:
+```{r}
+Boston$tax[Boston$tax==666] <- NA
+```
+
+There are no doubt other variables that need to be cleaned as well (like ptratio for sure) but you get the picture...  Data cleaning is hard.
+
+**(c) Are any of the predictors associated with per capita crime rate? If so, explain the relationship.**
+
+Let's make a heatmap of correlations, calculating correlations using pairwise complete observations (for a given pair of variables, neither has a missing value).  It looks like there are a number of variables associated with "crim": ptratio, rad, tax, lstat, age, indus and nox.
+```{r}
+pheatmap(cor(Boston, use="pairwise.complete.obs"))
+```
+
+**(d) Do any of the suburbs of Boston appear to have particularly high crime rates? Tax rates? Pupil-teacher ratios? Comment on the range of each predictor.**
+
+Make histograms of each.  breaks="FD" tends to result in more bins in the histogram than the default:
+```{r}
+par(mfrow=c(2,2))
+hist(Boston$crim, main="Crime Rates\n (note the long tail)",breaks="FD")
+hist(Boston$crim, main="Crime Rates with y-axis limited", 
+     ylim=c(0, 40), breaks="FD")
+hist(Boston$tax, main="Tax rates\n (note some high-tax outliers)", breaks="FD")
+hist(Boston$ptratio, main="Pupil-teacher ratio\n (no real outliers)", breaks="FD")
+```
+
+**(e) How many of the suburbs in this data set bound the Charles river?**
+```{r}
+summary(Boston$chas==1) ## (=1 if tract bounds river; 0 otherwise)
+```
+
+**(f) What is the median pupil-teacher ratio among the towns in this data set?**
+```{r}
+median(Boston$ptratio)
+```
+
+**(g) Which suburb of Boston has lowest median value of owner- occupied homes?**
+
+We don't have suburb names, but it's #399:
+```{r}
+which.min(Boston$medv)
+```
+
+**What are the values of the other predictors for that suburb, and how do those values compare to the overall ranges for those predictors? Comment on your findings.**
+
+From the ?Boston codebook to help interpret these histograms:
+
+* **crim**: per capita crime rate by town.
+* **zn**: proportion of residential land zoned for lots over 25,000 sq.ft.
+* **indus**: proportion of non-retail business acres per town.
+* **chas**: Charles River dummy variable (= 1 if tract bounds river; 0 otherwise).
+* **nox**: nitrogen oxides concentration (parts per 10 million).
+* **rm**: average number of rooms per dwelling.
+* **age**: proportion of owner-occupied units built prior to 1940.
+* **dis**: weighted mean of distances to five Boston employment centres.
+* **rad**: index of accessibility to radial highways.
+* **tax**: full-value property-tax rate per \$10,000.
+* **ptratio**: pupil-teacher ratio by town.
+* **black**: $1000 (Bk - 0.63)^2$ where Bk is the proportion of blacks by town.
+* **lstat**: lower status of the population (percent).
+* **medv**: median value of owner-occupied homes in \$1000s.
+
+```{r}
+par(mfrow=c(5,3), mar=c(2, 2, 1, 0))
+for (i in 1:ncol(Boston)){
+  hist(Boston[, i], main=colnames(Boston)[i], breaks="FD")
+  abline(v=Boston[399, i], col="red", lw=3)
+}
+```
+
+**(h) In this data set, how many of the suburbs average more than seven rooms per dwelling?**
+```{r}
+summary(Boston$rm > 7)
+```
+
+**More than eight rooms per dwelling?**
+```{r}
+summary(Boston$rm > 8)
+```
+
+**Comment on the suburbs that average more than eight rooms per dwelling.**
+
+First, create a logical index for which suburbs these are:
+```{r}
+idx <- Boston$rm > 8
+summary(idx)
+```
+
+Let's repeat the histograms again, and show red lines for these (subset rows using idx instead of 399:
+```{r}
+par(mfrow=c(5,3), mar=c(2, 2, 1, 0))
+for (i in 1:ncol(Boston)){
+  hist(Boston[, i], main=colnames(Boston)[i], breaks="FD")
+  abline(v=Boston[idx, i], col="red", lw=1)
+}
+```

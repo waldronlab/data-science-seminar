@@ -1,0 +1,49 @@
+---
+title: "Introduction to high throughput data exercises"
+author: "Lucas Schiffer"
+date: "July 8, 2016"
+output: html_document
+css: style.css
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Exercises
+
+For the remaining parts of this book we will be downloading larger datasets than those we have been using. Most of these datasets are not available as part of the standard R installation or packages such as UsingR. For some of these packages, we have created packages and offer them via GitHub. To download these you will need to install the devtools package. Once you do this, you can install packages such as the GSE5859Subset which we will be using here:
+
+```{r, results= 'hide', message = FALSE}
+library(devtools)
+install_github("genomicsclass/GSE5859Subset")
+library(GSE5859Subset)
+data(GSE5859Subset)
+```
+
+This package loads three tables: geneAnnotation, geneExpression, and sampleInfo. Answer the following questions to familiarize yourself with the data set:
+
+1. How many samples where processed on 2005-06-27?
+
+```{r}
+subset(sampleInfo, date == "2005-06-27")
+dim(subset(sampleInfo, date == "2005-06-27"))
+```
+
+2. Question: How many of the genes represented in this particular technology are on chromosome Y?
+
+```{r}
+head(geneAnnotation)
+unique(geneAnnotation$CHR)
+subset(geneAnnotation, CHR == "chrY")
+dim(subset(geneAnnotation, CHR == "chrY"))
+```
+
+3. What is the log expression value of the for gene ARPC1A on the one subject that we measured on 2005-06-10 ?
+
+```{r}
+matched_row <- match(subset(geneAnnotation, SYMBOL == "ARPC1A")$PROBEID, rownames(geneExpression))
+matched_col <- match(subset(sampleInfo, date == "2005-06-10")$filename, colnames(geneExpression))
+log(geneExpression[matched_row, matched_col])
+```

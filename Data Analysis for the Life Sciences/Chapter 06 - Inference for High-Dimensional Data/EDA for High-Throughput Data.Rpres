@@ -1,0 +1,152 @@
+```{r, echo = FALSE}
+library(genefilter)
+library(GSE5859Subset) #https://github.com/genomicsclass/GSE5859Subset
+library(rafalib)
+library(Biobase)
+library(GSE5859) #https://github.com/genomicsclass/GSE5859
+```
+
+EDA for High-Throughput Data
+========================================================
+author: Lucas Schiffer
+date: August 19, 2016
+autosize: true
+Data Analysis for the Life Sciences
+
+Today's Topics
+========================================================
+incremental: true
+- Introduction
+- Volcano Plots
+- p-value Histograms
+- Data Boxplots and Histograms
+- MA plot
+- Exercises
+
+Introduction
+========================================================
+incremental: true
+- How is EDA for high-throughput data different?
+
+> "If Edison had a needle to find in a haystack, he would proceed at once with the diligence of the bee to examine straw after straw until he found the object of his search... I was a sorry witness of such doings, knowing that a little theory and calculation would have saved him ninety per cent of his labor." - Nikola Tesla
+
+Volcano Plots
+========================================================
+incremental: true
+<p style="text-align: center">
+<img src="https://tinyurl.com/zxr4s8u" style="max-width: 75%; box-shadow: none;">
+<br>
+<a href="https://tinyurl.com/zxr4s8u" style="display: block; font-size: small">https://tinyurl.com/zxr4s8u</a>
+</p>
+********************************************************
+- Plot of -log(p-values) vs. effect size
+- Readily distinguishes problematic values
+- The two quantities should be inversely proportional
+
+Volcano Plots
+========================================================
+```{r}
+# gene expression p-values
+data(GSE5859Subset)
+g <- factor(sampleInfo$group)
+results <- rowttests(geneExpression,g)
+pvals <- results$p.value
+
+# nullified p-values
+m <- nrow(geneExpression)
+n <- ncol(geneExpression)
+randomData <- matrix(rnorm(n*m), m, n)
+nullpvals <- rowttests(randomData, g)$p.value
+```
+
+Volcano Plots
+========================================================
+```{r, grdevice = svg, fig.align = "center"}
+plot(results$dm, -log10(results$p.value), xlab = "Effect Size", ylab = "-log(p-values)")
+```
+
+p-value Histograms
+========================================================
+```{r, grdevice = svg, fig.align = "center"}
+hist(nullpvals, ylim = c(0, 1400))
+```
+********************************************************
+```{r, grdevice = svg, fig.align = "center"}
+hist(pvals, ylim = c(0, 1400))
+```
+
+p-value Histograms
+========================================================
+incremental: true
+- When an expected null result looks like a alternative?
+- Samples may be correlated, but can test for this
+- Permute the samples, plot of p-values should be normal
+
+p-value Histograms
+========================================================
+```{r, grdevice = svg, fig.align = "center"}
+permg <- sample(g)
+permresults <- rowttests(geneExpression, permg)
+hist(permresults$p.value)
+```
+
+Data Boxplots and Histograms
+========================================================
+```{r, fig.align = "center", fig.width = 16}
+data(GSE5859) 
+ge <- exprs(e) ##ge for gene expression
+ge[, 49] <- ge[, 49]/log2(exp(1)) ##error
+boxplot(ge, range = 0, names = 1:ncol(e), col = ifelse(1:ncol(ge) == 49, 1, 2))
+```
+
+Data Boxplots and Histograms
+========================================================
+### No boxes, no problem... kaboxplot!
+```{r, fig.align = "center", fig.width = 16}
+qs <- t(apply(ge, 2, quantile, prob=c(0.05, 0.25, 0.5, 0.75, 0.95)))
+matplot(qs,type="l",lty=1)
+```
+
+Data Boxplots and Histograms
+========================================================
+### Say shistogram 5 times fast!
+```{r, fig.align = "center", fig.width = 16}
+shist(ge, unit = 0.5)
+```
+
+MA plot
+========================================================
+incremental: true
+<p style="text-align: center">
+<img src="https://tinyurl.com/htv3de8" style="max-width: 75%; box-shadow: none;">
+<br>
+Microarray platforms
+<a href="https://tinyurl.com/htv3de8" style="display: block; font-size: small">https://tinyurl.com/htv3de8</a>
+</p>
+********************************************************
+- Scatterplots don't work very well
+- Known properties of data are more informative
+- Plot of (log(red) - log(green)) vs. average of log(red) and log(green)
+- Known as MA plot because it is a *Minus* vs. *Average* of the log intensities
+
+MA plot
+========================================================
+incremental: true
+```{r, fig.align = "center", echo = FALSE}
+x <- ge[, 1]
+y <- ge[, 2]
+plot(x, y)
+```
+- Approximate ```sd(y-x)``` ?
+
+********************************************************
+```{r, fig.align = "center", echo = FALSE}
+plot((x+y)/2,x-y)
+```
+```{r}
+sd(y-x)
+```
+
+Exercises
+========================================================
+#### Exercises <- http://rpubs.com/schifferl/eda4htde

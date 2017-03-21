@@ -1,0 +1,189 @@
+
+---
+title: "Chapter 8 section 1 - distances"
+author: "Levi Waldron"
+date: "Oct 14, 2016"
+output:
+  ioslides_presentation:
+    css: styles.css
+    logo: logo.png
+  slidy_presentation: default
+---
+
+## Outline
+
+- The importance of distances
+- Euclidian distance
+- some matrix algebra notation
+- [Distance Exercises](http://genomicsclass.github.io/book/pages/distance_exercises.html): p. 322-323
+
+# Distances in high-dimensional data analysis
+
+## The importance of distance
+
+- High-dimensional data are complex and impossible to visualize in raw form
+- Thousands of dimensions, we can only visualize 2-3
+- Distances can simplify thousands of dimensions
+
+<center>
+<img src="animals.png" alt="animals" align="middle" style="height: 350px;">
+</center>
+
+## The importance of distance (cont'd)
+
+- Distances can help organize samples and genomic features
+
+```{r, echo=FALSE}
+library(GSE5859Subset)
+data(GSE5859Subset) ##this loads three tables
+set.seed(1)
+ge = geneExpression[sample(1:nrow(geneExpression), 200), ]
+pheatmap::pheatmap(ge, scale="row", show_colnames = F, show_rownames = F)
+```
+
+## The importance of distance (cont'd)
+
+- Any clustering or classification of samples and/or genes involves
+combining or identifying objects that are close or similar.
+- Distances or similarities are mathematical representations of what
+we mean by close or similar.
+- The choice of distance is important and requires thought. 
+    - choice is subject-matter specific
+
+<font size="2">
+Source: http://master.bioconductor.org/help/course-materials/2002/Summer02Course/Distance/distance.pdf
+</font>
+
+## Metrics and distances
+
+A **metric** satisfies the following five properties:
+
+1. non-negativity $d(a, b) \ge 0$
+2. symmetry $d(a, b) = d(b, a)$
+3. identification mark $d(a, a) = 0$
+4. definiteness $d(a, b) = 0$ if and only if $a=b$
+5. triangle inequality $d(a, b) + d(b, c) \ge d(a, c)$
+    - A **distance** is only required to satisfy 1-3.
+    - A **similarity function** satisfies 1-2, and **increases** as $a$ and $b$ become more similar
+    - A **dissimilarity function** satisfies 1-2, and **decreases** as $a$ and $b$ become more similar
+
+
+## Euclidian distance (metric)
+
+- Remember grade school:
+```{r, echo=FALSE, fig.height=3.5}
+rafalib::mypar()
+plot(c(0,1,1),c(0,0,1),pch=16,cex=2,xaxt="n",yaxt="n",xlab="",ylab="",bty="n",xlim=c(-0.25,1.25),ylim=c(-0.25,1.25))
+lines(c(0,1,1,0),c(0,0,1,0))
+text(0,.2,expression(paste('(A'[x]*',A'[y]*')')),cex=1.5)
+text(1,1.2,expression(paste('(B'[x]*',B'[y]*')')),cex=1.5)
+text(-0.1,0,"A",cex=2)
+text(1.1,1,"B",cex=2)
+```
+<center>
+Euclidean d = $\sqrt{ (A_x-B_x)^2 + (A_y-B_y)^2}$.
+</center>
+
+- **Side note**: also referred to as *$L_2$ norm*
+
+## Euclidian distance in high dimensions
+
+```{r}
+##biocLite("genomicsclass/tissuesGeneExpression")
+library(tissuesGeneExpression)
+data(tissuesGeneExpression)
+dim(e) ##gene expression data
+table(tissue) ##tissue[i] corresponds to e[,i]
+```
+
+Interested in identifying similar *samples* and similar *genes*
+
+## Euclidian distance in high dimensions
+
+- Points are no longer on the Cartesian plane,
+- instead they are in higher dimensions. For example:
+    - sample $i$ is defined by a point in 22,215 dimensional space: $(Y_{1,i},\dots,Y_{22215,i})^\top$. 
+    - feature $g$ is defined by a point in 189 dimensions $(Y_{g,189},\dots,Y_{g,189})^\top$
+
+## Euclidian distance in high dimensions
+
+Euclidean distance as for two dimensions. E.g., the distance between two samples $i$ and $j$ is:
+
+$$ \mbox{dist}(i,j) = \sqrt{ \sum_{g=1}^{22215} (Y_{g,i}-Y_{g,j })^2 } $$
+
+and the distance between two features $h$ and $g$ is:
+
+$$ \mbox{dist}(h,g) = \sqrt{ \sum_{i=1}^{189} (Y_{h,i}-Y_{g,i})^2 } $$
+
+## Matrix algebra notation
+
+The distance between samples $i$ and $j$ can be written as:
+
+$$ \mbox{dist}(i,j) = \sqrt{ (\mathbf{Y}_i - \mathbf{Y}_j)^\top(\mathbf{Y}_i - \mathbf{Y}_j) }$$
+
+with $\mathbf{Y}_i$ and $\mathbf{Y}_j$ columns $i$ and $j$. 
+
+## Matrix algebra notation
+
+```{r}
+t(matrix(1:3, ncol=1))
+matrix(1:3, ncol=1)
+t(matrix(1:3, ncol=1)) %*% matrix(1:3, ncol=1)
+```
+
+Note: R is very efficient at matrix algebra
+
+## 3 sample example
+
+```{r}
+kidney1 <- e[, 1]
+kidney2 <- e[, 2]
+colon1 <- e[, 87]
+sqrt(sum((kidney1 - kidney2)^2))
+sqrt(sum((kidney1 - colon1)^2))
+```
+
+## 3 sample example using dist()
+
+```{r}
+dim(e)
+(d <- dist(t(e[, c(1, 2, 87)])))
+class(d)
+```
+
+## The dist() function
+
+Excerpt from ?dist:
+
+```{r, eval=FALSE}
+dist(x, method = "euclidean", diag = FALSE, upper = FALSE, p = 2)
+```
+
+- **method:** the distance measure to be used. 
+    - This must be one of "euclidean", "maximum", "manhattan", "canberra", "binary" or "minkowski". Any unambiguous substring can be given.
+- `dist` class output from `dist()` is used for many clustering algorithms and heatmap functions
+
+*Caution*: `dist(e)` creates a `r nrow(e)` x `r nrow(e)` matrix that will probably crash your R session.
+
+## Note on standardization
+
+- In practice, features (e.g. genes) are typically "standardized", *i.e.* converted to z-score:
+
+$$x_{gi} \leftarrow \frac{(x_{gi} - \bar{x}_g)}{s_g}$$
+
+- This is done because the differences in overall levels between features are often not due to biological effects but technical ones, *e.g.*:
+    - GC bias, PCR amplification efficiency, ...
+- Euclidian distance and $1-r$ (Pearson cor) are related:
+    - $\frac{d_E(x, y)^2}{2m} = 1 - r_{xy}$
+
+
+## Links
+
+- A built [html][] version of my full Chapter 8 lecture is available.
+- The [source][] R Markdown is also available from Github.
+- Source for this file is also availble from the [Book Club Github]
+    - See folder: Data Analysis for the Life Sciences/Chapter 08 - Distance and Dimension Reduction/
+
+[html]: http://rpubs.com/lwaldron/TrentoSession5Lecture
+[source]: https://github.com/lwaldron/AppStatTrento
+[Book Club Github]: https://github.com/jsrodriguezl/Book_Club
