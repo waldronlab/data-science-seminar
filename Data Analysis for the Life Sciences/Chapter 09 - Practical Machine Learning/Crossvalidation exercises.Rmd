@@ -34,15 +34,32 @@ X <- X[, -out]
     Question: What is the 2nd entry in the fold 3?
     
     ```{r}
-    
+    library(caret)
+    set.seed(1)
+    folds <- createFolds(y, k = 10)
+    folds$Fold03[2]
     ```
     
-2. We are going to use kNN. We are going to consider a smaller set of predictors by using filtering genes using t-tests. Specifically, we will perform a t-test and select the mm genes with the smallest p-values.
+2. We are going to use kNN. We are going to consider a smaller set of predictors by using filtering genes using t-tests. Specifically, we will perform a t-test and select the m genes with the smallest p-values.
     
     Let `m = 8` and `k = 5` and train kNN by leaving out the second fold `idx[[2]]`. How many mistakes do we make on the test set? Remember it is indispensable that you perform the t-test on the training data.
     
     ```{r}
+    set.seed(1)
     
+    sapply(list, function)
+    
+ks <- 1:12
+res <- sapply(ks, function(k) {
+    res.k <- sapply(seq_along(idx), function(i) {
+        pred <- knn(train = Xsmall[-idx[[i]], ],
+                    test = Xsmall[idx[[i]], ],
+                    cl = y[-idx[[i]]], k = k)
+        mean(y[idx[[i]]] != pred)
+    })
+    mean(res.k)
+})
+    ?knn()
     ```
     
 3. Now run through all 5 folds. What is our error rate?

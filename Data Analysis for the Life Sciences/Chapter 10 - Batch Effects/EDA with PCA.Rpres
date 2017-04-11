@@ -7,9 +7,50 @@ Data Analysis for the Life Sciences
 
 Topics
 ========================================================
+incremental: true
 - Introduction
--
--
--
--
+- EDA Reminder
+- PCA Reminder
+- MDS Reminder
+- Applications
 - Exercises
+
+Introduction
+========================================================
+incremental: true
+- What are batch effects?
+- Why do they matter?
+- How do you find them?
+- How to adjust for them?
+
+EDA Reminder
+========================================================
+incremental: true
+- What's EDA?
+- It is Exploratory Data Analysis!
+- Systematic check of data prior to analysis
+- Validates or disproves assumptions about data
+- Allows for correction in analysis
+
+PCA Reminder
+========================================================
+incremental: true
+- What's PCA?
+- It is Principle Components Analysis!
+- Seeks to understand and encapsulate variance
+
+MDS Reminder
+========================================================
+incremental: true
+- What's MDS?
+- It is Multi Demensional Scaling!
+
+Applications
+========================================================
+incremental: true
+- EDA with PCA is highly useful in omics
+- Allows for screening of batch effects
+
+Exercises
+========================================================
+#### The Exercises <- http://rpubs.com/schifferl/edapcae
