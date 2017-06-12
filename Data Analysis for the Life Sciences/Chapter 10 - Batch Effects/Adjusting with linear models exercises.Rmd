@@ -1,0 +1,18 @@
+---
+title: "Adjusting for Batch Effects with Linear Models Exercises"
+author: "Lucas Schiffer"
+date: "April 11, 2016"
+output: html_document
+css: style.css
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(fig.align = "center")
+knitr::opts_chunk$set(tidy = TRUE)
+knitr::opts_chunk$set(results = "hold")
+knitr::opts_chunk$set(warning = FALSE)
+```
+
+## Exercises
+
