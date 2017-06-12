@@ -1,7 +1,7 @@
 ---
 title: "Adjusting for Batch Effects with Linear Models Exercises"
 author: "Lucas Schiffer"
-date: "April 11, 2016"
+date: "June 13, 2016"
 output: html_document
 css: style.css
 ---
