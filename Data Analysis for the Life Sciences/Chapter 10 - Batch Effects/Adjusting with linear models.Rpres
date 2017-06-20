@@ -1,0 +1,58 @@
+Adjusting for Batch Effects with Linear Models
+========================================================
+author: Lucas Schiffer
+date: June 13, 2017
+autosize: true
+Data Analysis for the Life Sciences
+
+Topics
+========================================================
+incremental: true
+- Introduction
+- P-Value Histograms / Volcano Plots
+- Mathematical Formula
+- Applied Example
+- Exercises
+
+Introduction
+========================================================
+incremental: true
+- What are batch effects?
+- Why adjust for them?
+- How to find them?
+- A real world example!
+
+P-Value Histograms / Volcano Plots
+========================================================
+incremental: true
+<br><br><br>
+<p style="text-align: center">
+<img src="https://genomicsclass.github.io/book/pages/figure/adjusting_with_linear_models-pvalue_hist_and_volcano_plots-1.png">
+</p>
+
+P-Value Histograms / Volcano Plots
+========================================================
+incremental: true
+<br><br><br>
+<p style="text-align: center">
+<img src="https://genomicsclass.github.io/book/pages/figure/adjusting_with_linear_models-pvalue_hist_and_volcano_plots2-1.png">
+</p>
+
+Mathematical Formula
+========================================================
+incremental: true
+<br><br><br><br>
+$$Y_{ij} = \alpha_j + x_i \beta_{j} + \varepsilon_{ij}$$
+<br><br><br><br>
+$$Y_{ij} = \alpha_j + x_i \beta_{j} + z_i \gamma_j+\varepsilon_{ij}$$
+
+Applied Example
+========================================================
+incremental: true
+![](Clostridiales_Stratified.png)
+***
+![](Clostridiales_Pooled.png)
+
+Exercises
+========================================================
+The exercises <- http://rpubs.com/schifferl/abelme
