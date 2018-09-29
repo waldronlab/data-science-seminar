@@ -39,28 +39,27 @@ or there is a video
 emails by visiting
 https://groups.google.com/forum/#!forum/stat_learning.
 
-## Schedule
-
 View the presentation schedule, and reserve a presentation spot for
-yourself, on the [presentation schedule
-wiki](https://github.com/waldronlab/data-science-seminar/wiki).
+yourself, on the 
 
 ## Presenting
 
-1. Pick the date or topic that best suits you.
+1. Pick the date or topic that best suits you and reserve it on the
+[presentation schedule
+wiki](https://github.com/waldronlab/data-science-seminar/wiki), adding
+your GitHub username to the schedule table.
 
-2. Edit this file, adding you GitHub username to the schedule table.
+2. Read the required section of the book, and do the associated
+exercises that you will present.
 
-3. Read the chapter in the book.
-
-4. Edit the presentation file using RStudio. All presentations should
+3. Edit the presentation file using RStudio. All presentations should
 be authored using the `.Rpres` format, more infomation about the
 format is available
 [here](https://support.rstudio.com/hc/en-us/articles/200486468). Additionally,
 some previous presentation that can be used as examples are available
 [here](https://github.com/waldronlab/Book_Club/tree/master/Data%20Analysis%20for%20the%20Life%20Sciences).
 
-5. Commit the presentation to GitHub from RStudio so that it is
+4. Commit the presentation to GitHub from RStudio so that it is
 available to others. Don't know what that means? The process is
 documented
 [here](https://support.rstudio.com/hc/en-us/articles/200532077-Version-Control-with-Git-and-SVN)
