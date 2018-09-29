@@ -25,3 +25,6 @@
 *_cache
 *.dcf
 unnamed-*.png
+
+# PDF (textbooks)
+dataanalysisforthelifesciences.pdf

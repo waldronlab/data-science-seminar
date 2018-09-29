@@ -1,0 +1,166 @@
+```{r, include=FALSE}
+# BiocInstaller::biocLite("genomicsclass/GSE5859")
+library(RColorBrewer)
+library(rafalib)
+library(Biobase)
+library(GSE5859)
+```
+
+Factor Analysis
+========================================================
+author: Marcel Ramos
+date: 2017-04-24
+autosize: true
+Data Analysis for the Life Sciences
+
+Overview
+========================================================
+- Factor Analysis
+- with PCA
+- in general
+
+Origins
+========================================================
+- Karl Pearson
+- Correlation noted between different subjects when computed across students
+- one factor common subjects for each student explained the correl:
+
+$$
+Y_ij = \alpha_i W_1 + \varepsilon_{ij}
+$$
+
+where $Y_ij$ represents the grade for individual $i$ on subject $j$ and $\alpha_i$ representing the ability of student $i$ to obtain good grades
+
+With Batch Effects
+========================================================
+In this example, $W_1$ is a constant. Here is an example that can represent batch effects. We generate a random $N \times 6$ matrix $\mathbf{Y}$ with representing grades in six different subjects for N different children. We generate the data in a way that subjects are correlated with some more than others:
+
+```{r,echo=TRUE}
+library(MASS)
+library(rafalib)
+n <- 250
+p <- 6
+set.seed(1)
+g <- mvrnorm(n = n, mu = c(0,0), Sigma = matrix(c(1,0.5,0.5,1),2,2))
+Ystem <- g[,1] + matrix(rnorm(n*p/2,0,0.65),n,p/2)
+Yhum <- g[,2] + matrix(rnorm(n*p/2,0,0.65),n,p/2)
+Y <- cbind(Ystem,Yhum)
+colnames(Y) <- c("Math","Science","CS","Eng","Hist","Classics")
+head(Y, 5)
+```
+
+Sample Correlations
+========================================================
+- High correls across six subjects
+
+```{r}
+round(cor(Y), 2)
+```
+
+Graphical Look
+========================================================
+
+## RStudio Session
+```{r, eval = FALSE}
+mypar(1,2)
+cols=colorRampPalette(rev(brewer.pal(11,"RdBu")))(100)
+eps = matrix(rnorm(n*p),n,p)
+par(mar = c(8.1, 8.1, 3.5, 2.1))
+
+image(1:ncol(Y),1:ncol(Y),cor(Y)[,6:1],xaxt="n",yaxt="n",col=cols,xlab="",ylab="",zlim=c(-1,1),main="Actual Data")
+axis(1,1:ncol(Y),colnames(Y),las=2)
+axis(2,1:ncol(Y),rev(colnames(Y)),las=2)
+
+image(1:ncol(Y),1:ncol(Y),cor(eps)[,6:1],xaxt="n",yaxt="n",col=cols,xlab="",ylab="",zlim=c(-1,1),main="Independent Data")
+axis(1,1:ncol(Y),colnames(Y),las=2)
+axis(2,1:ncol(Y),rev(colnames(Y)),las=2)
+```
+
+
+Graphical Look (cont.)
+========================================================
+
+- Groupings into STEM and Humanities
+- Figure shows correlations across all subjects
+- Underlying hidden factor (e.g., academic ability)
+- Students that test high in one subj. test high in others
+- Higher in STEM than HUM
+
+Factor Model
+========================================================
+
+- Based on plot, we hypothesize that there are 2 hidden factors $\mathbf{W}_1$ and $\mathbf{W}_2$
+- These account for observed correl structure
+
+$$
+Y_{ij} = \alpha_{i,1} W_{1,j} + \alpha_{i,2} W_{2,j} + \varepsilon_{ij}
+$$
+
+Interpretation:
+
+$\alpha_{i,1}$ is the overall academic ability for student $i$ and $\alpha_{i,2}$ is the difference in ability between the STEM and HUM for student $i$. We can now estimate $W$ and $\alpha$
+
+Factor Analysis and PCA
+========================================================
+It turns out that under certain assumptions, the first two principal components are optimal estimates for $W_1$ and $W_2$.
+So we can estimate them like this:
+
+```{r}
+s <- svd(Y)
+What <- t(s$v[,1:2])
+colnames(What)<-colnames(Y)
+round(What,2)
+```
+
+As expected, the first factor is close to a constant and will help explain the observed correlation across all subjects, while the second is a factor differs between STEM and humanities. We can now use these estimates in the model:
+
+$$
+Y_{ij} = \alpha_{i,1} \hat{W}_{1,j} + \alpha_{i,2} \hat{W}_{2,j} + \varepsilon_{ij}
+$$
+
+Fit the model, large percent of the variability is explained
+
+```{r}
+fit = s$u[,1:2] %*% (s$d[1:2] * What)
+var(as.vector(fit))/var(as.vector(Y))
+```
+
+Important Notes
+========================================================
+
+- Correlated units, standard linear models not appropriate
+- We can account for the observed structure with factor analysis
+
+Factor Analysis in General
+========================================================
+
+- Common in high-throughput data
+- See correlations for a gene expression experiment with columns ordered by date
+
+```{r, eval = FALSE}
+data(GSE5859)
+n <- nrow(pData(e))
+o <- order(pData(e)$date)
+Y=exprs(e)[,o]
+cors=cor(Y-rowMeans(Y))
+cols=colorRampPalette(rev(brewer.pal(11,"RdBu")))(100)
+
+mypar()
+image(1:n,1:n,cors,col=cols,xlab="samples",ylab="samples",zlim=c(-1,1))
+```
+
+## RStudio Session
+
+
+Factor Analysis in General (cont.)
+========================================================
+Two factors are not enough for the correlation structure. However, a more general factor model can be useful:
+
+$$
+Y_{ij} = \sum_{k=1}^K \alpha_{i,k} W_{j,k} + \varepsilon_{ij}
+$$
+
+And we can use PCA to estimate $\mathbf{W}_1,\dots,\mathbf{W}_K$. However, choosing $k$ is a challenge and a topic of current research.
+EDA (exploratory data analysis) may help, see next session.
+
+### END
