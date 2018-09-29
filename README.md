@@ -1,3 +1,11 @@
+## Table of Contents
+
+- [Current activities](#current-activities)
+- [About us](#about-us)
+- [Getting started](#getting-started)
+- [Presenting](#presenting)
+- [Past textbooks](#past-textbooks)
+
 ## Current activities
 
 During Oct 2018 - Jan 2019 we will be reading and doing exercises from
@@ -35,12 +43,13 @@ in RStudio is documented
 or there is a video
 [here](https://www.rstudio.com/resources/webinars/rstudio-essentials-webinar-series-managing-part-2/).
 
-3. Join our Google Group (open membership) and sign up to receive
+3. Leave a comment on the ["Welcome"
+issue](https://github.com/waldronlab/data-science-seminar/issues/1) to
+let us know your GitHub username.
+
+4. Join our Google Group (open membership) and sign up to receive
 emails by visiting
 https://groups.google.com/forum/#!forum/stat_learning.
-
-View the presentation schedule, and reserve a presentation spot for
-yourself, on the 
 
 ## Presenting
 
