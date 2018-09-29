@@ -1,0 +1,3 @@
+[submodule "Statistical-Rethinking"]
+	path = Statistical-Rethinking
+	url = git@github.com:waldronlab/Statistical-Rethinking.git
