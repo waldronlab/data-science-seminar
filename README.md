@@ -1,10 +1,18 @@
 ## Table of Contents
 
+- [Meeting details](#meeting-details)
 - [Current activities](#current-activities)
 - [About us](#about-us)
 - [Getting started](#getting-started)
 - [Presenting](#presenting)
 - [Past textbooks](#past-textbooks)
+
+## Meeting details
+
+* Wednesdays at 11:15am NYC time / 5:15pm Central European Time
+* Meetings are on Blackboard: https://tinyurl.com/datasciencebb
+* Anonymous dial-in phone access: 571-392-7650 PIN: 275 060 2621
+* Schedule: https://github.com/waldronlab/data-science-seminar/wiki
 
 ## Current activities
 
