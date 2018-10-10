@@ -1,0 +1,97 @@
+ISL_Chapter2.1
+========================================================
+author: Tobias Hilgart
+date: 
+autosize: true
+
+Introduction
+========================================================
+
+- Suppose we would want to know the relation between a car's speed and it's stopping distance.
+- By observing, we come to the conclusion, that there is an almost square relation between (weighted)speed and stopping distance.
+- What we did was estimating the stopping distance as a function of speed
+
+***
+```{r,echo=FALSE}
+plot(cars)
+lines(((1:25)/2.5)^2)
+```
+
+Introduction
+========================================================
+
+- More generally, suppose we observe a quantitive resonse $Y$ (e.g. stopping distance) and $p$ different predictors $X = (X_1,...,X_p)$ 
+- We assume that there is some relationship betwenn them, which can be written in the (very general form) $$Y = f(X) + \epsilon.$$
+- The problem is, that $f$ is some fixed but unknown function, $\epsilon$ is an error therm which is independant from $X$.
+- The goal of statistical learning lies in finding methods to estimate $f$ through $\hat{f}$
+
+Why estimate f?
+========================================================
+
+Prediction
+- If you can estimate $f$ through $\hat{f}$, you can predict $Y$ using
+ $$ \hat{Y} = \hat{f}(X) $$
+ 
+ ***
+ 
+Inference
+- On many occasions, the way that $Y$ is influenced (when $X$ changes) is of interest. So we want to know how $Y$ changes as a function $f$ of $X$. 
+
+Why estimate f?
+===
+Prediction
+- Accuracy of $\hat{Y}$ (as a prediction  for $Y$) depends on two quantities: Reducible and irreducible error.
+- Reducible error lessens by finding a better estimate $\hat{f}$, thus increasing the accuracy of $\hat{Y}$ as well.
+- Irreducible error $\epsilon$ occurs e.g. by unmeasured variables/variation
+
+***
+
+Inference
+- Which predictors are actually associated with the response?
+- What is the relationship between the response and each predictor?
+- Is the relationship linear or mor complex?
+
+How do we estimate f?
+===
+Assume we have observed $n$ data points $(x_{1,i},\dots,x_{p,i},y_i)$. We use this as training data for our model i.e. we want to find a function $\hat{f}$ where $$\hat(f)(x_{1,i},\dots,x_{p,i}) \approx y_i \; \forall i=1,\dots,n.$$
+Most statistical learning methods can broadly be categorized as either parametric or non-parametric.
+
+How do we estimate f? - Parametric Methods
+===
+- Make an assumption about the shape of the function $f$, e.g. that $f$ is linear in $X$ (i.e. $f(X)=\beta_0 + \beta_1 X_1 + \dots + \beta_p X_p$)
+- In case of linearity (linear model), finding $f$ is simplified to finding its $p+1$ coefficients.
+- Once the model is selected, use the training date to fit or train the model. (In case of linearity there is the least squares method as most common approach)
+
+How do we estimate f? - Non-Parametric Methods
+===
+- Non-parametric methods do not make any explicit assumptions about the form of $f$.
+- They could possibly fit a wider range of pontential shapes of $f$
+- They do need, however, a much larger number of observations than their parametric counterparts to accurately estimate $f$.
+
+Prediction Accuracy vs. Model Interpretability
+===
+- A more flexible model can possibly be more accurate and thus the better choice if prediction is the goal.
+- However, a linear model makes it much easier to understand the relation of $X$ and $Y$ and may be better fot inference.
+- A highly flexible/complicated model may result in overfitting (model works just for the training data), so even if prediction is the goal, a flexible model may not always be the way to go.
+
+Supervised vs. Unsupervised Learning
+===
+Supervised
+- Training data is labled i.e. for each set of predictors there is a response.
+- Examples: Support Vector Machines, Linear/Logistic Regression, Neuronal Networks (Multilayer perceptron)
+
+***
+
+Unsupervised
+- We observe vectors of measurement $X$, but no associated response.
+- Examples Clustering, Neuronal Networks (deep-learning, self-organizing map)
+
+Regression vs. Classification
+===
+Regression
+- quantitive response i.e. $Y$ takes on numerical values like age, stopping distance etc.
+- Example: Linear regression
+
+Classification
+- qualitative response i.e. $Y$ takes on values in one of $K$ different classes, like gender, field of study etc.
+- Example: Logistic regression (note the name!)
