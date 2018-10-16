@@ -1,0 +1,168 @@
+An Introduction to Statistical Learning
+========================================================
+autosize: false
+
+## Assessing Model Accuracy  
+
+  
+### Jan Geissbauer
+### October 17, 2018  
+
+
+Topics
+========================================================
+
+- Introduction
+- Measuring the Quality of Fit
+- The Bias-Variance Trade-Off
+- The Classification Setting
+
+
+Introduction
+========================================================
+
+"No free lunch in statistics"
+
+- No method dominates all others over all possible data sets
+- Important task: decide which method produces the best results
+- We discuss concepts for selecting a statistical learning procedure
+
+
+ Measuring the Quality of Fit
+========================================================
+  <ul style="list-style-type:disc; margin-bottom: 20px;">
+  <li>Performance of a statistical learning method</li>
+  <li>How close is the prediction to the observed data?</li>
+  ![](MSE.JPG)
+  <li>Training MSE works for training data</li>
+  <li>But we are interested in the accuracy of the predictions</li>
+</ul>
+
+
+========================================================
+What can we do?
+- If we have access to observations, not used for training:
+- calculate the MSE and select the learning method with smallest test MSE
+
+But what if no test observations are available?
+- Problem: training and test MSE can be quite different!
+
+Some practical solutions will be discussed throughout this book
+
+
+========================================================
+<img src="Best_fit_curve.JPG"; style="width:820px;height:560px;">
+
+
+<div style="margin-top:-50px;font-size:50%;">
+Source: G. James, D. Witten, T. Hastie and R. Tibshirani: <i>An Introduction
+to Statistical Learning</i> </div>
+
+
+The Bias-Variance Trade-Off
+========================================================
+Decomposition of the expected test MSE, for a given value: 
+- the variance
+- the squared bias
+- the variance of the error terms
+
+<img src="Decomp_VarBias.JPG";>
+
+
+==========================================================
+### Variance 
+<p>the amount by which our model would change by using different training data sets</p>
+<p>more flexible methods have higher variance</p>
+
+***
+### Bias
+<p>the amount indicating how well the model fits the training data</p><br>
+<p>more flexible methods result in less bias</p>
+
+
+==========================================================
+<img src="VarBias_curve.JPG"; style="width:420px;height:560px;">
+
+<div style="margin-top:-45px;font-size:50%;">
+Source: G. James, D. Witten, T. Hastie and R. Tibshirani: <i>An Introduction
+to Statistical Learning</i> </div>
+
+***
+<br>
+
+By increasing the flexibility:  
+
+Bias initially decreases faster than the variance increases   
+*expected test MSE declines*  
+
+At some point, small bias and significantly increasing variance
+*expected test MSE grows*
+
+Typical U-shaped MSE
+
+
+==========================================================
+<br>
+
+<br>
+
+In order to minimize the MSE we need **a method** that simultaneously 
+achieves **low variance** and **low bias**
+
+
+The Classification Setting
+==========================================================
+<br>
+### Training Error
+![](ErrorRate.JPG)
+
+### Test error
+![](ErrorRate_test.JPG)
+
+***
+<br>
+
+<br>
+
+<br>
+
+<br>
+
+A good classifier is one for which the test error is smallest!
+
+
+==========================================================
+### Bayes Classifier
+Minimizing the test error rate (on average):  
+
+Assigning observations to the most likely class   
+![](CondProb.JPG)
+
+Bayes error rate:  
+![](ErrorRate_Bayes.JPG)
+
+Bayes decision boundary: separates the classes  
+
+
+==========================================================
+### K-Nearest Neighbors (KNN)
+
+Actualy we do not know the conditional distribution of Y given X, therefore: <div style="font-weight:bold;">Bayes Classifier serves as unattainable gold standard</div>
+
+What can we do?
+Solution:
+- Given an positive integer K and a test observation x$_0$
+- KNN identifies the K points in the training data closest to x$_0$
+- it estimates the conditional probability for class j
+- then KNN classifies x$_0$ to the class with the largest probability
+
+Number of K corresponds with the flexibility of the classifier
+
+
+==========================================================
+<img src="KNN.JPG"; style="width:560px;height:800px;">
+
+<div style="margin-top:-45px;font-size:50%;">
+Source: G. James, D. Witten, T. Hastie and R. Tibshirani: <i>An Introduction
+to Statistical Learning</i> </div>
+
