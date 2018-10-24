@@ -1,0 +1,57 @@
+---
+title: "Exercises 3.1."
+output: ioslides_presentation
+---
+
+##Exercise 1
+This question involves the use of simple linear regression on the Auto data set.
+
+(a) Use the lm() function to perform a simple linear regression with
+mpg as the response and horsepower as the predictor. Use the
+summary() function to print the results. Comment on the output.
+
+For example:
+i. Is there a relationship between the predictor and the response?
+ii. How strong is the relationship between the predictor and
+the response?
+iii. Is the relationship between the predictor and the response
+positive or negative?
+iv. What is the predicted mpg associated with a horsepower of
+98? What are the associated 95% confidence and prediction
+intervals?
+
+(b) Plot the response and the predictor. Use the abline() function
+to display the least squares regression line.
+
+(c) Use the plot() function to produce diagnostic plots of the least
+squares regression fit. Comment on any problems you see with
+the fit.
+
+##Exercise 2
+In this exercise we will create some simulated data and will fit simple
+linear regression models to it. Make sure to use set.seed(1) prior to
+starting part (a) to ensure consistent results.
+
+(a) Using the rnorm() function, create a vector, x, containing 100
+observations drawn from a N(0,1) distribution. This represents
+a feature, X.
+
+(b) Using the rnorm() function, create a vector, eps, containing 100
+observations drawn from a N(0,0.25) distribution i.e. a normal
+distribution with mean zero and variance 0.25.
+
+(c) Using x and eps, generate a vector y according to the model
+Y = ???1 + 0.5X + \(\epsilon\)
+What is the length of the vector y? What are the values of ??0
+and ??1 in this linear model?
+
+(d) Create a scatterplot displaying the relationship between x and
+y. Comment on what you observe.
+
+(e) Fit a least squares linear model to predict y using x. Comment
+on the model obtained. How do \(\hat\beta_0\) and \(\hat\beta_1\) compare to ??0 and
+??1?
+
+(f) Display the least squares line on the scatterplot obtained in (d).
+Draw the population regression line on the plot, in a different
+color. Use the legend() command to create an appropriate legend.
