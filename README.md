@@ -13,6 +13,7 @@
 * Meetings are on Blackboard: https://tinyurl.com/datasciencebb
 * Anonymous dial-in phone access: 571-392-7650 PIN: 275 060 2621
 * Schedule: https://github.com/waldronlab/data-science-seminar/wiki
+* Email list: https://groups.google.com/forum/#!forum/stat_learning
 
 ## Current activities
 
