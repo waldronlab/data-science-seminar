@@ -9,7 +9,7 @@
 
 ## Meeting details
 
-* Wednesdays at 11:15am NYC time / 5:15pm Central European Time
+* Wednesdays at 11:00am NYC time / 5:00pm Central European Time
 * Meetings are on Blackboard: https://tinyurl.com/datasciencebb
 * Anonymous dial-in phone access: 571-392-7650 PIN: 275 060 2621
 * Schedule: https://github.com/waldronlab/data-science-seminar/wiki
