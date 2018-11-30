@@ -49,9 +49,7 @@ Example: Default data set
 - predict wheither an individual will default on his credit card payment (default)
 - based on annual income (income) and monthly credit card balance (balance)
 
-```{r echo=FALSE, out.width="50%", fig.cap="defaulted = orange, not defaulted = blue"}
-knitr::include_graphics("figure/dataset.png")
-```
+<img src="figure/dataset.png" title="defaulted = orange, not defaulted = blue" alt="defaulted = orange, not defaulted = blue" width="50%" />
 
 - 2 classes (defaulted): Yes = orange; No = blue
 
@@ -62,9 +60,7 @@ Logistic Regression
 - models the probability that $Y$ belongs to a class
 - conditional probability: $P(default = Yes | balance)$, denote as $P(X)$
 
-```{r echo=FALSE, out.width="50%", fig.cap="probability of default"}
-knitr::include_graphics("figure/probabilities.png")
-```
+<img src="figure/probabilities.png" title="probability of default" alt="probability of default" width="50%" />
 
 - left: linear regression; right: logistic regression
 - linear regression: negative probability for balance close to 0
@@ -110,9 +106,7 @@ $l(\beta_{0},\beta_{1}) = \prod_{i:y_{i}=1}p(x_{i}) \prod_{i:y_{i}=1}(1-p(x_{i})
 
 - maximize this likelihood function
 
-```{r echo=FALSE, out.width="50%", fig.cap="estimated coefficients"}
-knitr::include_graphics("figure/table.png")
-```
+<img src="figure/table.png" title="estimated coefficients" alt="estimated coefficients" width="50%" />
 
 - estimated coeff. predicting prob. of default using balance
 - H0: $\beta_{1} = 0$
@@ -129,9 +123,7 @@ Making Predictions
 
 $\hat{p}(X) = \dfrac{e^{\hat{\beta_{0}}+\hat{\beta_{1}X}}}{1+e^{\hat{\beta_{0}}+\hat{\beta_{1}X}}} = \dfrac{e{-10.06513+0.0055\times1000}}{1+e{-10.06513+0.0055\times1000}} = 0.00576$
 
-```{r echo=FALSE, out.width="50%", fig.cap="probability of default"}
-knitr::include_graphics("figure/probabilities.png")
-```
+<img src="figure/probabilities.png" title="probability of default" alt="probability of default" width="50%" />
 
 
 Multiple Logistic Regression
@@ -139,14 +131,10 @@ Multiple Logistic Regression
 
 - binary response with multiple predictors $(X_{1},...,X_{p})$
 $\hat{p}(X) = \dfrac{e^{\hat{\beta_{0}}+\hat{\beta_{1}X_{1}+...+\beta_{p}X_{p}}}}{1+e^{\hat{\beta_{0}}+\hat{\beta_{1}X_{1}+...+\beta_{p}X_{p}}}}$
-```{r echo=FALSE, out.width="45%", fig.cap="estimated coefficients multiple"}
-knitr::include_graphics("figure/table2.png")
-```
+<img src="figure/table2.png" title="estimated coefficients multiple" alt="estimated coefficients multiple" width="45%" />
 - students: dummy variable (Yes = 1, No = 0)
 
-```{r echo=FALSE, out.width="45%", fig.cap="students analysis"}
-knitr::include_graphics("figure/analysis.png")
-```
+<img src="figure/analysis.png" title="students analysis" alt="students analysis" width="45%" />
 
 
 Logistic Regression for > 2 Classes
