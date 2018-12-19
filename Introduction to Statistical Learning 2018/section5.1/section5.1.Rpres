@@ -1,28 +1,153 @@
-Untitled
+```{r setup, echo=FALSE}
+opts_chunk$set(root.dir = paste0(getwd(),"/Introduction to Statistical Learning 2018/section5.1"))
+```
+
+Chapter 5.1 - Resampling Methods / CrossValidation
 ========================================================
-author: 
-date: 
+author: Roland
+date: 129.12.2018
 autosize: true
 
-First Slide
+Some of the figures in this presentation are taken from "An Introduction to Statistical Learning, with applications in R"  (Springer, 2013) with permission from the authors: G. James, D. Witten,  T. Hastie and R. Tibshirani. 
+
+Cross Validation
 ========================================================
 
-For more details on authoring R presentations please visit <https://support.rstudio.com/hc/en-us/articles/200486468>.
+- Validation Set Approach
+- Leave One Out Cross Validation
+- k-Fold Cross-Validation
+- Bias Variance Trade Off
+- Classification Problems
 
-- Bullet 1
-- Bullet 2
-- Bullet 3
 
-Slide With Code
+Cross-Validation: the Validation Set Approach
 ========================================================
 
-```{r}
-summary(cars)
+```{r  out.width = "100%", echo=FALSE}
+include_graphics("Fig5_1.jpg") 
 ```
 
-Slide With Plot
+Cross-Validation: the Validation Set Approach
 ========================================================
 
-```{r, echo=FALSE}
-plot(cars)
+```{r  out.width =  "70%", echo=FALSE}
+library(ISLR)
+plot(Auto$mpg~Auto$horsepower)
+
 ```
+
+
+Cross-Validation: the Validation Set Approach
+========================================================
+
+```{r  out.width =  "100%", echo=FALSE}
+include_graphics("Fig5_2.jpg") 
+```
+
+Cross-Validation: Leave One Out Cross Validation (LOOCV)
+========================================================
+
+```{r  out.width =  "100%", echo=FALSE}
+include_graphics("Fig5_3.jpg") 
+```
+
+Cross-Validation: Leave One Out Cross Validation (LOOCV)
+========================================================
+
+```{r  out.width = "100%", echo=FALSE}
+include_graphics("Eq5_1.jpg") 
+```
+
+Cross-Validation: Leave One Out Cross Validation (LOOCV)
+========================================================
+
+```{r  out.width =  "100%", echo=FALSE}
+include_graphics("Fig5_4.jpg") 
+```
+
+Cross-Validation: Leave One Out Cross Validation (LOOCV)
+========================================================
+
+```{r  out.width = "100%", echo=FALSE}
+include_graphics("Eq5_2.jpg") 
+```
+
+Cross-Validation: k-Fold Cross-Validation
+========================================================
+
+```{r  out.width =  "100%", echo=FALSE}
+include_graphics("Fig5_5.jpg") 
+```
+
+Cross-Validation: k-Fold Cross-Validation
+========================================================
+
+```{r  out.width = "100%", echo=FALSE}
+include_graphics("Eq5_3.jpg") 
+```
+
+Cross-Validation: k-Fold Cross-Validation
+========================================================
+
+```{r  out.width =  "100%", echo=FALSE}
+include_graphics("Fig5_6.jpg") 
+```
+
+Cross-Validation: k-Fold Cross-Validation
+========================================================
+
+```{r  out.width =  "100%", echo=FALSE}
+include_graphics("Fig2_9.jpg") 
+```
+
+Cross-Validation: k-Fold Cross-Validation
+========================================================
+
+```{r  out.width =  "100%", echo=FALSE}
+include_graphics("Fig2_10.jpg") 
+```
+
+Cross-Validation: k-Fold Cross-Validation
+========================================================
+
+```{r  out.width =  "100%", echo=FALSE}
+include_graphics("Fig2_11.jpg") 
+```
+
+
+Cross-Validation: k-Fold Cross-Validation
+========================================================
+
+```{r  out.width =  "100%", echo=FALSE}
+include_graphics("Fig5_6.jpg") 
+```
+
+
+Cross-Validation: on classification problems
+========================================================
+
+```{r  out.width =  "100%", echo=FALSE}
+include_graphics("Eq5_4.jpg") 
+```
+```{r  out.width =  "100%", echo=FALSE}
+include_graphics("Eq5_5.jpg") 
+```
+
+
+Cross-Validation: on classification problems
+========================================================
+
+```{r  out.width =  "60%", echo=FALSE}
+include_graphics("Fig5_7.jpg") 
+```
+
+Cross-Validation: on classification problems
+========================================================
+
+```{r  out.width =  "100%", echo=FALSE}
+include_graphics("Fig5_8.jpg") 
+```
+
+Cross-Validation: EXERCISE
+========================================================
+page 200/201 - Example (8) 
