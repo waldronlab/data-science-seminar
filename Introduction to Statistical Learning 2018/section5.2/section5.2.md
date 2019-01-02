@@ -43,9 +43,7 @@ Example (cont.)
 ========================================================
 We can simulate 100 pairs of returns on our investments in X and Y. Using these returns, we can estimate $\sigma^2_X$, $\sigma^2_Y$, and $\sigma_{XY}$.
 
-```{r echo=FALSE, out.width="45%", fig.cap="100 simulations"}
-knitr::include_graphics("figures/figure5.9.png")
-```
+<img src="figures/figure5.9.png" title="100 simulations" alt="100 simulations" width="45%" />
 
 Plugging these into this equation we can estimate $\alpha$.
 
@@ -60,9 +58,7 @@ $\sqrt{\frac{1}{1,000}\sum_{r=1}^{1,000}(\hat{\alpha}_r-\bar{\alpha})^2} = 0.083
 Example (cont.)
 ========================================================
 - A histogram of the 1,000 simulations with the true value of $\alpha$ shown as a red line:
-```{r echo=FALSE, fig.pos = 'H', fig.cap="Histogram of 1,000 simulations"}
-knitr::include_graphics("figures/figure5.10a.png")
-```
+![Histogram of 1,000 simulations](figures/figure5.10a.png)
 - However, this simulation was done by generating new samples from a set population
 - We can't do this in reality
 - Instead we can use the bootstrap approach to emulate this process
@@ -79,19 +75,16 @@ $SE_B(\hat{\alpha}) = \sqrt{\frac{1}{B - 1}\sum_{r=1}^B(\hat{\alpha}^{*r}-\frac{
 Bootstrap Process
 ========================================================
 - Illustration of the bootstrap approach:
-```{r echo=FALSE, fig.cap="Histogram of 1,000 simulations"}
-knitr::include_graphics("figures/figure5.11.png")
-```
+![Histogram of 1,000 simulations](figures/figure5.11.png)
 
 Assessing how well bootstrap works
 ========================================================
-```{r echo=FALSE, fig.cap="Figure 5.10"}
-knitr::include_graphics("figures/figure5.10.png")
-```
+![Figure 5.10](figures/figure5.10.png)
 
 Example in R
 ========================================================
-```{r}
+
+```r
 library(ISLR)
 library(boot)
 set.seed(1)
@@ -102,59 +95,142 @@ alpha.fn=function (data ,index){
   }
 alpha.fn(Portfolio ,1:100)
 ```
+
+```
+[1] 0.5758321
+```
 Example in R: 1 Bootstrap Dataset
 ========================================================
 We can take a sample (with replacement) equal to the sample size. This is the equivalent  of creating 1 bootstrap dataset:
-```{r}
+
+```r
 alpha.fn(Portfolio, sample(100, 100, replace=T))
+```
+
+```
+[1] 0.5963833
 ```
 
 Example in R: Bootstrap
 ========================================================
 Now we can use the $boot$ function to generate an estimate of $\alpha$ using 1,000 bootstrap datasets:
-```{r}
+
+```r
 boot(Portfolio, alpha.fn, R=1000)
+```
+
+```
+
+ORDINARY NONPARAMETRIC BOOTSTRAP
+
+
+Call:
+boot(data = Portfolio, statistic = alpha.fn, R = 1000)
+
+
+Bootstrap Statistics :
+     original        bias    std. error
+t1* 0.5758321 -7.315422e-05  0.08861826
 ```
 
 Example 2 in R
 ========================================================
 
-```{r}
+
+```r
 boot.fn=function (data ,index) + 
   return(coef(lm(mpg∼horsepower ,data=data , subset=index)))
 boot.fn(Auto ,1:392)
 ```
 
+```
+(Intercept)  horsepower 
+ 39.9358610  -0.1578447 
+```
 
-```{r}
+
+
+```r
 boot.fn(Auto, sample (392,392, replace=T))
+```
+
+```
+(Intercept)  horsepower 
+ 39.4404609  -0.1536114 
 ```
 Bootstrap Example
 ========================================================
-```{r, size="footnotesize"}
+
+```r
 boot(Auto ,boot.fn ,1000)
+```
+
+```
+
+ORDINARY NONPARAMETRIC BOOTSTRAP
+
+
+Call:
+boot(data = Auto, statistic = boot.fn, R = 1000)
+
+
+Bootstrap Statistics :
+      original        bias    std. error
+t1* 39.9358610  0.0141555746 0.870373847
+t2* -0.1578447 -0.0002819024 0.007533264
 ```
 
 Bootstrap Example
 ========================================================
 Compare our bootstrap estimates ($SE_{int}=0.862$, $SE_{hp}=0.007$) to linear model results:
-```{r, size="footnotesize"}
+
+```r
 summary(lm(mpg∼horsepower ,data=Auto))$coef
 ```
 
-Bootstrap Example Take 2
-========================================================
-
-```{r}
-boot.fn=function(data ,index) + coefficients(lm(mpg∼horsepower +I(horsepower ^2),data=data , subset=index))
-boot(Auto ,boot.fn ,1000)
-
+```
+              Estimate  Std. Error   t value      Pr(>|t|)
+(Intercept) 39.9358610 0.717498656  55.65984 1.220362e-187
+horsepower  -0.1578447 0.006445501 -24.48914  7.031989e-81
 ```
 
 Bootstrap Example Take 2
 ========================================================
-```{R}
+
+
+```r
+boot.fn=function(data ,index) + coefficients(lm(mpg∼horsepower +I(horsepower ^2),data=data , subset=index))
+boot(Auto ,boot.fn ,1000)
+```
+
+```
+
+ORDINARY NONPARAMETRIC BOOTSTRAP
+
+
+Call:
+boot(data = Auto, statistic = boot.fn, R = 1000)
+
+
+Bootstrap Statistics :
+        original        bias     std. error
+t1* 56.900099702 -3.078932e-02 2.1193694668
+t2* -0.466189630  5.358284e-04 0.0339989578
+t3*  0.001230536 -1.791806e-06 0.0001233926
+```
+
+Bootstrap Example Take 2
+========================================================
+
+```r
 summary(lm(mpg∼horsepower +I(horsepower ^2),data=Auto))$coef
+```
+
+```
+                    Estimate   Std. Error   t value      Pr(>|t|)
+(Intercept)     56.900099702 1.8004268063  31.60367 1.740911e-109
+horsepower      -0.466189630 0.0311246171 -14.97816  2.289429e-40
+I(horsepower^2)  0.001230536 0.0001220759  10.08009  2.196340e-21
 ```
 Compare to bootstrap estimates: $SE_{int}=2.088$, $SE_{hp}=0.033$, $SE_{hp^2}=0.0001$
 
