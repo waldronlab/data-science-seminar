@@ -77,9 +77,7 @@ Linear Discriminant Analysis for p = 1
 Example
 
 
-```{r echo=FALSE, out.width="100%"}
-knitr::include_graphics("figure/Bild1-1.png")
-```
+<img src="figure/Bild1-1.png" title="plot of chunk unnamed-chunk-1" alt="plot of chunk unnamed-chunk-1" width="100%" />
 
 Linear Discriminant Analysis for p > 1
 ========================================================
@@ -98,18 +96,14 @@ Linear Discriminant Analysis for p > 1
 
 Example: Performance of LDA on the default data set, using a threshold of 50%
 
-```{r echo=FALSE, out.width="100%"}
-knitr::include_graphics("figure/Bild2-1.png")
-```
+<img src="figure/Bild2-1.png" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" width="100%" />
 
 Linear Discriminant Analysis for p > 1
 ========================================================
 
 Example: Performance of LDA on the default data set, using a threshold of 20%
 
-```{r echo=FALSE, out.width="100%"}
-knitr::include_graphics("figure/Bild3-1.png")
-```
+<img src="figure/Bild3-1.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" width="100%" />
 
 
 Quadratic Discriminant Analysis
@@ -129,9 +123,7 @@ is largest
 Quadratic Discriminant Analysis
 ========================================================
 
-```{r echo=FALSE, out.width="100%"}
-knitr::include_graphics("figure/Bild4-1.png")
-```
+<img src="figure/Bild4-1.png" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" width="100%" />
 
 
 Exercises
