@@ -19,7 +19,7 @@
 ## Current activities
 
 During March 13 - July 3 2019 we will be reading and doing exercises from
-[Modern Statistics for Modern Biology](http://web.stanford.edu/class/bios221/book/)) by Susan Holmes and Wolfgang Huber. See the [schedule
+[Modern Statistics for Modern Biology](http://web.stanford.edu/class/bios221/book/) by Susan Holmes and Wolfgang Huber. See the [schedule
 wiki](https://github.com/waldronlab/data-science-seminar/wiki).
 
 ## About us
