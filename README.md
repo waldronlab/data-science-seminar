@@ -9,7 +9,7 @@
 
 ## Meeting details
 
-* Wednesdays at 11:00am NYC time / 5:00pm Central European Time
+* Wednesdays at 5:00pm Central European Time (noon NYC time in March, 11am April onwards)
 * Meetings are on Blackboard: https://tinyurl.com/datasciencebb
 * Anonymous dial-in phone access: 571-392-7650 PIN: 275 060 2621
 * Schedule: https://github.com/waldronlab/data-science-seminar/wiki
@@ -18,7 +18,7 @@
 
 ## Current activities
 
-During March 13 - June 2019 we will be reading and doing exercises from
+During March 13 - July 3 2019 we will be reading and doing exercises from
 [Modern Statistics for Modern Biology](http://web.stanford.edu/class/bios221/book/)) by Susan Holmes and Wolfgang Huber. See the [schedule
 wiki](https://github.com/waldronlab/data-science-seminar/wiki).
 
