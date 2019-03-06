@@ -14,6 +14,9 @@
 * Anonymous dial-in phone access: 571-392-7650 PIN: 275 060 2621
 * Schedule: https://github.com/waldronlab/data-science-seminar/wiki
 * Email list: https://groups.google.com/forum/#!forum/stat_learning
+* Calendar [ical] [http]
+
+[ical]: https://calendar.google.com/calendar/ical/094jn99q1meuq01gmtn7ipo0ts%40group.calendar.google.com/public/basic.ics [http]: https://calendar.google.com/calendar/embed?src=094jn99q1meuq01gmtn7ipo0ts%40group.calendar.google.com&ctz=America%2FNew_York
 
 ## Current activities
 
