@@ -9,16 +9,17 @@
 
 ## Meeting details
 
-* Wednesdays at 11:00am NYC time / 5:00pm Central European Time
+* Wednesdays at 5:00pm Central European Time (noon NYC time in March, 11am April onwards)
 * Meetings are on Blackboard: https://tinyurl.com/datasciencebb
 * Anonymous dial-in phone access: 571-392-7650 PIN: 275 060 2621
 * Schedule: https://github.com/waldronlab/data-science-seminar/wiki
 * Email list: https://groups.google.com/forum/#!forum/stat_learning
+* Calendar [ical](https://calendar.google.com/calendar/ical/094jn99q1meuq01gmtn7ipo0ts%40group.calendar.google.com/public/basic.ics) [http](https://calendar.google.com/calendar/embed?src=094jn99q1meuq01gmtn7ipo0ts%40group.calendar.google.com&ctz=America%2FNew_York)
 
 ## Current activities
 
-During March 13 - June 2019 we will be reading and doing exercises from
-[Modern Statistics for Modern Biology](https://web.stanford.edu/class/bios221/book/) by Susan Holmes and Wolfgang Huber. See the [schedule
+During March 13 - July 3 2019 we will be reading and doing exercises from
+[Modern Statistics for Modern Biology](http://web.stanford.edu/class/bios221/book/) by Susan Holmes and Wolfgang Huber. See the [schedule
 wiki](https://github.com/waldronlab/data-science-seminar/wiki).
 
 ## About us
@@ -26,7 +27,7 @@ wiki](https://github.com/waldronlab/data-science-seminar/wiki).
 This repository represent the joint effort of [Paris Lodron University
 of Salzburg](https://www.uni-salzburg.at/index.php?id=52) and the
 [City University of New York Graduate School of Public Health and
-Health Policy](https://sph.cuny.edu/). During active semesters we hold
+Health Policy](http://sph.cuny.edu/). During active semesters we hold
 weekly meetings, where a chapter of a book is presented by a
 developing instructor with a focus on modern applied statistical
 methodology and using the R language. Our meetings are open to all
@@ -40,7 +41,7 @@ hope you find these materials useful and will join our sessions.
 these
 [instructions](https://www.ics.uci.edu/~jutts/110/InstallingRandRStudio.pdf). Here
 is a short video showing [how to use RStudio to contribute to this
-Github repo](https://youtu.be/uHYcDQDbMY8).
+Github repo](http://youtu.be/uHYcDQDbMY8).
 
 2. Sign up for a GitHub account (also free) and clone this repository
 (open membership) in RStudio. Don't know what that means? Follow this
@@ -86,7 +87,7 @@ or there is a video
 
 Past textbooks have included:
 
-* Data Analysis for the Life Sciences by Rafael A Irizarry and Michael I Love ([Print Version](https://leanpub.com/dataanalysisforthelifesciences/)) ([HTML Version](https://genomicsclass.github.io/book/))
+* Data Analysis for the Life Sciences by Rafael A Irizarry and Michael I Love ([Print Version](https://leanpub.com/dataanalysisforthelifesciences/)) ([HTML Version](http://genomicsclass.github.io/book/))
 * [An Introduction to Statistical Learning](https://www-bcf.usc.edu/~gareth/ISL/) by Gareth James, Daniela Witten, Trevor Hastie and Robert Tibshirani.
 * [Statistical Rethinking: A Bayesian Course with Examples in R and Stan](https://xcelab.net/rm/statistical-rethinking/) by Richard McElreath, with [supplement by Solomon Kurz](https://bookdown.org/connect/#/apps/1850/access) and [lectures by McElreath](https://www.youtube.com/channel/UCNJK6_DZvcMqNSzQdEkzvzA/playlists).
-* The Art of Data Science (on [Leanpub](https://leanpub.com/artofdatascience) or [Bookdown](https://bookdown.org/rdpeng/artofdatascience/)) by Roger D. Peng and Elizabeth Matsui.
+* The Art of Data Science (https://leanpub.com/artofdatascience or https://bookdown.org/rdpeng/artofdatascience/) by Roger D. Peng and Elizabeth Matsui.
