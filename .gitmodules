@@ -1,3 +1,6 @@
 [submodule "Statistical-Rethinking"]
 	path = Statistical-Rethinking
 	url = git@github.com:waldronlab/Statistical-Rethinking.git
+[submodule "The-Art-of-Data-Science"]
+	path = The-Art-of-Data-Science
+	url = https://github.com/waldronlab/The-Art-of-Data-Science

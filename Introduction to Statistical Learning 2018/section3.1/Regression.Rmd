@@ -1,0 +1,134 @@
+---
+title: "Simple Regression"
+name: Patrick Zivkovic
+output: ioslides_presentation
+---
+
+##Introduction
+
+- Linear regression is a tool for the prediction of quantitative responses
+
+- kind of simple compared to other statistical learning methods but still useful
+
+- Testbook states importance of linear regression as "a good jumping-off point"
+
+##Simple Linear Regression
+
+- prediction of quantitative response Y on basis of a single predictor X
+    
+- \(Y \approx \beta_0\) + \(\beta_1\)X
+
+- \(\beta_0\) and \(\beta_1\) : Model Coefficients
+    - \(\beta_0\): Intercept
+    - \(\beta_1\): Slope
+      
+##Simple Linear Regression
+
+- We can use our training data to produce estimates for \(\beta_0\) and \(\beta_1\) 
+  and then we can predict future outcomes Y using this equation: 
+    
+    \(\hat y  = \hat\beta_0 + \hat\beta_1x\)
+  
+##Example 
+
+```{r echo=FALSE, out.width="100%"}
+knitr::include_graphics("C:/Users/Patrick/Desktop/Rpres Regression/Bild6.png")
+```
+
+##Estimating Coefficients
+
+- We want to estimate the slope and intercept so that the resulting line fits our data in the best possible way:
+  
+- most common approach: least squares criterion
+  
+    \(e_i = y_i - \hat y_i\)
+    
+- Minimize 
+
+    \(RSS = e_1^2 + e_2^2 + ... + e_n^2\)
+
+##Residual Sum of Squares
+
+\(RSS = e_1^2 + e_2^2 + ... + e_n^2\)
+
+```{r echo=FALSE, out.width="100%"}
+knitr::include_graphics("C:/Users/Patrick/Desktop/Rpres Regression/Bild5.png")
+```
+
+##Accuracy of the Coefficient Estimates
+
+- the population regression line is the best approximation of the true relationship between X and Y given by
+  
+    \(Y = \beta_0\) + \(\beta_1\)X + \(\epsilon\)
+    
+- The true relationship is generally not known, so we use the least squares line
+
+- Analogy to the estimate of the mean \(\hat\mu = \bar y\)
+
+##Population regression line vs. Least squares line
+
+```{r echo=FALSE, out.width="100%"}
+knitr::include_graphics("C:/Users/Patrick/Desktop/Rpres Regression/Bild7.png")
+```
+
+##Standard Error and Confidence Interval
+
+- How accurate are \(\hat\beta_0\) and \(\hat\beta_1\) as estimates of the true parameters?
+
+- With \(\hat\mu\) we can compute the standard error \(SE(\hat\mu)\)
+
+    \(Var(\hat\mu\)) = \(SE(\hat\mu)^2\) = \(\frac {\sigma^2}{n}\)
+    
+- \(SE(\hat\beta_0)\) and \(SE(\hat\beta_1)\) can be calculated based on the same idea
+
+- Confidence interval: \(\hat\beta_1\) \(\pm\) \(2 \cdot SE(\hat\beta_1)\)
+
+##Hypothesis test
+
+- Standard Errors can also be used to perform hypothesis tests on the coefficients
+
+- \(H_0: \beta_1 = 0\) vs. \(H_1: \beta_1 \neq 0\)
+
+- t-statistic: \(t= \frac{\hat\beta_1\ -0}{SE(\hat\beta_1)}\)
+
+- p-value indicates how likely it is that the observed relationship between X and Y is provided only by chance (cut-off at 5%)
+
+##An Output
+
+```{r echo=FALSE, out.width="100%"}
+knitr::include_graphics("C:/Users/Patrick/Desktop/Rpres Regression/Bild8.png")
+```
+
+##Assessing the Accuracy of the Model
+
+- interested in the extent to which the model fits the data
+
+- the quality is assessed using two related quantities
+    - \(RSE\) (residual standard error)
+    - \(R^2\) Statistic
+    
+##RSE
+
+- The RSE is an estimate of the standard deviaton of \(\epsilon\)
+
+    \(RSE = \sqrt \frac {RSS}{n-2}\)
+    
+- absolute measure of lack of fit of the model to the data
+
+##\(R^2\) Statistic
+
+- measures in proportion of variance explained (between 0 and 1)
+
+    \(R^2 = \frac {TSS-RSS}{TSS}\)
+    
+- interpretational advantage over the RSE
+
+- also \(R^2\) = \(r^2\) in simple regression 
+
+##An Output
+
+```{r echo=FALSE, out.width="70%"}
+knitr::include_graphics("C:/Users/Patrick/Desktop/Rpres Regression/Bild9.png")
+```
+
+

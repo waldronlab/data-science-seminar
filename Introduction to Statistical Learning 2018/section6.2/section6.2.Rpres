@@ -1,0 +1,161 @@
+```{r setup, echo=FALSE}
+opts_chunk$set(root.dir = paste0(getwd(),"/Introduction to Statistical Learning 2018/section5.1"))
+```
+
+Chapter 6.2 - Linear Model Selection / Regularization
+========================================================
+author: Roland
+date: 16.01.2019
+autosize: true
+
+Some of the figures in this presentation are taken from "An Introduction to Statistical Learning, with applications in R"  (Springer, 2013) with permission from the authors: G. James, D. Witten,  T. Hastie and R. Tibshirani. 
+
+Linear Model Selection / Shrinkage Methods
+========================================================
+
+- Ridge Regression
+- Lasso
+
+Adding constraints to Least Square 
+========================================================
+
+```{r  out.width = "90%", echo=FALSE}
+include_graphics("Fig6_4.jpg") 
+```
+
+Another Formulation for Ridge Regression and the Lasso
+========================================================
+
+```{r  out.width = "100%", echo=FALSE}
+include_graphics("Eq6_5.jpg") 
+```
+
+
+
+Ridge Regression: shrinkage penalty
+========================================================
+
+```{r  out.width = "45%", echo=FALSE}
+include_graphics("Eq6_1.jpg") 
+```
+```{r  out.width = "75%", echo=FALSE}
+include_graphics("Eq6_2.jpg") 
+```
+```{r  out.width = "40%", echo=FALSE}
+include_graphics("Eq6_3.jpg") 
+```
+
+
+Ridge Regression: example credit data set
+========================================================
+
+```{r  out.width = "100%", echo=FALSE}
+include_graphics("Fig6_1.jpg") 
+```
+
+
+Ridge Regression: Why Does Ridge Regression Improve Over Least Squares
+========================================================
+
+```{r  out.width = "100%", echo=FALSE}
+include_graphics("Fig6_2.jpg") 
+```
+
+
+Lasso: shrinkage penalty
+========================================================
+
+```{r  out.width = "75%", echo=FALSE}
+include_graphics("Eq6_2.jpg") 
+```
+
+```{r  out.width =  "75%", echo=FALSE}
+include_graphics("Eq6_4.jpg") 
+```
+
+
+Lasso: example credit data set
+========================================================
+
+```{r  out.width =  "100%", echo=FALSE}
+include_graphics("Fig6_3.jpg") 
+```
+
+
+Lasso allows variable selection
+========================================================
+
+```{r  out.width = "90%", echo=FALSE}
+include_graphics("Fig6_4.jpg") 
+```
+
+
+
+
+Comparing the Lasso and Ridge Regression
+========================================================
+
+```{r  out.width =  "100%", echo=FALSE}
+include_graphics("Fig6_5.jpg") 
+```
+
+Comparing the Lasso and Ridge Regression
+========================================================
+
+```{r  out.width =  "100%", echo=FALSE}
+include_graphics("Fig6_6.jpg") 
+```
+
+
+A Simple Special Case for Ridge Regression and the Lasso
+========================================================
+
+```{r  out.width = "20%", echo=FALSE}
+include_graphics("Eq6_7.jpg") 
+```
+```{r  out.width = "30%", echo=FALSE}
+include_graphics("Eq6_6.jpg") 
+```
+
+```{r  out.width = "80%", echo=FALSE}
+include_graphics("Fig6_7.jpg") 
+```
+
+
+Bayesian Interpretation for Ridge Regression and the Lasso
+========================================================
+```{r  out.width =  "40%", echo=FALSE}
+include_graphics("Eq6_8.jpg")
+```
+
+```{r  out.width =  "15%", echo=FALSE}
+include_graphics("Eq6_9.jpg") 
+```
+
+
+```{r  out.width =  "100%", echo=FALSE}
+include_graphics("Fig6_9.jpg") 
+```
+
+Selecting the Tuning Parameter
+========================================================
+
+```{r  out.width = "100%", echo=FALSE}
+include_graphics("Fig6_8.jpg") 
+```
+
+Selecting the Tuning Parameter
+========================================================
+
+```{r  out.width = "100%", echo=FALSE}
+include_graphics("Fig6_10.jpg") 
+```
+
+...
+========================================================
+...
+
+Regularization: EXERCISE
+========================================================
+* conceptual... page 259 / exercise 2 (a)-(b)
+* applied...    page 262 / exercise 8 (e)-(f)

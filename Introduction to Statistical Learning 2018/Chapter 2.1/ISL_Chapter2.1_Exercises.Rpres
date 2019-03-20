@@ -1,0 +1,27 @@
+ISL_Chapter2.1_Exercises
+========================================================
+author: 
+date: 
+autosize: true
+
+Exercise 1
+========================================================
+
+For each bullet, indicate whether we would generally expect the performance of a flexible statistical learning method to be better or worse than an inflexible (parametric) method. Justify your answer.
+
+- The sample size $n$ is extremely large, and the number of predictors $p$ is small.
+- The number of predictors $p$ is extremeley large, and the number of observations $n$ is small.
+- The variance of the error terms, i.e. $\sigma = \text{Var}(\epsilon)$, is extremely high.
+
+Exercise 2
+========================================================
+Explain, whether each scenario is a classification, or a regression problem and indicate, whether we are most interested in prediction or inference. Finally, provide $n$ and $p$.
+
+- We collect a set of data on the top 500 firms in the US. For each firm we record profit, number of employees, industry and the CEO salary. We are interested in understanding which factors are reflected in the CEO's salary.
+
+- We collect weekly data for exchange rates USD/Euro for all of 2017. For each week we record the % change in the USD/Euro, the % change in the US market, the % change in the British market and the % change in the German market. We want to know how the exchange rate will (likely) behave for the last months of 2018.
+
+
+Excercise 3
+========================================================
+Give an example scenario of your own (for example: a classification problem where we are interested in inference). Generate a (basic) sample of your predictors (with realistic data e.g. no height of 3m) and response using R (or use an existing data set) and visualize the data. Finally, give a short justification whether you would use a flexible or non-flexible model in your case.
