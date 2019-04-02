@@ -1,0 +1,579 @@
+---
+title: "Modern Statistics for Modern Biology"
+subtitle: "Chapter3: High Quality Graphics in R"
+author: "Mariela Cortés López"
+date: "April 3rd, 2019"
+header-includes:
+   - \usepackage{bbm}
+output: 
+  slidy_presentation:
+      incremental: yes
+mainfont: Arial
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, error = F, message = F)
+```
+
+## Chapter Goals
+
+- Learn how to rapidly and flexibly explore datasets by visualization.
+- Create beautiful and intuitive plots for scientific presentations and publications.
+- Review the basics of base R plotting.
+- Understand the logic behind the grammar of graphics concept.
+- Introduce ggplot2’s ggplot function.
+- See how to plot data in one, two, or even three to five dimensions, and explore faceting.
+- Create “along-genome” plots for molecular biology data (or along other sequences, e.g., peptides).
+- Discuss some of our options of interactive graphics.
+
+## Base R plotting
+DNase is a dataframe whose columns are Run (the assay run), conc (the protein concentration that was used) and density (the measured optical density)
+ 
+```{r DNase1, echo = TRUE}
+plot(DNase$conc, DNase$density)
+```
+
+```{r DNaseblue, echo = TRUE}
+plot(DNase$conc, DNase$density,
+  ylab = attr(DNase, "labels")$y,
+  xlab = paste(attr(DNase, "labels")$x, attr(DNase, "units")$x),
+  pch = 3,
+  col = "blue")
+```
+
+
+```{r DNaseBarandBox, echo = TRUE}
+hist(DNase$density, breaks=25, main = "")
+boxplot(density ~ Run, data = DNase)
+```
+
+Boxplots are convenient for showing multiple distributions next to each other in a compact space. 
+
+
+## Example dataset
+
+The aim of the experiment was to investigate the gene expression changes associated with the first symmetry breaking event in the embryo.
+
+```{r Hiiragi2013, echo = TRUE}
+#BiocManager::install("Hiiragi2013", version = "3.8")
+library("Hiiragi2013")
+data("x")
+dim(Biobase::exprs(x))
+
+```
+
+```{r Hiiragi2013head, echo = TRUE}
+head(pData(x), n = 2)
+
+```
+
+
+```{r Hiiragi2013colors, echo = TRUE}
+library("dplyr")
+groups = group_by(pData(x), sampleGroup) %>%
+  summarise(n = n(), color = unique(sampleColour))
+groups
+```
+
+Dplyr equivalences 
+```{r eval=FALSE}
+f(x) %>% g(y) %>% h
+h(g(f(x), y))
+```
+
+## ggplot2
+
+```{r ggDNAse1, echo = TRUE}
+library("ggplot2")
+ggplot(DNase, aes(x = conc, y = density)) + geom_point()
+```
+
+```{r ggDNasebar, echo = TRUE}
+
+ggplot(groups, aes(x = sampleGroup, y = n)) +
+  geom_bar(stat = "identity")
+
+```
+
+
+```{r ggDNAsecolor, echo=TRUE}
+groupColor = setNames(groups$color, groups$sampleGroup)
+
+ggplot(groups, aes(x = sampleGroup, y = n, fill = sampleGroup)) +
+  geom_bar(stat = "identity") +
+  scale_fill_manual(values = groupColor, name = "Groups") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+
+
+
+```{r ggobject, echo=T}
+gg = ggplot(DNase, aes(x = conc, y = density)) + geom_point()
+gg
+print(gg)
+```
+
+```{r ggsave, eval=F}
+ggsave("DNAse-histogram-demo.pdf", plot = gg)
+```
+
+
+## The grammar of graphics
+The components of ggplot2’s grammar of graphics are
+
+- one or more datasets,
+- one or more geometric objects(points, lines, rectangles, contours),
+- descriptions of how the variables in the data are mapped to visual properties (aesthetics) of the geometric objects, and an associated scale (e. g., linear, logarithmic, rank),
+- one or more coordinate systems,
+- statistical summarization rules,
+- a facet specification, i.e. the use of multiple similar subplots to look at subsets of the same data,
+- optional parameters that affect the layout and rendering, such text size, font and alignment, legend positions.
+
+```{r layers1, echo=T}
+dftx = data.frame(t(Biobase::exprs(x)), pData(x))
+ggplot( dftx, aes( x = X1426642_at, y = X1418765_at)) +
+  geom_point( shape = 1 ) +
+  geom_smooth( method = "loess" )
+```
+
+```{r coloredLayers, echo=T}
+ggplot( dftx, aes( x = X1426642_at, y = X1418765_at ))  +
+  geom_point( aes( color = sampleColour), shape = 19 ) +
+  geom_smooth( method = "loess" ) +
+  scale_color_discrete( guide = FALSE )
+
+```
+
+
+```{r mousedata, echo=T}
+library("mouse4302.db")
+
+AnnotationDbi::select(mouse4302.db,
+   keys = c("1426642_at", "1418765_at"), keytype = "PROBEID",
+   columns = c("SYMBOL", "GENENAME"))
+```
+
+```{r}
+dfx = as.data.frame(Biobase::exprs(x))
+ggplot(dfx, aes(x = `20 E3.25`)) + geom_histogram(binwidth = 0.2)
+```
+
+
+
+```{r}
+pb = ggplot(groups, aes(x = sampleGroup, y = n))
+class(pb)
+```
+
+
+```{r}
+pb = pb + geom_bar(stat = "identity")
+pb = pb + aes(fill = sampleGroup)
+pb = pb + theme(axis.text.x = element_text(angle = 90, hjust = 1))
+pb = pb + scale_fill_manual(values = groupColor, name = "Groups")
+pb
+```
+
+```{r}
+pb.polar = pb + coord_polar() +
+  theme(axis.text.x = element_text(angle = 0, hjust = 1),
+        axis.text.y = element_blank(),
+        axis.ticks = element_blank()) +
+  xlab("") + ylab("")
+pb.polar
+```
+
+
+## Visualizing data in 1D
+```{r, echo=T}
+selectedProbes = c( Fgf4 = "1420085_at", Gata4 = "1418863_at",
+                   Gata6 = "1425463_at",  Sox2 = "1416967_at")
+library("reshape2")
+genes = melt(Biobase::exprs(x)[selectedProbes, ],
+             varnames = c("probe", "sample"))
+head(genes)
+genes$gene =
+  names(selectedProbes)[match(genes$probe, selectedProbes)]
+```
+
+### Barplots
+
+```{r barplot}
+ggplot(genes, aes( x = gene, y = value)) +
+  stat_summary(fun.y = mean, geom = "bar")
+```
+
+
+```{r barplotWerrorbars}
+library("Hmisc")
+ggplot(genes, aes( x = gene, y = value, fill = gene)) +
+  stat_summary(fun.y = mean, geom = "bar") +
+  stat_summary(fun.data = mean_cl_normal, geom = "errorbar",
+               width = 0.25)
+```
+
+### Boxplot
+
+```{r boxplotgg}
+p = ggplot(genes, aes( x = gene, y = value, fill = gene))
+p + geom_boxplot()
+```
+
+### Violin plots
+The shape of the violin gives a rough impression of the distribution density.
+
+```{r violin}
+p + geom_violin()
+```
+
+### Dot plots and beeswarm plots
+Lay out the points so that they are as near possible to their proper locations without overlap 
+
+```{r dotplots, out.width=c('50%x', '50%'), fig.show='hold'}
+p + geom_dotplot(binaxis = "y", binwidth = 1/6,
+       stackdir = "center", stackratio = 0.75,
+       aes(color = gene))
+
+library("ggbeeswarm")
+p + geom_beeswarm(aes(color = gene))
+```
+
+
+
+### Density plot
+
+```{r}
+ggplot(genes, aes( x = value, color = gene)) + geom_density()
+```
+
+### ECDF
+
+Describe the distribution of a one-dimensional random variable X:
+
+Cumulative distribution function (CDF)
+
+$$F(x)=P(X \leq x)$$
+Empirical cumulative distribution function:
+
+$$F_n(x) = \frac{\text{number of }i\text{ for which }x_i\leq x}{n} = \frac{1}{n}\sum_{i=1}^n \mathbb{1} (x \leq x_i)  $$
+
+Proprieties: 
+
+- It is lossless
+- As n grows, the ECDF $F_n(x)$ converges to the true CDF $F(x)$
+
+```{r}
+library(dplyr)
+simdata = rnorm(70)
+tibble(index = seq(along = simdata),
+          sx = sort(simdata)) %>%
+ggplot(aes(x = sx, y = index)) + geom_step()
+```
+
+```{r}
+ggplot(genes, aes( x = value, color = gene)) + stat_ecdf()
+```
+
+### The effect of transformations on densities
+
+Density depends on scale transformations of the data, via the **chain rule**
+
+```{r, out.width=c('50%x', '50%'), fig.show='hold'}
+ggplot(dfx, aes(x = `64 E4.5 (EPI)`)) + geom_histogram(bins = 100)
+ggplot(dfx, aes(x = 2 ^ `64 E4.5 (EPI)`)) + 
+  geom_histogram(binwidth = 20) + xlim(0, 1500)
+```
+
+
+## Visualizing data in 2D: scatterplots
+
+```{r}
+scp = ggplot(dfx, aes(x = `59 E4.5 (PE)` ,
+                      y = `92 E4.5 (FGF4-KO)`))
+scp + geom_point()
+```
+
+
+```{r}
+scp  + geom_point(alpha = 0.1)
+```
+
+
+```{r}
+scp + geom_density2d()
+```
+
+
+```{r}
+scp + geom_density2d(h = 0.5, bins = 60)
+library("RColorBrewer")
+colorscale = scale_fill_gradientn(
+    colors = rev(brewer.pal(9, "YlGnBu")),
+    values = c(0, exp(seq(-5, 0, length.out = 100))))
+
+scp + stat_density2d(h = 0.5, bins = 60,
+          aes( fill = ..level..), geom = "polygon") +
+  colorscale + coord_fixed()
+```
+
+
+```{r}
+scp + geom_hex() + coord_fixed()
+scp + geom_hex(binwidth = c(0.2, 0.2)) + colorscale +
+  coord_fixed()
+```
+
+### Plot shapes
+
+Rules for scatter plots:
+
+- Same axis units: same mapping (i.e _coord_fixed_)
+- Different units: compare dimensions. If the data follow a line, **banking**
+
+```{r}
+library("ggthemes")
+sunsp = tibble(year   = time(sunspot.year),
+               number = as.numeric(sunspot.year))
+sp = ggplot(sunsp, aes(x = year, y = number)) + geom_line()
+sp
+ratio = with(sunsp, bank_slopes(year, number))
+sp + coord_fixed(ratio = ratio)
+```
+
+## Visualizing more than two dimensions
+
+To show relationships.
+
+The geom_point geometric object offers the following aesthetics (beyond x and y):
+
+- fill
+- color
+- shape
+- size
+- alpha
+
+### Faceting
+
+```{r}
+library("magrittr")
+dftx$lineage %<>% sub("^$", "no", .)
+dftx$lineage %<>% factor(levels = c("no", "EPI", "PE", "FGF4-KO"))
+
+ggplot(dftx, aes( x = X1426642_at, y = X1418765_at)) +
+  geom_point() + facet_grid( . ~ lineage )
+```
+
+For 2 faceting variables:
+
+```{r}
+ggplot( dftx,
+  aes( x = X1426642_at, y = X1418765_at)) + geom_point() +
+   facet_grid( Embryonic.day ~ lineage )
+```
+
+To fit in a determinated number of columns: 
+
+```{r}
+ggplot(mutate(dftx, Tdgf1 = cut(X1450989_at, breaks = 4)),
+   aes( x = X1426642_at, y = X1418765_at)) + geom_point() +
+   facet_wrap( ~ Tdgf1, ncol = 2 )
+```
+
+### Interactive graphics
+
+#### shiny
+
+
+[shiny gallery](http://shiny.rstudio.com/gallery/)
+
+#### ggvis
+
+Build on Vega.
+
+[ggviz link](http://ggvis.rstudio.com)
+
+#### plotly
+
+```{r}
+library("plotly")
+plot_ly(economics, x = ~ date, y = ~ unemploy / pop)
+```
+
+#### rgl, webgl
+
+```{r eval=FALSE, execute=FALSE}
+data("volcano")
+volcanoData = list(
+  x = 10 * seq_len(nrow(volcano)),
+  y = 10 * seq_len(ncol(volcano)),
+  z = volcano,
+  col = terrain.colors(500)[cut(volcano, breaks = 500)]
+)
+library("rgl")
+with(volcanoData, persp3d(x, y, z, color = col))
+```
+
+```{r echo=FALSE}
+knitr::include_graphics("mcortes-lopez_Presentation_Chapter_03_files/rgl_example.png")
+
+```
+
+
+## Color
+
+Basic R color palette: 
+
+```{r}
+pie(rep(1, 8), col=1:8)
+```
+
+
+RColorBrewer:
+
+```{r}
+display.brewer.all()
+```
+
+Three types of palettes:
+
+- qualitative
+- sequential
+- diverging
+
+```{r}
+head(brewer.pal.info)
+table(brewer.pal.info$category)
+```
+
+
+For more colors that the available:
+
+```{r,  fig.height=1}
+brewer.pal(4, "RdYlGn")
+mypalette  = colorRampPalette(
+    c("darkorange3", "white","darkblue")
+  )(100)
+head(mypalette)
+
+par(mai = rep(0.1, 4))
+image(matrix(1:100, nrow = 100, ncol = 10), col = mypalette,
+        xaxt = "n", yaxt = "n", useRaster = TRUE)
+
+```
+
+For a compilation of R color palettes:
+
+
+[_Comprehensive list of color palettes in R_](https://github.com/EmilHvitfeldt/r-color-palettes)
+
+## Heatmaps
+
+Powerful way of visualizing large, matrix-like datasets and providing a quick overview of the patterns that might be in the data.
+
+```{r}
+library("pheatmap")
+topGenes = order(rowVars(Biobase::exprs(x)), decreasing = TRUE)[1:500]
+rowCenter = function(x) { x - rowMeans(x) }
+pheatmap( rowCenter(Biobase::exprs(x)[ topGenes, ] ),
+  show_rownames = FALSE, show_colnames = FALSE,
+  breaks = seq(-5, +5, length = 101),
+  annotation_col =
+    pData(x)[, c("sampleGroup", "Embryonic.day", "ScanDate") ],
+  annotation_colors = list(
+    sampleGroup = groupColor,
+    genotype = c(`FGF4-KO` = "chocolate1", `WT` = "azure2"),
+    Embryonic.day = setNames(brewer.pal(9, "Blues")[c(3, 6, 9)],
+                             c("E3.25", "E3.5", "E4.5")),
+    ScanDate = setNames(brewer.pal(nlevels(x$ScanDate), "YlGn"),
+                        levels(x$ScanDate))
+  ),
+  cutree_rows = 4
+)
+```
+
+
+### Color spaces
+
+
+
+```{r}
+groupColor[1]
+```
+
+For lines and points, we want a strong contrast to the background, so on a white background, we want them to be relatively dark (low luminance L). For area fills, lighter, more pastel-type colors with low to moderate chromatic content are usually more pleasant.
+
+
+## Data transformations
+
+
+```{r, out.width=c('50%x', '50%'), fig.show='hold'}
+gg = ggplot(tibble(A = Biobase::exprs(x)[, 1], M = rnorm(length(A))),
+            aes(y = M))
+gg + geom_point(aes(x = A), size = 0.2)
+gg + geom_point(aes(x = rank(A)), size = 0.2)
+
+
+```
+
+
+## Mathematical symbols and other fonts
+
+```{r}
+volume = function(rho, nu)
+            pi^(nu/2) * rho^nu / gamma(nu/2+1)
+
+ggplot(tibble(nu    = 1:15,
+  Omega = volume(1, nu)), aes(x = nu, y = Omega)) +
+geom_line() +
+xlab(expression(nu)) + ylab(expression(Omega)) +
+geom_text(label =
+"Omega(rho,nu)==frac(pi^frac(nu,2)~rho^nu, Gamma(frac(nu,2)+1))",
+  parse = TRUE, x = 6, y = 1.5)
+```
+
+[extrafont](https://cran.r-project.org/web/packages/extrafont/)
+
+```{r}
+ggplot(genes, aes( x = value, color = gene)) + stat_ecdf() +
+  theme(text = element_text(family = "Times"))
+
+```
+
+
+## Genomic Data
+
+```{r}
+library("ggbio")
+data("hg19IdeogramCyto", package = "biovizBase")
+plotIdeogram(hg19IdeogramCyto, subchr = "chr1")
+```
+
+
+```{r}
+library("GenomicRanges")
+data("darned_hg19_subset500", package = "biovizBase")
+autoplot(darned_hg19_subset500, layout = "karyogram",
+         aes(color = exReg, fill = exReg))
+```
+
+
+```{r}
+data("ideoCyto", package = "biovizBase")
+dn = darned_hg19_subset500
+seqlengths(dn) = seqlengths(ideoCyto$hg19)[names(seqlengths(dn))]
+dn = keepSeqlevels(dn, paste0("chr", c(1:22, "X")))
+autoplot(dn, layout = "karyogram", aes(color = exReg, fill = exReg))
+```
+
+
+
+## Recommended exercises:
+
+### Exercise 3.4:
+
+Check out the shiny tutorials on the RStudio website. Write a shiny app that displays one of the plots from this chapter, but with interactive elements to control, e.g., which genes are displayed (Figures 3.31–3.33).
+
+
+### Optional- Exercise 3.5
+
+What options are there for serializing a graphic, i.e., for storing a graphic in a file that you can save for later use, or load up in another software? How can you serialize interactive graphics?
