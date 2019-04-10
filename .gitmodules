@@ -4,3 +4,6 @@
 [submodule "The-Art-of-Data-Science"]
 	path = The-Art-of-Data-Science
 	url = https://github.com/waldronlab/The-Art-of-Data-Science
+[submodule "MSMB/MSMBexercises"]
+	path = MSMB/MSMBexercises
+	url = git@github.com:waldronlab/MSMBexercises.git
