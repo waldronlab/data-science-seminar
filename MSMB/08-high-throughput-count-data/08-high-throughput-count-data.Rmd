@@ -1,0 +1,391 @@
+---
+title: "MSMB Ch. 8: High-Throughput Count Data"
+author: "Domenick Braccia"
+date: "5/29/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, error = FALSE)
+```
+
+# Intro
+
+Many downstream analysis pipelines rely on count tables generated from high-throughput experiments. Some of these experiments include:
+
+* RNA-seq
+* ChIP-Seq
+* RIP-Seq
+* DNA-Seq
+* and more!
+
+**NOTE:** count tables do not represent *all* molecules sequenced in a sample. Some molecules and intermediates get lost along the way. Instead, what we sequence and count is a *statistical sample* of all the molecules present in a sample. This idea of obtaining a sample from a greater population of sequences is important when it comes to analyzing count tables.
+
+# 8.1: Goals of this chapter
+
+In this chapter, we will become familiar with count data in high-throughput sequencing applications such as RNA-Seq. Our main aim is to detect and quantify systematic changes between samples from different conditions, say untreated versus treated, and to distinguish such systematic changes from sampling variations and experimental variability within the same conditions.
+
+Core concepts covered:
+
+* multifactorial designs, linear models and analysis of variance (ANOVA)
+* generalized linear models (GLMs)
+* robustness & outlier detection
+* shrinkage estimation
+
+# 8.2: core concepts
+
+sequencing library (all molecules) -> fragments (300-1000 bp) -> read (up to 150 bp)
+
+# 8.3: count data
+
+Let's look at an example dataset from the package `pasilla`:
+
+```{r}
+fn = system.file("extdata", "pasilla_gene_counts.tsv",
+                  package = "pasilla", mustWork = TRUE)
+counts = as.matrix(read.csv(fn, sep = "\t", row.names = "gene_id"))
+```
+
+* breakdown of count table count table:
+    * dimensions
+    * integer values are "raw" counts
+    * models described in this chapter rely on the counts being raw
+
+* challenges of count data
+    * heteroskedasity (variable variance)
+    * normalization (sampling depth, length, GC content, etc.)
+    * RNA-seq: gene structures, splicing and isoforms (we are limited by sequencers)
+
+# 8.4: Modeling Count Data
+
+## Dispersion
+
+library of n total fragments, $n_1$, $n_2$, ... are number of fragments mapping to gene1, gene2,etc. From this, we can conclude that the probability that a given read maps to the ith gene is: $p_i = n_i/n$. Using a Poisson distribution, the *rate* of the Poisson process is given by: $\lambda_i=rp_i$ where r is the number of reads obtained from sequencing the fragments from a sequence library.
+
+**NOTE:** this $\lambda_i$ varries between samples, so we use gamma-Poisson distribution (negative binomial) because it is better suited than regular Poisson.  
+
+## Normalization
+
+* naively: could normalize by reads of all genes per sample and make proporionality factor, *s*
+* better solution (which DESeq uses): use robust regression to normalize
+* see figure 8.1 in the book for a depiction of how robust regression is used to normalize
+
+# 8.5: A Basic Analysis
+
+Data from pasilla package. `untreated` are negative controls and `treated` were  fruit flies given siRNA against *pasilla* gene (important for normal secretion in the salivary gland).
+
+```{r}
+annotationFile = system.file("extdata",
+  "pasilla_sample_annotation.csv",
+  package = "pasilla", mustWork = TRUE)
+pasillaSampleAnno = readr::read_csv(annotationFile)
+pasillaSampleAnno
+```
+
+Now performing some data wrangling on the metadata:
+
+```{r}
+library("dplyr")
+pasillaSampleAnno = mutate(pasillaSampleAnno,
+condition = factor(condition, levels = c("untreated", "treated")),type = factor(sub("-.*", "", type), levels = c("single", "paired")))
+```
+
+Notice that the types of sequencing runs performed on factor of interest, `condition`, is roughly balanced:
+
+```{r}
+with(pasillaSampleAnno,
+       table(condition, type))
+```
+
+Before conduction our analysis, we will convert our data into a DESeqDataSet class. Bioconductor uses formal classes to store data which helps in a number of ways:
+
+* keeps related data together
+* prevents bugs due to loss of sychronization
+* helps encapsulate common operations into shorter commands
+* validity methods
+* (hopefully I don't need to convince everyone here why BioConductor is useful)
+
+```{r}
+mt = match(colnames(counts), sub("fb$", "", pasillaSampleAnno$file))
+stopifnot(!any(is.na(mt)))
+
+library("DESeq2")
+pasilla = DESeqDataSetFromMatrix(
+  countData = counts,
+  colData   = pasillaSampleAnno[mt, ],
+  design    = ~ condition)
+class(pasilla)
+is(pasilla, "SummarizedExperiment")
+```
+
+## Running DESeq command
+
+* Now we are ready to run our differential expression analysis step.  
+* similar to a t-test though more mathematically involved (see 8.7)  
+
+```{r}
+pasilla = DESeq(pasilla)
+```
+
+`DESeq()` is a wrapper for running `estimateSizeFactors` (for normalization) `estimateDispersions` (dispersion estimation) and `nbinomWaldTest` (hypothesis tests for differential abundance).
+
+```{r}
+res = results(pasilla)
+res[order(res$padj), ] %>% head
+```
+
+## Exploring results
+
+four main plots to make after running diff exp. analysis:
+
+1. the histogram of p-values
+2. the MA plot
+3. an ordination plot (eg. PCA)
+4. A heatmap 
+
+### 1. histogram of pvalues
+
+```{r}
+library(ggplot2)
+ggplot(as(res, "data.frame"), aes(x = pvalue)) +
+  geom_histogram(binwidth = 0.01, fill = "Royalblue", boundary = 0)
+```
+
+FDR can be estimated by:
+* choosing a significance thresh (0.01)
+* estimating backround count level (~100)
+* finding total number of genes with pvalue < 0.01 (~1000)
+* dividing background level by total number of significant genes (~10%)
+
+**NOTE: if the background distribution is not uniform (bumps of higher # of pvales towards left or right) this could be an indication of batch effects in data.**
+
+### 2. MA plot
+
+```{r}
+plotMA(pasilla, ylim = c( -2, 2))
+```
+
+### 3. PCA plot:
+
+```{r}
+pas_rlog = rlogTransformation(pasilla)
+plotPCA(pas_rlog, intgroup=c("condition", "type")) + coord_fixed()
+```
+
+PCA plots are useful for visualizing the overall effect of experimental covariates and / or detect batch effects.
+
+**NOTE: a regularized logarithm was used to transform the data. See 8.10.2 for more info**
+
+### 4. Heatmaps
+
+```{r}
+library("pheatmap")
+select = order(rowMeans(assay(pas_rlog)), decreasing = TRUE)[1:30]
+pheatmap( assay(pas_rlog)[select, ],
+     scale = "row",
+     annotation_col = as.data.frame(
+        colData(pas_rlog)[, c("condition", "type")] ))
+```
+
+* by default, `pheatmap` arranges rows and columns of the matrix by the dendogram from unsupervised clustering.
+* clustering ended up being dominated by the `type` factor which describes which sequencing technology was applied to each sample (see section 8.9 for how this is accounted for)
+
+## Exporting results
+
+Results can be exported using the [ReportingTools](https://bioconductor.org/packages/release/bioc/html/ReportingTools.html) package. See *RNA-Seq differential expression* vignette for more information.
+
+# 8.6: Possible modifications to default choices
+
+## Few changes assumption:
+
+* It is assumed that most genes do not change drastically with experimental condition.
+* If this assumption doesn't hold, need to ID a subset of genes for which we know that their expression does not change drastically with the condition of interest and then calculate the size factors and dispersion parameters
+
+## Point-like null hypothesis
+
+* for smaller sample sizes, there needs to be an appreciable change in expression for differential expression to be called, thus, more of a chance of biological relevance if differential expression is called.
+* for larger sample sizes, statistical significance is not always an indicator of biological relevance. For instance, many genes may be perturbed by indirect downstream effects. see 8.10.4 for further exploration of this topic.
+
+# 8.7: Multi-factor design and linear models
+
+## Basics of multifactorial design
+
+Consider a case where we want to measure the effect siRNA knockdown of the pasilla gene as well as the effect of a certain drug. We could construct the linear model  
+
+\begin{equation}
+y = \beta_0 + x_1 \beta_1 + x_2 \beta_2 + x_1x_2\beta_{12}.
+\tag{8.1}
+\end{equation}
+
+Breakdown of equation:  
+
+* $y$: expression of pasilla gene post siRNA knowdown / drug treatment (response variable)  
+* $\beta_0$: expression of pasilla gene under no experimental conditions (intercept)
+* $x_1$ and $x_2$: design factors indicating siRNA transfection ($x_1 = 1$) and drug administering ($x_2 = 1$)
+* $\beta_1$ and $\beta_2$: difference in pasilla expression from baseline to treatment groups due to siRNA knockdown alone and drug administration alone (respectively)
+
+Other notes:
+
+* By log transforming the data, $\beta_1$ indicates the log-fold-change in pasilla expression under just siRNA knockdown
+* $\beta_{12}$ is the "interaction" term for siRNA knockdown and drug administration
+* the design matrix representation of all samples and their experimental conditions:
+
+\begin{equation}
+\begin{array}{c|c|c} x_0 & x_1 & x_2\\
+\hline
+1&0&0\\
+1&1&0\\
+1&0&1\\
+1&1&1\end{array}
+\tag{8.4}
+\end{equation}
+
+## Accounting for noise and replicates
+
+equation 8.1 can be further complicated by adding terms for each replicate in the experiment:
+
+\begin{equation}
+y_{j} = x_{j0} \; \beta_0 + x_{j1} \; \beta_1 + x_{j2} \; \beta_2 + x_{j1}\,x_{j2}\;\beta_{12} + \varepsilon_j.
+\tag{8.5}
+\end{equation}
+
+The added terms *j* and $\varepsilon$ represent the index over all individual replicates and $\varepsilon$ is an "error" term which is designed to absorb the differences between replicates of the same condition. This will be called the residual.
+
+In Summary:
+$\beta$s represent the average effects of each of the experimental factors, while the residuals $\varepsilon_j$ reflect the experimental fluctuations around the mean between the replicates. 
+
+The least sum of squares fitting approach states that:
+
+\begin{equation}
+\sum_j \varepsilon_j^2 \quad\to\quad\text{min}.
+\tag{8.6}
+\end{equation}
+
+Basically, the $\varepsilon_j$ s must be small so that the system of equations is not underdetermined. This approach is mathematically convenient, since it can achieved by straightforward matrix algebra. The R function `lm` accomplishes this.
+
+## Analysis of Variance (ANOVA)
+
+A useful way to think about (8.5) is contained in the term analysis of variance, abbreviated ANOVA. In fact, what Equation (8.5) does is decompose the variability of y that we observed in the course of our experiments into elementary components: its baseline value $\beta_0$, its variability caused by the effect of the first variable, $\beta_1$, its variability caused by the effect of the second variable, $\beta_2$, its variability caused by the effect of the interaction, $\beta_{12}$, and variability that is unaccounted for. The last of these we commonly call noise, the other ones, systematic variability.
+
+## Robustness 
+
+* the mean of a set of numbers is fairly sensitive to outliers, which is why the eqution (8.6) is sometimes not the most robust choice to measure rresidual.
+* the median is more robust as one needs to change half of the numbers in order to significantly raise or lower the median of a set of numbers
+* other more robust choices for the sum of squares are as follows:
+
+\begin{align}
+R &= \sum_j |\varepsilon_j| & \text{Least absolute deviations} \tag{8.8} \\
+R &= \sum_j \rho_s(\varepsilon_j)  & \text{M-estimation}  \tag{8.9} \\
+R &= Q_{\theta}\left( \{\varepsilon_1^2, \varepsilon_2^2,... \} \right)
+& \text{LTS, LQS}  \tag{8.10}  \\
+R &= \sum_j w_j \varepsilon_j^2 & \text{general weighted regression} \tag{8.11} 
+\end{align}
+
+# Generalized Linear Models
+
+The idea here is to take the concepts in equations 8.5 and 8.6 and generalize the assumptions made.
+
+## Transforming scale
+
+* log-scaling
+* using a sigmoid function on right hand side of equation (8.5) to model *y* data on a [0, 1] scale
+
+$$f(y) = 1/(1+e^{-y})$$
+
+## Generalized linear model for count data
+
+The differential expression analysis in DESeq2 uses a generalized linear model of the form:
+
+\begin{align}
+K_{ij} &\sim \text{GP}(\mu_{ij}, \alpha_i)  \tag{8.14} \\
+\mu_{ij} &= s_j\, q_{ij}  \tag{8.15} \\
+\log_2(q_{ij}) &= \sum_k x_{jk} \beta_{ik}.  \tag{8.16} 
+\end{align}
+
+Breakdown of these three equations:
+
+* The counts $K_{ij}$ for gene i, sample j are modeled using a gamma-Poisson (GP) distribution with two parameters, the mean $\mu_{ij}$ and the dispersion $\alpha_{i}$
+* $\alpha_{i}$ (dispersion) is different for each gene but the same accross all samples by default
+* Equation (8.15) states that the mean is composed of a sample-specific size factor $s_j$ and $q_{ij}$, which is proportional to the true expected concentration of fragments for gene i in sample j.
+* The value of $q_{ij}$ is given by the linear model in the third line via the link function, log2
+* The design matrix (xjk) is the same for all genes (and therefore does not depend on i). Its rows j correspond to the samples, its columns k to the experimental factors
+* The coefficients $\beta_ik$ give the log2 fold changes for gene i for each column of the design matrix $X$
+
+# Two factor analysis of the pasilla data
+
+In addition to treatment with siRNA, the other condition we considered earlier was which type of sequencing was performed.
+
+We saw earlier through EDA that sequencing type had a considerable systematic effect of the data. We will attempt to correct for that here to paint a more correct picture of differences which can be attributable to the treatment.
+
+```{r}
+# running DESeq with type and condition as design parameters
+pasillaTwoFactor = pasilla
+design(pasillaTwoFactor) = formula(~ type + condition)
+pasillaTwoFactor = DESeq(pasillaTwoFactor)
+
+# accessing results
+res2 = results(pasillaTwoFactor)
+head(res2, n = 3)
+```
+
+By specifying the contrast argument in `results()`, we can see the log2 fold changes and p-values / adjusted p-values associated with the type of sequencing.
+
+```{r}
+resType = results(pasillaTwoFactor,
+  contrast = c("type", "single", "paired"))
+head(resType, n = 3)
+```
+
+What did we gain from considering the `type` variable in our design? We can start by plotting p-values from both analyses against each other.
+
+```{r}
+trsf = function(x) ifelse(is.na(x), 0, (-log10(x)) ^ (1/6))
+ggplot(tibble(pOne = res$pvalue,
+              pTwo = res2$pvalue),
+    aes(x = trsf(pOne), y = trsf(pTwo))) +
+    geom_hex(bins = 75) + coord_fixed() +
+    xlab("Single factor analysis (condition)") +
+    ylab("Two factor analysis (type + condition)") +
+    geom_abline(col = "orange")
+```
+
+We can see a modest increase in the number of "discovered" genes in switching to a two factor analysis as opposed to a one factor analysis. More specifically:
+
+```{r}
+compareRes = table(
+   `simple analysis` = res$padj < 0.1,
+   `two factor` = res2$padj < 0.1 )
+addmargins( compareRes )
+```
+
+The two-factor analysis found 1325 genes differentially expressed at an FDR threshold of 10%, while the one-factor analysis found 1061.
+
+# Further statistical concepts
+
+These are concepts and ideas that were touched upon throughout this chapter but were not explained in full detail. Please check out section 8.10 in the book for more information on these topics:
+
+* sharing of dispersion information accross genes
+* count data transformations
+  * variance-stabalizing
+  * regularized logarithm (rlog)
+* dealing with outliers
+* tests of log2 fold change above or below a threshold
+
+# Summary of Chapter 8:
+
+* we have seen how to analyze count tables from high-throughput sequencing for differential abundance
+* we built upon the powerful and flexible framework of linear models which allows us to:
+    * analyze a basic two-groups comparison as well as
+    * more complex multifactorial designs and
+    * experiments with covariates that have more than two levels or are continuous
+* we applied a generalization of ordinary linear models (GLMs) to discrete and asymetric count data.
+  * in particular considered gamma-Poisson distributed data with dispersion parameters
+* we discussed normalizing for differences in sampling depth through size factors *s_i*
+* we applied shrinkage / emperical Bayes techniques to account for the low number of replicates
+* we applied transformations to data to aid in:
+    * plotting data
+    * general purpose clustering
+    * dimensionality reduction (PCA)
+
+
+
