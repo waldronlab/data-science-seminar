@@ -78,6 +78,10 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
 BiocManager::install(c("EBImage", "MSMB"))
 ```
 
+**Note**: In order to install `EBImage` you need to have the `fftw3` library
+installed on your system. For Linux users, please install the  library by
+running: `apt install libfftw3-dev`. 
+
 # Load mosquito image (`EBImage` package)
 
 * Currently only 3 image formats are supported
