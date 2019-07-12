@@ -45,7 +45,7 @@ For what purpose?
 
 * Mainly focusing on using 2D images
 
-What issues can we encounter that we should look out for? 
+What issues can we encounter that we should look out for?
 
 * Batch effects
 * Illumination
@@ -64,7 +64,7 @@ cell segmentation as an example.
 dependencies.
 
 * Get to know the most basic distribution for a spatial point process: the
-homogeneous Poisson process. 
+homogeneous Poisson process.
 
 * Recognize whether your data fit that basic assumption or whether they show
 evidence of clumping or exclusion.
@@ -148,20 +148,56 @@ be applied to it?
 
 ```{r}
 slotNames(mosq)
-# OR 
+# OR
 str(mosq)
-
-## methods
-head(showMethods(classes = "Image"))
 ```
 
-Getting the dimensions of the array: 
+Shortened list of methods: 
+
+```{r,eval=FALSE}
+showMethods(classes = "Image")
+
+# Function: - (package base)
+# e1="numeric", e2="Image"
+#     (definition from function "Ops")
+# 
+# Function ".DollarNames":
+#  <not an S4 generic function>
+# Function: [ (package base)
+# x="Image"
+# 
+# Function: abind (package EBImage)
+# ...="Image"
+# 
+# Function "annotation":
+#  <not an S4 generic function>
+# 
+# Function "annotation<-":
+#  <not an S4 generic function>
+# 
+# Function "anyDuplicated":
+#  <not an S4 generic function>
+# 
+# Function "append":
+#  <not an S4 generic function>
+# 
+# Function "as.data.frame":
+#  <not an S4 generic function>
+# 
+# Function "as.list":
+#  <not an S4 generic function>
+# 
+# Function "asJSON":
+#  <not an S4 generic function>
+```
+
+Getting the dimensions of the array:
 
 ```{r}
 dim(mosq)
 ```
 
-Getting to the data of the image: 
+Getting to the data of the image:
 
 ```{r}
 dim(imageData(mosq))
@@ -228,3 +264,8 @@ manipulate them!
 mosqinv <- normalize(-mosq)
 ```
 
+# Additional Resources
+
+* [Slide deck]() on Intensity Transformation and Spatial Filtering
+
+[Slide deck]: https://slideplayer.com/slide/13753825/
