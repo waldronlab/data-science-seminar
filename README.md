@@ -9,7 +9,7 @@
 
 ## Meeting details
 
-* Wednesdays at 5:00pm Central European Time (noon NYC time in March, 11am April onwards)
+* Wednesdays at 5:00pm Central European Time (11am NYC time)
 * Meetings are on Blackboard: https://tinyurl.com/datasciencebb (here is the [full link](https://us.bbcollab.com/collab/ui/session/guest/d3d0f258a0154bc885fd22cb7ae8a86f))
 * Anonymous dial-in phone access: 571-392-7650 PIN: 275 060 2621
 * Schedule: https://github.com/waldronlab/data-science-seminar/wiki
@@ -18,13 +18,12 @@
 
 ## Current activities
 
-During March 13 - July 24 2019 we will be reading and doing exercises from
-[Modern Statistics for Modern Biology](http://web.stanford.edu/class/bios221/book/) by Susan Holmes and Wolfgang Huber. See the [schedule
-wiki](https://github.com/waldronlab/data-science-seminar/wiki).
+During October 16 2019 - Feb 5 2020, we will read an advance online copy of the new book [Causal Inference: What If][1] by Miguel Hernán and James Robins, scheduled to be released by Chapman & Hall/CRC in 2020. See the [schedule
+wiki](https://github.com/waldronlab/data-science-seminar/wiki) for the schedule of presentations.
 
 ## About us
 
-This repository represent the joint effort of [Paris Lodron University
+This repository represents the joint effort of [Paris Lodron University
 of Salzburg](https://www.uni-salzburg.at/index.php?id=52) and the
 [City University of New York Graduate School of Public Health and
 Health Policy](http://sph.cuny.edu/). During active semesters we hold
@@ -87,6 +86,7 @@ or there is a video
 
 Past textbooks have included:
 
+* [Modern Statistics for Modern Biology](http://web.stanford.edu/class/bios221/book/) by Susan Holmes and Wolfgang Huber. 
 * Data Analysis for the Life Sciences by Rafael A Irizarry and Michael I Love ([Print Version](https://leanpub.com/dataanalysisforthelifesciences/)) ([HTML Version](http://genomicsclass.github.io/book/))
 * [An Introduction to Statistical Learning](https://www-bcf.usc.edu/~gareth/ISL/) by Gareth James, Daniela Witten, Trevor Hastie and Robert Tibshirani.
 * [Statistical Rethinking: A Bayesian Course with Examples in R and Stan](https://xcelab.net/rm/statistical-rethinking/) by Richard McElreath, with [supplement by Solomon Kurz](https://bookdown.org/connect/#/apps/1850/access) and [lectures by McElreath](https://www.youtube.com/channel/UCNJK6_DZvcMqNSzQdEkzvzA/playlists).
