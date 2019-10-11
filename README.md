@@ -36,27 +36,27 @@ hope you find these materials useful and will join our sessions.
 
 ## Getting started
 
-1. If you don't already have them, install R and RStudio following
+1. Leave a comment on the ["Welcome" Issue](https://github.com/waldronlab/data-science-seminar/issues/9) to introduce yourself and to
+let us know your GitHub username.
+
+2. Join our Google Group (open membership) and sign up to receive
+emails by visiting
+https://groups.google.com/forum/#!forum/stat_learning.
+
+3. Optional: Install R and RStudio following
 these
 [instructions](https://www.ics.uci.edu/~jutts/110/InstallingRandRStudio.pdf). Here
 is a short video showing [how to use RStudio to contribute to this
 Github repo](http://youtu.be/uHYcDQDbMY8).
 
-2. Sign up for a GitHub account (also free) and clone this repository
-(open membership) in RStudio. Don't know what that means? Follow this
+4. Sign up for a GitHub account, then introduce yourself on the "Welcome" issue of this repository, under [Issues](https://github.com/waldronlab/data-science-seminar/issues).  You will then be able to contribute your presentation and/or exercise notes using file upload directly here, or by using git. If you want to use git instead of simple file upload but don't know what that means, follow this
 [tutorial](https://try.github.io/levels/1/challenges/1). The process
 in RStudio is documented
 [here](https://support.rstudio.com/hc/en-us/articles/200532077-Version-Control-with-Git-and-SVN)
 or there is a video
 [here](https://www.rstudio.com/resources/webinars/rstudio-essentials-webinar-series-managing-part-2/).
 
-3. Leave a comment on the ["Welcome"
-issue](https://github.com/waldronlab/data-science-seminar/issues/1) to
-let us know your GitHub username.
 
-4. Join our Google Group (open membership) and sign up to receive
-emails by visiting
-https://groups.google.com/forum/#!forum/stat_learning.
 
 ## Presenting
 
@@ -75,7 +75,7 @@ format is available
 some previous presentation that can be used as examples are available
 [here](https://github.com/waldronlab/Book_Club/tree/master/Data%20Analysis%20for%20the%20Life%20Sciences).
 
-4. Commit the presentation to GitHub from RStudio so that it is
+4. Commit the presentation to GitHub so that it is
 available to others. Don't know what that means? The process is
 documented
 [here](https://support.rstudio.com/hc/en-us/articles/200532077-Version-Control-with-Git-and-SVN)
