@@ -1,0 +1,12 @@
+---
+title: "Causal Inference: What If"
+subtitle: "Chapter "
+author: ""
+date: ""
+header-includes:
+   - \usepackage{bbm}
+output: 
+  slidy_presentation:
+      incremental: yes
+mainfont: Arial
+---
