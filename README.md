@@ -18,7 +18,7 @@
 
 ## Current activities
 
-During October 16 2019 - Feb 5 2020, we will read an advance online copy of the new book [Causal Inference: What If][1] by Miguel Hernán and James Robins, scheduled to be released by Chapman & Hall/CRC in 2020. See the [schedule
+During October 16 2019 - Feb 5 2020, we will read an advance online copy of the new book [Causal Inference: What If] by Miguel Hernán and James Robins, scheduled to be released by Chapman & Hall/CRC in 2020. See the [schedule
 wiki](https://github.com/waldronlab/data-science-seminar/wiki) for the schedule of presentations.
 
 ## About us
@@ -86,3 +86,5 @@ Past textbooks have included:
 * [An Introduction to Statistical Learning](https://www-bcf.usc.edu/~gareth/ISL/) by Gareth James, Daniela Witten, Trevor Hastie and Robert Tibshirani.
 * [Statistical Rethinking: A Bayesian Course with Examples in R and Stan](https://xcelab.net/rm/statistical-rethinking/) by Richard McElreath, with [supplement by Solomon Kurz](https://bookdown.org/connect/#/apps/1850/access) and [lectures by McElreath](https://www.youtube.com/channel/UCNJK6_DZvcMqNSzQdEkzvzA/playlists).
 * The Art of Data Science (https://leanpub.com/artofdatascience or https://bookdown.org/rdpeng/artofdatascience/) by Roger D. Peng and Elizabeth Matsui.
+
+[Causal Inference: What If]: https://www.hsph.harvard.edu/miguel-hernan/causal-inference-book/
