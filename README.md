@@ -68,12 +68,7 @@ your GitHub username to the schedule table.
 2. Read the required section of the book, and do the associated
 exercises that you will present.
 
-3. Edit the presentation file using RStudio. All presentations should
-be authored using the `.Rpres` format, more infomation about the
-format is available
-[here](https://support.rstudio.com/hc/en-us/articles/200486468). Additionally,
-some previous presentation that can be used as examples are available
-[here](https://github.com/waldronlab/Book_Club/tree/master/Data%20Analysis%20for%20the%20Life%20Sciences).
+3. Edit the presentation file, using the template provided in the folder corresponding to the textbook name. See more information about making [Slidy presentations](https://bookdown.org/yihui/rmarkdown/slidy-presentation.html). 
 
 4. Commit the presentation to GitHub so that it is
 available to others. Don't know what that means? The process is
