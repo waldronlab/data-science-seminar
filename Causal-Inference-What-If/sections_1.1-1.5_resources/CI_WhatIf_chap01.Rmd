@@ -1,0 +1,177 @@
+---
+title: "Causal Inference: What If"
+subtitle: "Chapter 01 - A definition of causal effect"
+author: ""
+date: ""
+header-includes:
+   - \usepackage{bbm}
+output: 
+  slidy_presentation:
+      incremental: no
+      mathjax: "default"
+      font_adjustment: +1
+mainfont: Arial
+framework: io2012
+widgets: [mathjax, quiz, bootstrap] # {mathjax, quiz, bootsrap}
+assets: {assets: ../../assets}
+---
+
+## 1.1 Individual causal effects
+
+
+![Does a heart transplantation (treatment: A) cause survival (outcome: Y) ?](Chap01_images/zeus_hera_heart_transplant.png){width=80%}
+
+**Causal Effect**: $Y_{i}^{a=1} \neq Y_{i}^{a=0}$
+
+$Y^{a=1}$ and $Y^{a=0}$ are *Potential Outcomes* or *Counterfactual Outcomes* 
+
+---
+
+## ad 1.1 The Fundamental Problem of Causal Inference
+
+"Rubin Causal Model" (Holland, 1986) framework:
+
+![](Chap01_images/rubin.jpg){width=10%}</center>
+
+**Unit**: The person, place, or thing upon which a treatment will operate, at a particular time
+
+**Treatment**: An intervention (Pearl: "we do ..."), the effects of which the investigator wishes to assess relative to no intervention
+
+**Potential Outcomes**: The values of a unit's measurement of interest after application of the treatment and non-application of the treatment
+
+**The Fundamental Problem of Causal Inference**: We can observe at most one of the potential outcomes for each unit.
+
+Definitions from "Basic Concepts of Statistical Inference ofr Causal Effects in Experiments and Observational Studies"; Donald Rubin; Harvard University; 2005
+
+## 1.2 Average causal effects
+
+Identifying **individual causal effects** is generally not possible, but we can assess an **aggregated causal effect** - the average causal effect in a population of individuals.
+<center>
+![](Chap01_images/gods_heart_transplant.png){width=50%}</center>
+
+
+Formal definition of the **average causal effect** in the population: $Pr[Y^{a=0}=1] \neq Pr[Y^{a=1}=1]$ <br><br>
+In our example - the *null hypothesis* of no average causal effect is true: $Pr[Y^{a=0}=1] = 10/20 = Pr[Y^{a=1}=1] = 10/20$
+
+---
+
+## ad 1.2 Stable Unit-Treatment-Value Assumption (SUTVA)
+
+"Rubin Causal Model" (Holland, 1986) framework:
+
+
+<center>![](Chap01_images/rubin.jpg){width=10%}</center>
+
+Two parts:
+<ul>
+<li> there is only **one form of the treatment** and one form of the control ("treatment variation irrelevance", by VanderWeele 2009)
+<li> there is **no interference** among units ("no interaction btw units", by Cox 1958)
+</ul>
+
+---
+
+
+## 1.3 Measures of causal effect
+
+causal $H_0$: <br>
+<ul>
+<li> average treatment effect: $$ATE=Pr[Y^{a=1}=1]-Pr[Y^{a=0}=1]=0$$
+<li> risk ratio: $$\frac{Pr[Y^{a=1}=1]}{Pr[Y^{a=0}=1]}=1$$
+<li> odds ratio: $$\frac{Pr[Y^{a=1}=1]/Pr[Y^{a=1}=0]}{Pr[Y^{a=0}=1]/Pr[Y^{a=0}=0]}=1$$
+</ul>
+
+**Example**: Consider a population of 100 million patients in which 20 million would die within five years if treated (a=1), and 30 million would die within five years if untreated (a=0). This information can be summarizedin several equivalent ways:
+<ul>
+<li> the causal risk difference is 0.2 - 0.3 = -0.1
+<li> if one treats the 100 million patients, there will be 10 million fewer deaths than if one does not treat those 100 million patients
+<li> one needs to treat 100 million patients to save 10 million lives
+<li> on average, one needs to treat 10 patients to save 1 life - "**number needed to treat** (NNT)"
+</ul>
+---
+
+## ad 1.3 Number needed to treat (NNT)
+
+quote: "... the only way, we are told, that physicians can understand probabilities: odds being a difficult concept only comprehensible to statisticians, bookies, puntersa and readers of the sports pages of popular newspapers..."; Statistical Issues in Drug Development; Stephen Senn; Wiley; 2007
+
+---
+
+## 1.4 Random variability
+
+$1^{st}$ source of random error: **sampling variability** 
+We assume *consistent* estimators $\widehat{Pr}[Y^a=1]$, but we need statitical procedures to determine the uncertainty of seeing only a limited number of individuals of our population.
+
+$2^{nd}$ source of random error: **nondeterministic counterfactuals**
+We might look at an inherent stochastic process (eg. quantum mechanics, gene expression, ...) - chapter 10.
+
+---
+
+## 1.5 Causation versus association
+<center>
+![](Chap01_images/table1_2.PNG){width=50%}</center>
+
+$$Pr[Y=1|A=1]=7/13$$
+$$Pr[Y=1|A=0]=3/7$$
+We conclude that in our population treatment A and outcome Y are dependent / **associated** because $Pr[Y=1|A=1] \neq Pr[Y=1|A=0]$. <br>
+Independence $Y\perp \!\!\! \perp A$ is defined as $Pr[Y=1|A=1] = Pr[Y=1|A=0]$.
+---
+
+## 1.5 Association is not Correlation
+<center>
+![](Chap01_images/CausationIsNotCorrelation.png){width=70%}</center>
+
+## Example 1 of 5: "Breakthrough story in cancer research"
+
+![](Chap01_images/theLancet.png){width=70%}
+
+*Background*: We tested the **primary hypothesis** that breast cancer **recurrence** after potentially curative surgery is **lower with regional anaesthesia-analgesia** using paravertebral blocks and the anaesthetic propofol **than with general anaesthesia** with the volatile anaesthetic sevoflurane and opioid analgesia. <br>
+
+*Methods*: We did a **randomised controlled trial** at **13 hospitals** in Argentina, Austria, ... Primary analyses were done under **intention-to-treat** principles. <br>
+
+*Findings*: **Between Jan 30, 2007, and Jan 18, 2018, 2132 women were enrolled** to the study, ... Baseline characteristics were **well balanced** between study groups. Among women assigned **regional anaesthesia-analgesia, 102 (10%) recurrences** were reported, compared with **111 (10%) recurrences among those allocated general anaesthesia** (hazard ratio 0·97, 95% CI 0·74–1·28; **p=0·84**). 
+
+*Interpretation*: In our study population, regional anaesthesia-analgesia (paravertebral block and propofol) **did not reduce breast cancer recurrence** after potentially curative surgery.. Clinicians can use regional or general anaesthesia with respect to breast cancer recurrence ... 
+
+---
+
+## Example 2 of 5: "predictions vs actionable insights"
+
+On his talk about about the influence of causal inference on recommender systems (Amit Sharma; DataEngConf NYC 2016):
+
+![](Chap01_images/reddit.png){width=100%}
+
+Social networks like the "social-news-aggregator" platform reddit (1.65 billion comments until May 2015) provide a relevant communications platform. Therefore understanding evolution of its user community is essential for monitoring community health, predicting individual user trajectories and supporting effective reccommendations. Comment lenght served in the study of Barbosa *et.al.* (arXiv; 2015) as proxy for user effort to answer the question: "**is reddit getting worse over time?**".
+
+---
+
+## Example 3 of 5: "some more paradoxons..."
+
+"A large university is interested in investigating the effects on the students of the diet provided in the university dining halls and any sex differences in these effects. Various types of data are gathered. In particular, the weight of each student at the time of his arrival in September and his weight the following June are recorded.” (Lord; 1967)
+
+<center>![](Chap01_images/LordsParadox.png){width=40%}</center>
+
+Figure from "Lord's Paradox Revisited - Oh Lord! Kumbaya!"; Judea Pearl; 2016
+
+---
+
+## Example 4 of 5: "cross-over trials & twin studies"
+
+<center>![](Chap01_images/crossover.png){width=90%}</center>
+
+Figure source: Verena Wally *et.al.*; Diacerein orphan drug development for epidermolysis bullosa simplex: A phase 2/3 randomized, placebo-controlled, double-blind clinical trial.; J Am Acad Dermatol.; 2018 
+
+
+---
+
+## Example 5 of 5: "Mendelian randomization as a means to find causality in oberservational data"
+
+<center>![](Chap01_images/birth_weight_paradoxon.png){width=80%}</center>
+
+Figure source: Sonia Hernández-Díaz *et.al.*; The Birth Weight “Paradox” Uncovered?; Americ. Journ. Epidem.; 2006
+
+**Birth weight paradox**: "The birth-weight paradox concerns the relationship between the birth weight and mortality rate of childrenborn to tobacco smoking mothers. It is dubbed a “paradox” because, contrary to expectations, low birth-weight children born to smoking mothers have a lower infant mortality rate than the low birth weightchildren of non-smokers" ("Lord's Paradox Revisited - Oh Lord! Kumbaya!"; Judea Pearl; 2016)
+
+**Mendelian randomization** "(MR) is a burgeoning field that involves the use of genetic variants to assess causal relationships between exposures and outcomes. MR studies can be straightforward; for example, genetic variants within or near the encoding locus that is associated with protein concentrations can help to assess their causal role in disease."; (Holmes *et.al.*; Mendelian randomization in cardiometabolic disease: challenges in evaluating causality.;Nat.Rev.Cardiology;2017)
+
+---
+
+
