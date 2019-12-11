@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>Effect Modifications in Causal Inference</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Gregory Botwin" />
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Effect Modifications in Causal Inference
+## Causal Inference: What If 4.1 -4.3
+### Gregory Botwin
+### 11-DEC-2019, Data Science Seminar
+
+---
+
+
+
+
+
+# Review Causal Inference Notation
+
+1. Individual causal effects: `$$Y^{a=1} \quad \neq \quad Y^{a=0}$$`
+
+2. Average Causal Effect: `$$\operatorname{Pr}\left[Y^{a=1}=1\right] \neq \operatorname{Pr}\left[Y^{a=0}=1\right]$$`
+
+
+---
+
+# Review Effect Measures
+3. Measures of Null Causal Effect:  
+- Risk Difference: `$$\operatorname{Pr}\left[Y^{a=1}=1\right]-\operatorname{Pr}\left[Y^{a=0}=1\right]=0$$`
+- Risk Ratio: `$$\frac{\operatorname{Pr}\left[Y^{a=1}=1\right]}{\operatorname{Pr}\left[Y^{a=0}=1\right]}=1$$`
+- Odds Ratio: `$$\frac{\operatorname{Pr}\left[Y^{a=1}=1\right] / \operatorname{Pr}\left[Y^{a=1}=0\right]}{\operatorname{Pr}\left[Y^{a=0}=1\right] / \operatorname{Pr}\left[Y^{a=0}=0\right]}=1$$`
+
+---
+
+# Review Causation V. Association
+![](association_not_causation.png)
+
+---
+# Review Randomization
+1. Ideal/Marginalized Randomization ensures missing data (e.g. non-observed potential outcomes) occur by chance, this allows for exchangeability 
+
+2. Exchangeability: `$$Y^{a} \perp \perp A$$`
+
+3. Conditional Exchangeability: `$$Y^{a} \perp \perp A | L$$`
+
+---
+# Effect Modification Definition (4.1)
+- *Modifier* V = Sex (1 female, 0 male)  
+
+- *Treatment* A = heart transplant (1 transplant, 0 no-transplant) 
+
+- *Outcome* Y = Mortality (1 death, 0 survival)
+
+- Definition: V is a modifier of the effect of A on Y when the average causal effect of A on Y varies across levels of V
+
+---
+
+# Effect Modification Example
+![](simple_example.png)
+
+---
+# Additive, Multiplicative, and Qualitative Modification
+- Sex V is an effect modifier of the treatment of heart transplant A on mortality Y on the **additive** scale because **risk difference** varies across levels of V.
+
+- Sex V is an effect modifier of the treatment of heart transplant A on mortality Y on the **multiplicative** scale because the causal **risk ratio** varies across the levels of V.
+
+- **Qualitative** effect modification occurs when the average causal effects in the subsets V are in the opposite direction.
+
+---
+# How Causal Effect Depends on Effect Measured
+- Since the average causal effect can be measured using different effect measures, the presence of effect depends of the effect measure being used.
+
+- With **qualitative** effects, additive implies multiplicative and vice versa. 
+
+- With **non-qualitative** effects, you can find an effect on one scale and not the other. 
+
+![](non_qualititaitve.png)
+---
+# Stratification to Identify Effect Modification Example 
+![](worked_example.png)
+
+- Target trial =  Measure effect of treatment of heart transplant A conditionally randomized based on severity L, with stratification between countries V, for outcome mortality Y.
+
+---
+# Why to Care About Modifiers
+- If V modifies the effect of treatment A on the outcome Y then the average causal effect will differ between populations with different prevalence of V. 
+
+- The presence of effect modification is helpful to identify the groups of individuals that would benefit the most from the intervention. 
+
+- Identifying effect modification may help understand the mechanism leading to the outcome. 
+
+---
+# Discussion Questions
+1. Why isn't the odds ratio scale a desirable parameter of interest for causal inference?
+
+2. Why is the additive (risk difference) over the multiplicative (risk ratio) preferred to identify groups that will benefit the most from the intervention?
+
+3. How will matching across strata impact the assessment of effect modifiers (example Silber 2016) https://jamanetwork.com/journals/jamasurgery/fullarticle/2482670?appId=scweb
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
