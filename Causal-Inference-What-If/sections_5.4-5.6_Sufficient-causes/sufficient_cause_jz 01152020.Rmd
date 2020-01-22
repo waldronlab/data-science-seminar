@@ -1,0 +1,87 @@
+---
+title: 'Causal Inference: What If'
+author: "Jiaqi Zhu"
+date: "15 January 2020"
+output:
+  slidy_presentation: default
+  beamer_presentation: default
+mainfont: Arial
+subtitle: |-
+  Section 5.4-5.6
+  Sufficient causes
+header-includes: \usepackage{bbm}
+---
+
+Review
+============================
+- *Interaction* requires joint intervention
+- joint intervention: interventions on two or more treatments
+- definition of interaction between treatment A (apple) and E (egg) on the additive scale, causal effect difference
+$$\operatorname{Pr}\left[Y^{a=1,e=1}=1\right]-\operatorname{Pr}\left[Y^{a=0,e=1}=1\right]\neq\operatorname{Pr}\left[Y^{a=1,e=0}=1\right]-\operatorname{Pr}\left[Y^{a=0,e=0}=1\right] $$
+- sufficient condition to identify interaction is that exchangability, positivity, and consistency are all satisfied for each treatment
+- if E is randomly assigned, interaction = effect modification
+
+
+
+#Counterfactual response types
+<div style='text-align: center'>
+![](./section_5.4-5.6_resources/figure5.0.png){height=400}
+</div>
+- deterministic counterfactual responses
+- no interaction: type 1,4,6,11,13,16
+- presence of interaction:
+  - develop the outcome under 1 out of 4 treatment combination: type 8,12,14,15
+  - develop the outcome under 2 out of 4 treatment combination: type 7,10
+  - develop the outcome under 3 out of 4 treatment combination: type 2,3,5,9
+
+
+
+#Sufficient causes
+<div style='text-align: center'>
+![](./section_5.4-5.6_resources/1figure5.1.png){height=200}
+</div>
+- causal mechanisms involved in the interaction between two treatments
+- sufficient-component causes: sufficient causes and their components
+
+
+#Sufficient causes
+<div style='text-align: center'>
+![](./section_5.4-5.6_resources/figure5.2.png){height=400}
+</div>
+
+
+
+
+#Sufficient causes interactions
+- *Interaction* under counterfactual-framework - contrast of counterfactual quantities
+- *Interaction* under sufficient-component-cause-framework - co-existence in sufficient cause
+    - synergistic  (A = 1 and E = 1)
+    - antagonistic (A = 1 and E = 0, A = 0 and E = 1)
+- special case where we don't need knowledge of sufficient causes and components specification: inequality holds
+
+$$\operatorname{Pr}\left[Y^{a=1,e=1}=1\right]-\operatorname{Pr}\left[Y^{a=0,e=1}=1\right]>\operatorname{Pr}\left[Y^{a=1,e=0}=1\right] $$
+
+
+
+
+#Counterfactuals vs. sufficient-component causes
+<div style='text-align: center'>
+![](./section_5.4-5.6_resources/figure5.3.png){height=600}
+</div>
+
+
+
+#Counterfactuals vs. sufficient-component causes
+<div style='text-align: center'>
+![](./section_5.4-5.6_resources/table5.4.png){height=300}
+</div>
+
+
+
+
+#Thank You
+<div style='text-align: center;'>
+**Questions and Discussion**
+</div>
+
+---
