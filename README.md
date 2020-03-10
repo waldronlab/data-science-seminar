@@ -18,7 +18,7 @@
 
 ## Current activities
 
-During October 16 2019 - Feb 5 2020, we will read an advance online copy of the new book [Causal Inference: What If] by Miguel Hernán and James Robins, scheduled to be released by Chapman & Hall/CRC in 2020. See the [schedule
+During March 18 - May 2020, we will complete reading the new book [Causal Inference: What If] by Miguel Hernán and James Robins, scheduled to be released by Chapman & Hall/CRC in 2020. See the [schedule
 wiki](https://github.com/waldronlab/data-science-seminar/wiki) for the schedule of presentations.
 
 ## About us
