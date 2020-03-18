@@ -9,10 +9,9 @@
 
 ## Meeting details
 
-* Wednesdays at 5:00pm Central European Time (11am NYC time)
-* Meetings are on Blackboard: https://tinyurl.com/datasciencebb (here is the [full link](https://us.bbcollab.com/collab/ui/session/guest/d3d0f258a0154bc885fd22cb7ae8a86f))
-* Anonymous dial-in phone access: 571-392-7650 PIN: 275 060 2621
 * Schedule: https://github.com/waldronlab/data-science-seminar/wiki
+* Wednesdays at 5:00pm Central European Time (in March this is noon NYC time)
+* Meetings are on Blackboard: https://tinyurl.com/datasciencebb (here is the [full link](https://us.bbcollab.com/collab/ui/session/guest/d3d0f258a0154bc885fd22cb7ae8a86f))
 * Email list: https://groups.google.com/forum/#!forum/stat_learning
 * Calendar [ical](https://calendar.google.com/calendar/ical/094jn99q1meuq01gmtn7ipo0ts%40group.calendar.google.com/public/basic.ics) [http](https://calendar.google.com/calendar/embed?src=094jn99q1meuq01gmtn7ipo0ts%40group.calendar.google.com&ctz=America%2FNew_York)
 
