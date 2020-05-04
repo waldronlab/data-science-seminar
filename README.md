@@ -1,13 +1,16 @@
-## Table of Contents
+# Table of Contents
 
-- [Meeting details](#meeting-details)
-- [Current activities](#current-activities)
-- [About us](#about-us)
-- [Getting started](#getting-started)
-- [Presenting](#presenting)
-- [Past textbooks](#past-textbooks)
+- Single-cell Multimodal Data Journal Club
+    - All details on [wiki](https://github.com/waldronlab/data-science-seminar/wiki/Single-cell-multimodal-data)
+- Causal Inference: What If? book club
+    - [Meeting details](#meeting-details)
+    - [Current activities](#current-activities)
+    - [About us](#about-us)
+    - [Getting started](#getting-started)
+    - [Presenting](#presenting)
+    - [Past textbooks](#past-textbooks)
 
-## Meeting details
+# Causal Inference Book Club Meeting details
 
 * Schedule: https://github.com/waldronlab/data-science-seminar/wiki
 * Wednesdays at 5:00pm Central European Time (in March this is noon NYC time)
