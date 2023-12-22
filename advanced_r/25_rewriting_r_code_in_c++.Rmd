@@ -1,0 +1,15 @@
+---
+title: Advanced R
+subtitle: Rewriting R code in C++
+author: ''
+date: ''
+header-includes:
+   - \usepackage{bbm}
+output:
+  slidy_presentation:
+      incremental: yes
+mainfont: Arial
+---
+
+# Rewriting R code in C++
+

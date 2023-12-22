@@ -1,0 +1,15 @@
+---
+title: Advanced R
+subtitle: S3
+author: ''
+date: ''
+header-includes:
+   - \usepackage{bbm}
+output:
+  slidy_presentation:
+      incremental: yes
+mainfont: Arial
+---
+
+# S3
+
