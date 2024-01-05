@@ -1,0 +1,15 @@
+---
+title: Advanced R
+subtitle: Names and values
+author: ''
+date: ''
+header-includes:
+   - \usepackage{bbm}
+output:
+  slidy_presentation:
+      incremental: yes
+mainfont: Arial
+---
+
+# Names and values
+
