@@ -1,6 +1,8 @@
 # Table of Contents
 
-- Advanced R book club
+- Single-cell Multimodal Data Journal Club
+    - All details on [wiki](https://github.com/waldronlab/data-science-seminar/wiki/Single-cell-multimodal-data)
+- Causal Inference: What If? book club
     - [Meeting details](#meeting-details)
     - [Current activities](#current-activities)
     - [About us](#about-us)
@@ -8,22 +10,23 @@
     - [Presenting](#presenting)
     - [Past textbooks](#past-textbooks)
 
-# Advanced R Meeting details
+# Causal Inference Book Club Meeting details
 
 * Schedule: https://github.com/waldronlab/data-science-seminar/wiki
-* Fridays at 11:00am Eastern Standard Time (we will switch to Eastern Daylight Savings Time starting the week of March 10th)
-* Meetings are on Zoom (please join the [Google Group](https://groups.google.com/g/cuny-data-science-book-club) to receive link)
-* Email list: https://groups.google.com/g/cuny-data-science-book-club
-* Calendar [ical](https://calendar.google.com/calendar/ical/493d60a5acd1938c95eccb32481058421ff3e052fe6a7661d1b518004290fb48%40group.calendar.google.com/public/basic.ics) [http](https://calendar.google.com/calendar/u/0?cid=NDkzZDYwYTVhY2QxOTM4Yzk1ZWNjYjMyNDgxMDU4NDIxZmYzZTA1MmZlNmE3NjYxZDFiNTE4MDA0MjkwZmI0OEBncm91cC5jYWxlbmRhci5nb29nbGUuY29t)
+* Wednesdays at 5:00pm Central European Time (in March this is noon NYC time)
+* Meetings are on Blackboard: https://tinyurl.com/datasciencebb (here is the [full link](https://us.bbcollab.com/collab/ui/session/guest/d3d0f258a0154bc885fd22cb7ae8a86f))
+* Email list: https://groups.google.com/forum/#!forum/stat_learning
+* Calendar [ical](https://calendar.google.com/calendar/ical/094jn99q1meuq01gmtn7ipo0ts%40group.calendar.google.com/public/basic.ics) [http](https://calendar.google.com/calendar/embed?src=094jn99q1meuq01gmtn7ipo0ts%40group.calendar.google.com&ctz=America%2FNew_York)
 
 ## Current activities
 
-During January 19th - May 2024, we will complete reading the new book [Advanced R](https://adv-r.hadley.nz/) by Hadley Wickham . See the [schedule
+During March 18 - May 2020, we will complete reading the new book [Causal Inference: What If] by Miguel Hernán and James Robins, scheduled to be released by Chapman & Hall/CRC in 2020. See the [schedule
 wiki](https://github.com/waldronlab/data-science-seminar/wiki) for the schedule of presentations.
 
 ## About us
 
-This repository represents the joint effort of the
+This repository represents the joint effort of [Paris Lodron University
+of Salzburg](https://www.uni-salzburg.at/index.php?id=52) and the
 [City University of New York Graduate School of Public Health and
 Health Policy](http://sph.cuny.edu/). During active semesters we hold
 weekly meetings, where a chapter of a book is presented by a
@@ -35,14 +38,15 @@ hope you find these materials useful and will join our sessions.
 
 ## Getting started
 
-1. Leave a comment on the ["Welcome to the Advanced R Book Club" Issue](https://github.com/waldronlab/data-science-seminar/issues/9) to introduce yourself and to
+1. Leave a comment on the ["Welcome" Issue](https://github.com/waldronlab/data-science-seminar/issues/9) to introduce yourself and to
 let us know your GitHub username.
 
 2. Join our Google Group (open membership) and sign up to receive
 emails by visiting
-https://groups.google.com/g/cuny-data-science-book-club.
+https://groups.google.com/forum/#!forum/stat_learning.
 
-3. Install R and RStudio following these
+3. Optional: Install R and RStudio following
+these
 [instructions](https://www.ics.uci.edu/~jutts/110/InstallingRandRStudio.pdf). Here
 is a short video showing [how to use RStudio to contribute to this
 Github repo](http://youtu.be/uHYcDQDbMY8).
@@ -84,4 +88,5 @@ Past textbooks have included:
 * [An Introduction to Statistical Learning](https://www-bcf.usc.edu/~gareth/ISL/) by Gareth James, Daniela Witten, Trevor Hastie and Robert Tibshirani.
 * [Statistical Rethinking: A Bayesian Course with Examples in R and Stan](https://xcelab.net/rm/statistical-rethinking/) by Richard McElreath, with [supplement by Solomon Kurz](https://bookdown.org/connect/#/apps/1850/access) and [lectures by McElreath](https://www.youtube.com/channel/UCNJK6_DZvcMqNSzQdEkzvzA/playlists).
 * The Art of Data Science (https://leanpub.com/artofdatascience or https://bookdown.org/rdpeng/artofdatascience/) by Roger D. Peng and Elizabeth Matsui.
-* [Causal Inference: What If](https://www.hsph.harvard.edu/miguel-hernan/causal-inference-book/) by Miguel Hernan and Jamie Robins
+
+[Causal Inference: What If]: https://www.hsph.harvard.edu/miguel-hernan/causal-inference-book/
