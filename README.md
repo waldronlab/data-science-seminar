@@ -35,7 +35,7 @@ hope you find these materials useful and will join our sessions.
 
 ## Getting started
 
-1. Leave a comment on the ["Welcome to the Advanced R Book Club" Issue](https://github.com/waldronlab/data-science-seminar/issues/9) to introduce yourself and to
+1. Leave a comment on the ["Welcome to the Advanced R Book Club" Issue](https://github.com/waldronlab/data-science-seminar/issues/12) to introduce yourself and to
 let us know your GitHub username.
 
 2. Join our Google Group (open membership) and sign up to receive
