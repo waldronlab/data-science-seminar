@@ -47,7 +47,7 @@ https://groups.google.com/g/cuny-data-science-book-club.
 is a short video showing [how to use RStudio to contribute to this
 Github repo](http://youtu.be/uHYcDQDbMY8).
 
-4. Sign up for a GitHub account, then introduce yourself on the "Welcome" issue of this repository, under [Issues](https://github.com/waldronlab/data-science-seminar/issues).  You will then be able to contribute your presentation and/or exercise notes using file upload directly here, or by using git. If you want to use git instead of simple file upload but don't know what that means, follow this
+4. Sign up for a GitHub account, then introduce yourself on the "Welcome to the Advanced R Book Club" issue of this repository, under [Issues](https://github.com/waldronlab/data-science-seminar/issues).  You will then be able to contribute your presentation and/or exercise notes using file upload directly here, or by using git. If you want to use git instead of simple file upload but don't know what that means, follow this
 [tutorial](https://try.github.io/levels/1/challenges/1). The process
 in RStudio is documented
 [here](https://support.rstudio.com/hc/en-us/articles/200532077-Version-Control-with-Git-and-SVN)
