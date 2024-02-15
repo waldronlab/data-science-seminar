@@ -7,6 +7,7 @@
     - [Getting started](#getting-started)
     - [Presenting](#presenting)
     - [Past textbooks](#past-textbooks)
+    - [Recordings of presentations](https://youtube.com/playlist?list=PLHeOp2a2kQShqgSpivMngc7TBkjVhmHow&si=RMwUTHMAHp2Xn8kW)
 
 # Advanced R Meeting details
 
